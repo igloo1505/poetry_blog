@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,10 +12,11 @@ import LockOutlined from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 import Copyright from "./Copyright";
+import { login } from "../../state/userActions";
 
 const useStyles = makeStyles((theme) => {
-	console.log("theme: ", theme);
 	return {
 		icon: {
 			backgroundColor: theme.palette.secondary.main,
@@ -23,20 +24,32 @@ const useStyles = makeStyles((theme) => {
 	};
 });
 
-const LoginCard = ({ shouldShowLogin, setShouldShowLogin }) => {
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		// eslint-disable-next-line no-console
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		});
+const LoginCard = ({
+	props: { shouldShowLogin, setShouldShowLogin },
+	login,
+	user,
+}) => {
+	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
+		rememberMe: false,
+	});
+	const handleSubmit = (e) => {
+		// Submit stuff here
+		console.log("Form Data", formData);
+		login(formData);
 	};
 	const styles = useStyles();
 
 	const toggleSignUp = () => {
 		setShouldShowLogin(!shouldShowLogin);
+	};
+
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
 	};
 
 	return (
@@ -59,7 +72,7 @@ const LoginCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box component="form" noValidate sx={{ mt: 1 }}>
 					<TextField
 						margin="normal"
 						required
@@ -68,6 +81,7 @@ const LoginCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 						label="Email Address"
 						name="email"
 						autoComplete="email"
+						onChange={handleChange}
 						autoFocus
 					/>
 					<TextField
@@ -79,16 +93,30 @@ const LoginCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 						type="password"
 						id="password"
 						autoComplete="current-password"
+						onChange={handleChange}
 					/>
 					<FormControlLabel
-						control={<Checkbox value="remember" color="primary" />}
+						control={
+							<Checkbox
+								value="remember"
+								name="rememberMe"
+								color="primary"
+								onChange={(e) => {
+									setFormData({
+										...formData,
+										[e.target.name]: e.target.checked,
+									});
+								}}
+							/>
+						}
 						label="Remember me"
 					/>
 					<Button
-						type="submit"
+						// type="submit"
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
+						onClick={handleSubmit}
 					>
 						Sign In
 					</Button>
@@ -111,4 +139,9 @@ const LoginCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 	);
 };
 
-export default LoginCard;
+const mapStateToProps = (state, props) => ({
+	user: state.user,
+	props: props,
+});
+
+export default connect(mapStateToProps, { login })(LoginCard);

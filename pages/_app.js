@@ -1,8 +1,10 @@
 import React, { useEffect, Fragment, useState } from "react";
 import "../styles/globals.css";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { Provider } from "react-redux";
 import mainTheme from "../themes/mainTheme";
 import Appbar from "../components/app/Appbar";
+import store from "../state/store";
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {
@@ -12,10 +14,14 @@ function MyApp({ Component, pageProps }) {
 		}
 	}, []);
 	return (
-		<ThemeProvider theme={mainTheme}>
-			<Appbar />
-			<Component {...pageProps} />
-		</ThemeProvider>
+		<Fragment>
+			<Provider store={store}>
+				<ThemeProvider theme={mainTheme}>
+					<Appbar />
+					<Component {...pageProps} />
+				</ThemeProvider>
+			</Provider>
+		</Fragment>
 	);
 }
 

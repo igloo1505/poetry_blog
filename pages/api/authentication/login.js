@@ -2,10 +2,8 @@
 import uuid from "uuid";
 import nc from "next-connect";
 import { connectDB } from "../../../util/connectDB";
-// import authMiddleware from "../../../util/authMiddleware";
 import jwt from "jsonwebtoken";
 import Cookies from "cookies";
-// import NextCors from "nextjs-cors";
 import { handleRememberMe } from "../../../util/handleRememberMe";
 import User from "../../../models/User";
 import colors from "colors";
@@ -14,16 +12,10 @@ const handler = nc();
 // TODO add auth middleware back in to all protected routes
 // TODO add check for cookies and adapt to 'remember me' state stored in cookies, and sign jwt in cookies as well.
 handler.post(async (req, res) => {
-	// await NextCors(req, res, {
-	//   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-	//   origin: "*",
-	//   optionsSuccessStatus: 200,
-	// });
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
 		let _email = req.body.email.toLowerCase();
-
 		const user = await User.findOne({ email: _email });
 		console.log("User!!!:", user);
 		if (!user) {

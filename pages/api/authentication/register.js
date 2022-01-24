@@ -17,14 +17,7 @@ handler.post(async (req, res) => {
 	const cookies = new Cookies(req, res);
 	try {
 		let { firstName, lastName, allowEmails, email, password } = req.body;
-		console.log(
-			"firstName, lastName, allowEmails, email, password: ",
-			firstName,
-			lastName,
-			allowEmails,
-			email,
-			password
-		);
+
 		let _email = email.toLowerCase();
 		const user = await User.findOne({ email: _email });
 		console.log("User!!!:", user);
