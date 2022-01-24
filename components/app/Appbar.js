@@ -86,7 +86,7 @@ const Appbar = ({
 						<Link href="/">
 							<a className={styles.aTag}>Home</a>
 						</Link>
-						<Link href="/newSubmission">
+						<Link href={isAuthed ? "/newSubmission" : "/login"}>
 							<a className={styles.aTag}>Submit</a>
 						</Link>
 						{isAuthed ? (

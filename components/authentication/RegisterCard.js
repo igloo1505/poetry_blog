@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Copyright from "./Copyright";
+import { registerNewUser } from "../../state/userActions";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => {
 	return {
@@ -22,16 +24,30 @@ const useStyles = makeStyles((theme) => {
 	};
 });
 
-const RegisterCard = ({ shouldShowLogin, setShouldShowLogin }) => {
+const RegisterCard = ({
+	props: { shouldShowLogin, setShouldShowLogin },
+	registerNewUser,
+}) => {
 	const styles = useStyles();
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		// eslint-disable-next-line no-console
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
+
+	const [formData, setformData] = useState({
+		firstName: "",
+		lastName: "",
+		allowEmails: true,
+		email: "",
+		password: "",
+	});
+
+	const handleChange = (e) => {
+		setformData({
+			...formData,
+			[e.target.name]: e.target.value,
 		});
+	};
+
+	const handleSubmit = (e) => {
+		console.log("Form Data", formData);
+		registerNewUser(formData);
 	};
 
 	const toggleSignUp = () => {
@@ -55,17 +71,19 @@ const RegisterCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
-				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box component="form" noValidate sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
 							<TextField
 								autoComplete="given-name"
 								name="firstName"
+								value={formData.firstName}
 								required
 								fullWidth
 								id="firstName"
 								label="First Name"
 								autoFocus
+								onChange={handleChange}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
@@ -73,8 +91,10 @@ const RegisterCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 								required
 								fullWidth
 								id="lastName"
+								onChange={handleChange}
 								label="Last Name"
 								name="lastName"
+								value={formData.lastName}
 								autoComplete="family-name"
 							/>
 						</Grid>
@@ -85,6 +105,8 @@ const RegisterCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 								id="email"
 								label="Email Address"
 								name="email"
+								value={formData.email}
+								onChange={handleChange}
 								autoComplete="email"
 							/>
 						</Grid>
@@ -93,24 +115,38 @@ const RegisterCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 								required
 								fullWidth
 								name="password"
+								value={formData.password}
 								label="Password"
 								type="password"
 								id="password"
+								onChange={handleChange}
 								autoComplete="new-password"
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<FormControlLabel
-								control={<Checkbox value="allowExtraEmails" color="primary" />}
+								control={
+									<Checkbox
+										color="primary"
+										name="allowEmails"
+										value={formData.allowEmails}
+										onChange={(e) => {
+											setformData({
+												...formData,
+												allowEmails: e.target.checked,
+											});
+										}}
+									/>
+								}
 								label="I want to receive inspiration, marketing promotions and updates via email."
 							/>
 						</Grid>
 					</Grid>
 					<Button
-						type="submit"
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
+						onClick={handleSubmit}
 					>
 						Sign Up
 					</Button>
@@ -128,4 +164,9 @@ const RegisterCard = ({ shouldShowLogin, setShouldShowLogin }) => {
 	);
 };
 
-export default RegisterCard;
+const mapStateToProps = (state, props) => ({
+	user: state.user,
+	props: props,
+});
+
+export default connect(mapStateToProps, { registerNewUser })(RegisterCard);

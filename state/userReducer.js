@@ -16,6 +16,13 @@ const userReducer = createReducer(initialState, (builder) => {
 			user: action.payload,
 		};
 	});
+	builder.addCase(Types.REGISTRATION_SUCCESS, (state, action) => {
+		return {
+			...state,
+			isAuthenticated: true,
+			user: action.payload.user,
+		};
+	});
 	builder.addCase(Types.LOGOUT, (state, action) => {
 		console.log("userData: ", action.payload);
 		return {
