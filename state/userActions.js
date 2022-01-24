@@ -26,3 +26,7 @@ export const login = (userData) => async (dispatch) => {
 		dispatch({ type: Types.SERVER_ERROR, payload: error });
 	}
 };
+
+export const handleLogout = () => (dispatch) => {
+	dispatch({ type: Types.LOGOUT });
+};

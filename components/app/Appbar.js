@@ -13,6 +13,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import { connect } from "react-redux";
+import { handleLogout } from "../../state/userActions";
 
 const useStyles = makeStyles((theme) => ({
 	toolbarRight: {
@@ -38,8 +40,25 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MenuAppBar() {
+const Appbar = ({
+	user: {
+		isAuthenticated,
+		user: { _id },
+	},
+	handleLogout,
+}) => {
 	const [anchorEl, setAnchorEl] = useState(null);
+	const [isAuthed, setIsAuthed] = useState(false);
+
+	useEffect(() => {
+		if (isAuthenticated && _id) {
+			setIsAuthed(true);
+		}
+		if (!isAuthenticated || !_id) {
+			setIsAuthed(false);
+		}
+	}, [isAuthenticated, _id]);
+
 	const styles = useStyles();
 	const handleChange = (event) => {
 		setAuth(event.target.checked);
@@ -70,12 +89,27 @@ export default function MenuAppBar() {
 						<Link href="/newSubmission">
 							<a className={styles.aTag}>Submit</a>
 						</Link>
-						<Link href="/login">
-							<a className={styles.aTag}>Login</a>
-						</Link>
+						{isAuthed ? (
+							<Link href="/">
+								<a className={styles.aTag} onClick={handleLogout}>
+									Logout
+								</a>
+							</Link>
+						) : (
+							<Link href="/login">
+								<a className={styles.aTag}>Login</a>
+							</Link>
+						)}
 					</div>
 				</Toolbar>
 			</AppBar>
 		</Box>
 	);
-}
+};
+
+const mapStateToProps = (state, props) => ({
+	user: state.user,
+	props: props,
+});
+
+export default connect(mapStateToProps, { handleLogout })(Appbar);
