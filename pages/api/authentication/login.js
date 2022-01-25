@@ -5,6 +5,7 @@ import { connectDB } from "../../../util/connectDB";
 import jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import { handleRememberMe } from "../../../util/handleRememberMe";
+import { handleCookies, handleAuth } from "../../../util/handleCookies";
 import User from "../../../models/User";
 import colors from "colors";
 
