@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import clsx from "clsx";
 import * as Types from "../../state/Types";
+import { isMobile } from "mobile-device-detect";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";
@@ -70,16 +71,21 @@ const Appbar = ({
 	};
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			document.addEventListener("mousemove", (e) => {
-				if (e.y < hoverLimit) {
-					showNavbar();
-				}
-				if (e.y >= hoverLimit) {
-					hideNavbar();
-				}
-			});
+			if (!isMobile) {
+				document.addEventListener("mousemove", (e) => {
+					if (e.y < hoverLimit) {
+						showNavbar();
+					}
+					if (e.y >= hoverLimit) {
+						hideNavbar();
+					}
+				});
+			}
+			if (isMobile) {
+				showNavbar();
+			}
 		}
-	}, []);
+	}, [isMobile]);
 
 	useEffect(() => {
 		if (isAuthenticated && _id) {

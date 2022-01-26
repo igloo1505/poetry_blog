@@ -21,6 +21,7 @@
     "cookies": "^0.8.0",
     "gsap": "^3.9.1",
     "jsonwebtoken": "^8.5.1",
+    "mobile-device-detect": "^0.4.3",
     "mongodb": "^4.3.1",
     "mongoose": "^6.1.7",
     "mongoose-autopopulate": "^0.16.0",
