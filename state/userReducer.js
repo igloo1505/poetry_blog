@@ -13,7 +13,7 @@ const userReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			isAuthenticated: true,
-			user: action.payload,
+			user: action.payload.user,
 		};
 	});
 	builder.addCase(Types.REGISTRATION_SUCCESS, (state, action) => {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -9,12 +8,16 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlined from "@mui/icons-material/LockOutlined";
+import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Copyright from "./Copyright";
 import { login } from "../../state/userActions";
+import { gsap } from "gsap";
+
+const formContainerId = "login-form-container";
 
 const useStyles = makeStyles((theme) => {
 	return {
@@ -34,6 +37,10 @@ const LoginCard = ({
 		password: "",
 		rememberMe: false,
 	});
+	useEffect(() => {
+		animateFormEntrance();
+	}, []);
+
 	const handleSubmit = (e) => {
 		// Submit stuff here
 		console.log("Form Data", formData);
@@ -53,7 +60,7 @@ const LoginCard = ({
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="xs" id={formContainerId}>
 			<CssBaseline />
 			<Box
 				sx={{
@@ -145,3 +152,15 @@ const mapStateToProps = (state, props) => ({
 });
 
 export default connect(mapStateToProps, { login })(LoginCard);
+
+const animateFormEntrance = () => {
+	gsap.fromTo(
+		`#${formContainerId}`,
+		{
+			opacity: 0,
+			y: -100,
+			ease: "power3.inOut",
+		},
+		{ opacity: 1, y: 0 }
+	);
+};

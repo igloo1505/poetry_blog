@@ -15,6 +15,9 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Copyright from "./Copyright";
 import { registerNewUser } from "../../state/userActions";
 import { connect } from "react-redux";
+import { gsap } from "gsap";
+
+const formContainerId = "register-form-container";
 
 const useStyles = makeStyles((theme) => {
 	return {
@@ -38,6 +41,10 @@ const RegisterCard = ({
 		password: "",
 	});
 
+	useEffect(() => {
+		animateFormEntrance();
+	}, []);
+
 	const handleChange = (e) => {
 		setformData({
 			...formData,
@@ -55,7 +62,7 @@ const RegisterCard = ({
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="xs" id={formContainerId}>
 			<CssBaseline />
 			<Box
 				sx={{
@@ -170,3 +177,15 @@ const mapStateToProps = (state, props) => ({
 });
 
 export default connect(mapStateToProps, { registerNewUser })(RegisterCard);
+
+const animateFormEntrance = () => {
+	gsap.fromTo(
+		`#${formContainerId}`,
+		{
+			opacity: 0,
+			y: -100,
+			ease: "power3.inOut",
+		},
+		{ opacity: 1, y: 0 }
+	);
+};

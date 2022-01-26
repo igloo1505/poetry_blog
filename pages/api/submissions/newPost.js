@@ -28,6 +28,13 @@ handler.post(async (req, res) => {
 			body,
 		});
 		let savedSubmission = await newSubmission.save();
+		let _user = await User.findByIdAndUpdate(
+			_userId,
+			{
+				$push: { posts: newSubmission._id },
+			},
+			{ new: true }
+		).populate("posts");
 		console.log("savedSubmission:", savedSubmission);
 		return res
 			.status(200)

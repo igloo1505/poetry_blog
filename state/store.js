@@ -1,13 +1,8 @@
-import {
-	createReducer,
-	createAction,
-	current,
-	applyMiddleware,
-	configureStore,
-	createSlice,
-} from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userReducer";
+import formReducer from "./formReducer";
 import networkReducer from "./networkReducer";
+import UIReducer from "./UIReducer";
 
 const initialState = {};
 
@@ -19,7 +14,9 @@ const withDevtools = () => {
 const store = configureStore({
 	reducer: {
 		user: userReducer,
+		forms: formReducer,
 		network: networkReducer,
+		UI: UIReducer,
 	},
 	devTools: () => withDevtools(),
 	// devTools: true,

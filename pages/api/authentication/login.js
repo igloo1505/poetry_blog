@@ -7,6 +7,7 @@ import Cookies from "cookies";
 import { handleRememberMe } from "../../../util/handleRememberMe";
 import { handleCookies, handleAuth } from "../../../util/handleCookies";
 import User from "../../../models/User";
+import Submission from "../../../models/Submission";
 import colors from "colors";
 
 const handler = nc();
@@ -47,7 +48,9 @@ handler.post(async (req, res) => {
 			let doc = p._doc;
 			delete doc.password;
 			// delete doc.otp
-			return res.json(doc);
+			return res.json({
+				user: doc,
+			});
 		}
 	} catch (error) {
 		console.log(error);

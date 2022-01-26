@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 import { v4 } from "uuid";
+import Submission from "./Submission";
+
+const perPage = 10;
 
 const UserSchema = mongoose.Schema(
 	{
@@ -33,6 +36,11 @@ const UserSchema = mongoose.Schema(
 		allowEmails: {
 			type: Boolean,
 			default: true,
+		},
+		posts: {
+			type: [mongoose.Schema.Types.ObjectId],
+			default: [],
+			autopopulate: true,
 		},
 	},
 	{ timestamps: true }
@@ -77,24 +85,34 @@ UserSchema.methods.comparePassword = async function (
 };
 
 // TODO MAKE SURE THIS IS HANDLED ON INITIAL LOGIN TO AVOID SYNC ISSUES BETWEEN CLIENT OTP AND HASHED ONETIMEPASSWORD
-// UserSchema.methods.handleOtp = async function (password, next) {
-// 	let comparison = await bcrypt.compare(password, this.oneTimePassword);
-// 	if (comparison) {
-// 		let newOtp = [...v4()].filter((c) => /[a-zA-Z0-9]+/g.test(c));
-// 		console.log("newOtp: ", newOtp);
-// 		const salt = await bcrypt.genSalt(10);
-// 		this.oneTimePassword = await bcrypt.hash(newOtp.join(), salt);
-// 		return {
-// 			isMatch: true,
-// 			comparison: comparison,
-// 			newClientOtp: newOtp,
-// 		};
-// 	} else {
-// 		return {
-// 			isMatch: false,
-// 			comparison: comparison,
-// 		};
-// 	}
-// };
+UserSchema.methods.handleOtp = async function (password, next) {
+	let comparison = await bcrypt.compare(password, this.oneTimePassword);
+	if (comparison) {
+		let newOtp = [...v4()].filter((c) => /[a-zA-Z0-9]+/g.test(c));
+		console.log("newOtp: ", newOtp);
+		const salt = await bcrypt.genSalt(10);
+		this.oneTimePassword = await bcrypt.hash(newOtp.join(), salt);
+		return {
+			isMatch: true,
+			comparison: comparison,
+			newClientOtp: newOtp,
+		};
+	} else {
+		return {
+			isMatch: false,
+			comparison: comparison,
+		};
+	}
+};
+
+UserSchema.methods.getUsersPosts = async function (_index) {
+	let posts = await Submission.find({
+		author: this._id.toString(),
+	})
+		.limit(perPage)
+		.skip(_index * perPage)
+		.sort({ createdAt: -1 });
+	return posts;
+};
 
 module.exports = mongoose.models?.User || mongoose.model("User", UserSchema);
