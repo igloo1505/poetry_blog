@@ -3,22 +3,25 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import AccountCircle from "@mui/icons-material/AccountCircle";
+import clsx from "clsx";
 import * as Types from "../../state/Types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";
 
 const hoverLimit = 100;
 
 const useStyles = makeStyles((theme) => ({
+	toolbarMain: {
+		position: "absolute",
+		width: "100vw",
+		zIndex: 10,
+		transition: "all 0.3s ease-in-out",
+	},
+	toolbarHidden: {
+		transform: "translateY(-100%)",
+	},
 	toolbarRight: {
 		display: "flex",
 		flexDirection: "row",
@@ -55,14 +58,12 @@ const Appbar = ({
 	const dispatch = useDispatch();
 
 	const showNavbar = () => {
-		console.log("Showing navbar");
 		dispatch({
 			type: Types.SET_NAVBAR_HIDDEN,
 			payload: false,
 		});
 	};
 	const hideNavbar = () => {
-		console.log("Hiding navbar");
 		dispatch({
 			type: Types.RESET_NAVBAR_HIDDEN,
 		});
@@ -70,14 +71,12 @@ const Appbar = ({
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			document.addEventListener("mousemove", (e) => {
-				console.log("e.y: ", e.y);
 				if (e.y < hoverLimit) {
 					showNavbar();
 				}
 				if (e.y >= hoverLimit) {
 					hideNavbar();
 				}
-				console.log("Event", e);
 			});
 		}
 	}, []);
@@ -108,6 +107,7 @@ const Appbar = ({
 			sx={{ flexGrow: 1 }}
 			onMouseEnter={showNavbar}
 			onMouseLeave={hideNavbar}
+			className={clsx(styles.toolbarMain, navbarHidden && styles.toolbarHidden)}
 		>
 			<AppBar position="static">
 				<Toolbar>

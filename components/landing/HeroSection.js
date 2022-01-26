@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 		textAlign: "center",
+		zIndex: 1,
 		// border: "5px solid red",
 	},
 }));
@@ -23,11 +24,10 @@ const HeroSection = () => {
 	return (
 		<div className={styles.heroContainer}>
 			<Image
-				// loader={myLoader}
 				src={HeroImage}
 				alt="Dramatic Poetry with Roses"
-				// width={500}
-				// height={500}
+				layout="fill"
+				objectFit="cover"
 			/>
 		</div>
 	);
