@@ -3,7 +3,7 @@ import store from "./store";
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
-	navbarHidden: true,
+	navbarHidden: false,
 };
 
 const UIReducer = createReducer(initialState, (builder) => {

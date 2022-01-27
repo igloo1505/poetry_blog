@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import clsx from "clsx";
 import * as Types from "../../state/Types";
 import { isMobile } from "mobile-device-detect";
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 		position: "absolute",
 		width: "100vw",
 		zIndex: 10,
+		top: 0,
 		transition: "all 0.3s ease-in-out",
 	},
 	toolbarHidden: {
@@ -69,10 +71,13 @@ const Appbar = ({
 			type: Types.RESET_NAVBAR_HIDDEN,
 		});
 	};
+	const router = useRouter();
 	useEffect(() => {
+		console.log("router.pathname: ", router.pathname);
 		if (typeof window !== "undefined") {
 			if (!isMobile) {
 				document.addEventListener("mousemove", (e) => {
+					console.log("Mouse move", e);
 					if (e.y < hoverLimit) {
 						showNavbar();
 					}

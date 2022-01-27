@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import * as Types from "../../state/Types";
 import HeroImage from "../../public/penWithCoffeeAndRoses.jpg";
 import clsx from "clsx";
 import gsap from "gsap";
@@ -41,20 +43,17 @@ const useStyles = makeStyles((theme) => ({
 
 const HeroSection = () => {
 	const styles = useStyles();
-	const [overlayFadeIn, setOverlayFadeIn] = useState(false);
+	const router = useRouter();
+	const dispatch = useDispatch();
 	useEffect(() => {
 		setTimeout(() => {
-			// setOverlayFadeIn(true);
-			animateEntrance();
+			animateEntrance({ dispatch });
 		}, overlayTimeout);
 	}, []);
 
 	return (
 		<div className={styles.heroContainer}>
-			<div
-				className={clsx(styles.overlay, overlayFadeIn && styles.overlayFadeIn)}
-				id={overlayId}
-			>
+			<div className={clsx(styles.overlay)} id={overlayId}>
 				<Image
 					src={HeroImage}
 					alt="Dramatic Poetry with Roses"
@@ -75,11 +74,17 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(mapStateToProps)(HeroSection);
 
-const animateEntrance = () => {
+const animateEntrance = ({ dispatch }) => {
 	let tl = gsap.timeline();
 	tl.fromTo(
 		`#${overlayId}`,
 		{ backgroundColor: "rgba(0, 0, 0, 0)" },
 		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
 	);
+	setTimeout(() => {
+		dispatch({
+			type: Types.SET_NAVBAR_HIDDEN,
+			payload: true,
+		});
+	}, 800);
 };

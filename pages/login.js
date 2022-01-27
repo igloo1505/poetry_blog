@@ -3,6 +3,17 @@ import LoginCard from "../components/authentication/LoginCard";
 import RegisterCard from "../components/authentication/RegisterCard";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+	container: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+		minHeight: "100vh",
+	},
+}));
 
 const login = ({
 	user: {
@@ -12,6 +23,7 @@ const login = ({
 }) => {
 	const [shouldShowLogin, setShouldShowLogin] = useState(true);
 	const router = useRouter();
+	const styles = useStyles();
 	useEffect(() => {
 		if (isAuthenticated && _id) {
 			router.push("/");
@@ -19,7 +31,7 @@ const login = ({
 	}, [isAuthenticated, _id, router]);
 
 	return (
-		<div>
+		<div className={styles.container}>
 			{shouldShowLogin ? (
 				<LoginCard
 					shouldShowLogin={shouldShowLogin}
