@@ -14,7 +14,8 @@ handler.post(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
-		let { body, title } = req.body;
+		let { body, title, tags } = req.body;
+		let _tags = tags || [];
 		let _userId = cookies.get("userId");
 		console.log("userId: from cookies", _userId);
 		const user = await User.findById(_userId);
@@ -26,6 +27,7 @@ handler.post(async (req, res) => {
 			author: user._id,
 			title,
 			body,
+			_tags,
 		});
 		let savedSubmission = await newSubmission.save();
 		let _user = await User.findByIdAndUpdate(

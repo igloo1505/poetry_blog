@@ -17,6 +17,11 @@ const SubmissionSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		tags: {
+			type: [String],
+			required: true,
+			default: [],
+		},
 	},
 	{ timestamps: true }
 );

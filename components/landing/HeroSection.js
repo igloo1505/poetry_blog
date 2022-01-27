@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import * as Types from "../../state/Types";
 import HeroImage from "../../public/penWithCoffeeAndRoses.jpg";
+import MainSearchInput from "./MainSearchInput";
 import clsx from "clsx";
 import gsap from "gsap";
 
@@ -54,6 +55,7 @@ const HeroSection = () => {
 	return (
 		<div className={styles.heroContainer}>
 			<div className={clsx(styles.overlay)} id={overlayId}>
+				<MainSearchInput />
 				<Image
 					src={HeroImage}
 					alt="Dramatic Poetry with Roses"
