@@ -1,6 +1,7 @@
 import React from "react";
 import { connect, useDispatch } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { gsap } from "gsap";
 
 const useStyles = makeStyles((theme) => ({
 	mainInput: {
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 			border: `4px solid ${theme.palette.primary.main}`,
 			boxShadow: "20px 20px 19px #7b7b7a, -20px -20px 19px #a3a3a2",
 		},
-		// Lifted
 	},
 	innerContainer: {},
 	outerContainer: {
@@ -32,14 +32,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const mainSearchInputId = "main-search-input-id";
+
 const MainSearchInput = () => {
 	const styles = useStyles();
 	return (
-		<div className={styles.outerContainer}>
+		<div className={styles.outerContainer} id={mainSearchInputId}>
 			<div className={styles.innerContainer}>
 				<input
 					type="text"
-					placeholder="Search for a poem..."
+					// placeholder="Search for a poem..."
+					placeholder="Search..."
 					className={styles.mainInput}
 				/>
 			</div>

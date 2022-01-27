@@ -73,11 +73,9 @@ const Appbar = ({
 	};
 	const router = useRouter();
 	useEffect(() => {
-		console.log("router.pathname: ", router.pathname);
 		if (typeof window !== "undefined") {
 			if (!isMobile) {
 				document.addEventListener("mousemove", (e) => {
-					console.log("Mouse move", e);
 					if (e.y < hoverLimit) {
 						showNavbar();
 					}

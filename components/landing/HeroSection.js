@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		backgroundColor: "rgba(0, 0, 0, 0)",
 		transition: "background-color 0.3s ease-in-out",
+		"& > span": {
+			zIndex: -1,
+		},
 	},
 	overlayFadeIn: {
 		width: "100%",
@@ -82,6 +85,11 @@ const animateEntrance = ({ dispatch }) => {
 		`#${overlayId}`,
 		{ backgroundColor: "rgba(0, 0, 0, 0)" },
 		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
+	);
+	tl.fromTo(
+		`#main-search-input-id`,
+		{ x: "-50vw", y: "50vw", opacity: 0.0 },
+		{ x: 0, y: "50vw", opacity: 1, duration: 1 }
 	);
 	setTimeout(() => {
 		dispatch({

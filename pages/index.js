@@ -1,9 +1,22 @@
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import HeroSection from "../components/landing/HeroSection";
+import { autoLoginOnFirstRequest } from "../util/autoLogin";
+import Cookies from "cookies";
+import mongoose from "mongoose";
+import Submission from "../models/Submission";
+import PopupCardSection from "../components/landing/PopupCardSection";
 
-export default function Home() {
+export default function Home({ latestSubmissions }) {
+	const [poemCardArray, setPoemCardArray] = useState([]);
+	useEffect(() => {
+		if (latestSubmissions.length > 0) {
+			setPoemCardArray(latestSubmissions.slice(0, 3));
+		}
+	}, []);
+
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -12,6 +25,7 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<HeroSection />
+			<PopupCardSection poemCardArray={poemCardArray} />
 			<footer className={styles.footer}>
 				<a
 					href="https://www.igloodevelopment.dev/"
@@ -24,3 +38,36 @@ export default function Home() {
 		</div>
 	);
 }
+
+export const getServerSideProps = async (ctx) => {
+	// let _user = await autoLoginOnFirstRequest(ctx.req, ctx.res);
+	let latestSubmissions = await mongoose
+		.connect(process.env.MONGO_URI, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		})
+		.then(async () => {
+			let r = await Submission.find({ date: -1 }).limit(10);
+			// .populate({
+			// 	path: "recipeReviews",
+			// 	options: {
+			// 		limit: 10,
+			// 		sort: { created: -1 },
+			// 		// skip: req.params.pageIndex*10
+			// 	},
+			// 	populate: {
+			// 		path: "submittedBy",
+			// 		select:
+			// 			"firstName lastName _id -groceryList -myBookmarks -userProfileData",
+			// 	},
+			// })
+			// .populate("createdBy", { firstName: 1, lastName: 1, _id: 1 });
+			return r;
+		});
+	return {
+		props: {
+			// hasUser: _user,
+			latestSubmissions: JSON.parse(JSON.stringify(latestSubmissions)),
+		},
+	};
+};
