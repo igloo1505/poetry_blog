@@ -8,6 +8,7 @@ const SubmissionSchema = mongoose.Schema(
 		author: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
+			// autopopulate: true,
 		},
 		title: {
 			type: String,

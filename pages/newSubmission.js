@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 		minHeight: "calc(100vh - 64px)",
 		padding: "1rem 0px",
 		[theme.breakpoints.up(800)]: {
-			// backgroundColor: green[500],
+			// backgroundColor: green[500],xj
 			justifyContent: "center",
 		},
 	},

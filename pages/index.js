@@ -47,21 +47,10 @@ export const getServerSideProps = async (ctx) => {
 			useUnifiedTopology: true,
 		})
 		.then(async () => {
-			let r = await Submission.find({ date: -1 }).limit(10);
-			// .populate({
-			// 	path: "recipeReviews",
-			// 	options: {
-			// 		limit: 10,
-			// 		sort: { created: -1 },
-			// 		// skip: req.params.pageIndex*10
-			// 	},
-			// 	populate: {
-			// 		path: "submittedBy",
-			// 		select:
-			// 			"firstName lastName _id -groceryList -myBookmarks -userProfileData",
-			// 	},
-			// })
-			// .populate("createdBy", { firstName: 1, lastName: 1, _id: 1 });
+			let r = await Submission.find({ date: -1 }).limit(10).populate({
+				path: "author",
+				select: "firstName lastName email _id",
+			});
 			return r;
 		});
 	return {
