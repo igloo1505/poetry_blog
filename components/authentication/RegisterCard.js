@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => {
 		icon: {
 			backgroundColor: theme.palette.secondary.main,
 		},
+		submitButton: {
+			margin: "0.75rem 0",
+		},
 	};
 });
 
@@ -132,6 +135,7 @@ const RegisterCard = ({
 						</Grid>
 						<Grid item xs={12}>
 							<FormControlLabel
+								style={{ margin: "0.75rem 0" }}
 								control={
 									<Checkbox
 										color="primary"
@@ -154,6 +158,7 @@ const RegisterCard = ({
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 						onClick={handleSubmit}
+						className={styles.submitButton}
 					>
 						Sign Up
 					</Button>

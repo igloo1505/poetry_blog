@@ -13,8 +13,8 @@ handler.get(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
-		let { searchQuery } = req.body;
-		let _userId = cookies.get("userId");
+		let { searchQuery, userId } = req.body;
+		let _userId = cookies.get("userId") || userId;
 		console.log("userId: from cookies", _userId);
 		const user = await User.findById(_userId);
 		if (!user) {
@@ -38,6 +38,7 @@ handler.get(async (req, res) => {
 		}
 
 		let _byBody = await Submission.find(bodyQuery).limit(10);
+		console.log("_byBody: ", _byBody);
 		let _byTag = await Submission.find(tagQuery).limit(10);
 
 		return res.status(200).json({

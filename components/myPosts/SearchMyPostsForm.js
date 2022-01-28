@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
 	formContainer: {},
 	formRow: {},
 	formInput: {},
+	searchButton: {
+		margin: "0.75rem 0",
+		// marginLeft: "0.25rem",
+		// marginRight: "0.25rem",
+	},
 	avatar: {
 		backgroundColor: theme.palette.secondary.main,
 	},
@@ -58,18 +63,10 @@ const SearchMyPostsForm = () => {
 		console.log("Search Form data", searchFormData);
 	};
 	return (
-		<Grid
-			container
-			component="main"
-			id="randomGridId"
-			className={styles.outerGridContainer}
-		>
+		<Grid container component="main" className={styles.outerGridContainer}>
 			<CssBaseline />
 			<Grid
 				item
-				// xs={12}
-				// sm={8}
-				// md={5}
 				component={Paper}
 				elevation={6}
 				square
@@ -104,6 +101,7 @@ const SearchMyPostsForm = () => {
 							variant="contained"
 							sx={{ mt: 3, mb: 2 }}
 							onClick={handleSearchClick}
+							className={styles.searchButton}
 						>
 							Search
 						</Button>

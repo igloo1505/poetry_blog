@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => {
 		icon: {
 			backgroundColor: theme.palette.secondary.main,
 		},
+		submitButton: {
+			margin: "0.75rem 0",
+		},
 	};
 });
 
@@ -103,6 +106,7 @@ const LoginCard = ({
 						onChange={handleChange}
 					/>
 					<FormControlLabel
+						style={{ margin: "0.5rem 0" }}
 						control={
 							<Checkbox
 								value="remember"
@@ -124,6 +128,7 @@ const LoginCard = ({
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 						onClick={handleSubmit}
+						className={styles.submitButton}
 					>
 						Sign In
 					</Button>
