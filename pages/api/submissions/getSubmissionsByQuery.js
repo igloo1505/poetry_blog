@@ -38,7 +38,6 @@ handler.get(async (req, res) => {
 		}
 
 		let _byBody = await Submission.find(bodyQuery).limit(10);
-		console.log("_byBody: ", _byBody);
 		let _byTag = await Submission.find(tagQuery).limit(10);
 
 		return res.status(200).json({
