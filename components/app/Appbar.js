@@ -67,7 +67,7 @@ const Appbar = ({
 		});
 	};
 	const hideNavbar = () => {
-		if (!navbarHidden) {
+		if (!navbarHidden && !isMobile) {
 			dispatch({
 				type: Types.RESET_NAVBAR_HIDDEN,
 			});
@@ -85,8 +85,24 @@ const Appbar = ({
 						hideNavbar();
 					}
 				});
+				document.addEventListener("touch", (e) => {
+					if (e.y < hoverLimit) {
+						showNavbar();
+					}
+					if (e.y >= hoverLimit) {
+						hideNavbar();
+					}
+				});
 			}
 			if (isMobile) {
+				document.addEventListener("touch", (e) => {
+					if (e.y < hoverLimit) {
+						showNavbar();
+					}
+					if (e.y >= hoverLimit) {
+						hideNavbar();
+					}
+				});
 				showNavbar();
 			}
 		}
@@ -116,8 +132,8 @@ const Appbar = ({
 	return (
 		<Box
 			sx={{ flexGrow: 1 }}
-			onMouseEnter={showNavbar}
-			onMouseLeave={hideNavbar}
+			// onMouseEnter={showNavbar}
+			// onMouseLeave={hideNavbar}
 			className={clsx(styles.toolbarMain, navbarHidden && styles.toolbarHidden)}
 		>
 			<AppBar position="static">

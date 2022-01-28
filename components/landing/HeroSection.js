@@ -4,8 +4,9 @@ import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import * as Types from "../../state/Types";
-import HeroImage from "../../public/penWithCoffeeAndRoses.jpg";
+import { isMobile } from "mobile-device-detect";
 import MainSearchInput from "./MainSearchInput";
+import HeroImage from "../../public/penWithCoffeeAndRoses.jpg";
 import clsx from "clsx";
 import gsap from "gsap";
 
@@ -92,9 +93,11 @@ const animateEntrance = ({ dispatch }) => {
 		{ x: 0, y: "50vw", opacity: 1, duration: 1 }
 	);
 	setTimeout(() => {
-		dispatch({
-			type: Types.SET_NAVBAR_HIDDEN,
-			payload: true,
-		});
+		if (!isMobile) {
+			dispatch({
+				type: Types.SET_NAVBAR_HIDDEN,
+				payload: true,
+			});
+		}
 	}, 800);
 };

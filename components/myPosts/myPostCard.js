@@ -34,7 +34,9 @@ const myPostCard = ({ submission }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
 
-	const handleCardClick = () => {
+	const handleCardClick = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
 		dispatch({
 			type: Types.SET_LARGE_MODAL_DATA,
 			payload: submission,

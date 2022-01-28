@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import * as Types from "../../state/Types";
 import { gsap } from "gsap";
+import clsx from "clsx";
 
 const modalContainerId = "largeModalContainer";
 const modalBackdropId = "largeModalBackdrop";
@@ -24,7 +25,29 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: "#fff",
 		// backgroundColor: "#e0e0e0",
 		// boxShadow: "6px 6px 12px #bebebe",
+		// boxShadow: "20px 20px 60px #bebebe, -20px -20px 60px #ffffff",\
+		transform: "translateY(-100vh)",
+		transition: "all 0.3s ease-in-out",
+	},
+	modalContainerOpen: {
+		minHeight: "300px",
+		maxHeight: "90vh",
+		minWidth: "min(300px, 50vw)",
+		maxWidth: "90vw",
+		// width: "90vw",
+		position: "fixed",
+		// top: "-50%",
+		// left: "50%",
+		// transform: "translate(-50%, calc(-50% - 64px))",
+		border: `1px solid ${theme.palette.secondary.dark}`,
+		zIndex: "9999",
+		borderRadius: "10px",
+		backgroundColor: "#fff",
+		// backgroundColor: "#e0e0e0",
+		// boxShadow: "6px 6px 12px #bebebe",
 		boxShadow: "20px 20px 60px #bebebe, -20px -20px 60px #ffffff",
+		transform: "translateY(0px)",
+		transition: "all 0.3s ease-in-out",
 	},
 	topModalContainer: {
 		backgroundColor: theme.palette.secondary.main,
@@ -60,6 +83,18 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
+		// backgroundColor: "red",
+		zIndex: "-1",
+		// display: "none",
+		// opacity: "0",
+		zIndex: 99999,
+	},
+	backdropOpen: {
+		zIndex: 99999,
+		display: "flex",
+	},
+	hide: {
+		display: "none",
 	},
 }));
 
@@ -70,40 +105,44 @@ const ViewSubmissionLargeModal = ({
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
-	// useEffect(() => {
-	// 	let _timeout = timeout || 3000;
-	// 	if (modalOpen) {
-	// 		setTimeout(() => {
-	// 			dispatch({
-	// 				type: Types.RESET_LARGE_MODAL_DATA,
-	// 			});
-	// 		}, _timeout);
-	// 	}
-	// }, [modalOpen]);
+	const [isOpen, setIsOpen] = useState(false);
+	useEffect(() => {
+		if (!modalOpen) {
+			setTimeout(() => {
+				setIsOpen(modalOpen);
+			}, 800);
+		}
+		if (modalOpen) {
+			setIsOpen(modalOpen);
+		}
+	}, [modalOpen]);
 
-	const handleBackdropClick = () => {
+	const handleBackdropClick = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
 		dispatch({
 			type: Types.RESET_LARGE_MODAL_DATA,
 		});
 	};
 
-	useEffect(() => {
-		if (modalOpen) {
-			entranceAnimation();
-		}
-		if (!modalOpen) {
-			exitAnimation();
-		}
-	}, [modalOpen, title]);
-
 	return (
 		<div
-			className={styles.backdrop}
+			className={clsx(
+				styles.backdrop,
+				modalOpen && styles.backdropOpen,
+				!isOpen && styles.hide
+			)}
 			id={modalBackdropId}
 			onClick={handleBackdropClick}
 			// style={modalOpen ? { display: "flex" } : { display: "none" }}
 		>
-			<div className={styles.modalContainer} id={modalContainerId}>
+			<div
+				className={clsx(
+					styles.modalContainer,
+					modalOpen && styles.modalContainerOpen
+				)}
+				id={modalContainerId}
+			>
 				<div className={styles.topModalContainer}>
 					<span className={styles.titleText}>{title}</span>
 				</div>
@@ -122,60 +161,58 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(mapStateToProps)(ViewSubmissionLargeModal);
 
-const entranceAnimation = () => {
-	console.log("Animating modal entrance");
-	gsap.fromTo(
-		`#${modalContainerId}`,
-		{
-			opacity: 1,
-			y: "-200px",
-			scaleY: 0,
-			scaleX: 0,
-			transformOrigin: "50% 50%",
-		},
-		{
-			y: "0",
-			opacity: 1,
-			duration: 0.35,
-			scaleY: 1,
-			scaleX: 1,
-			// ease: "elastic.out(1, 0.3)",
-			ease: "power4.out",
-		}
-	);
-};
-const exitAnimation = () => {
-	console.log("Animating modal entrance");
-	let tl = gsap.timeline();
-	tl.fromTo(
-		`#${modalContainerId}`,
-		{
-			opacity: 1,
-			y: "0",
-			opacity: 1,
-			scaleY: 1,
-			scaleX: 1,
-		},
-		{
-			y: "-500px",
-			opacity: 0,
-			duration: 1,
-			scaleY: 0,
-			scaleX: 0,
-			ease: "elastic.out(1, 0.3)",
-		}
-	);
-	// gsap.fromTo(
-	// 	`#${modalContainerId}`,
-	// 	{
-	// 		opacity: 1,
-	// 		y: "-500px",
-	// 	},
-	// 	{
-	// 		y: "0",
-	// 		opacity: 1,
-	// 		duration: 1,
-	// 		ease: "elastic.out(1, 0.3)",
-	// 	}
-	// );
-};
+// const entranceAnimation = ({ setIsOpen }) => {
+// 	console.log("Animating modal entrance");
+// 	gsap.fromTo(
+// 		`#${modalContainerId}`,
+// 		{
+// 			opacity: 1,
+// 			y: "-500px",
+// 			display: "flex",
+// 			flexDirection: "column",
+// 			scaleY: 0,
+// 			scaleX: 0,
+// 			transformOrigin: "50% 50%",
+// 		},
+// 		{
+// 			y: "0",
+// 			opacity: 1,
+// 			duration: 0.35,
+// 			scaleY: 1,
+// 			scaleX: 1,
+// 			// ease: "elastic.out(1, 0.3)",
+// 			ease: "power4.out",
+// 			// onComplete: () => {
+// 			// 	setIsOpen(true);
+// 			// },
+// 		}
+// 	);
+// };
+// const exitAnimation = ({ setIsOpen }) => {
+// 	console.log("Animating modal entrance");
+// 	let tl = gsap.timeline();
+// 	tl.fromTo(
+// 		`#${modalContainerId}`,
+// 		{
+// 			opacity: 1,
+// 			y: "0",
+// 			opacity: 1,
+// 			scaleY: 1,
+// 			scaleX: 1,
+// 		},
+// 		{
+// 			y: "-500px",
+// 			opacity: 0,
+// 			duration: 1,
+// 			scaleY: 0,
+// 			scaleX: 0,
+// 			ease: "elastic.out(1, 0.3)",
+// 			// onComplete: () => {
+// 			// 	setIsOpen(false);
+// 			// },
+// 		}
+// 	);
+// 	tl.to(`#${modalContainerId}`, {
+// 		display: "none",
+// 	});
+// };
