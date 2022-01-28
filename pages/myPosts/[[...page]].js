@@ -14,15 +14,20 @@ const useStyles = makeStyles((theme) => ({
 	outerContainer: {
 		display: "flex",
 		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		width: "100vw",
-		height: "100%",
+		// alignItems: "center",
+		justifyContent: "space-around",
+		width: "min(100vw, 900px)",
+		height: "fit-content",
 		marginTop: "64px",
-		padding: "1rem 1.5rem",
+		padding: "2rem 1.5rem",
+		marginLeft: "50%",
+		transform: "translateX(-50%)",
+		// border: "1px solid red",
 		// gap: "0.75rem",
 	},
-	containerLeft: {},
+	containerLeft: {
+		width: "50%",
+	},
 	containerRight: {
 		display: "flex",
 		flexDirection: "column",
@@ -32,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		// marginTop: "64px",
 		gap: "0.75rem",
+		width: "50%",
 	},
 }));
 

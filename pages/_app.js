@@ -4,6 +4,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import mainTheme from "../themes/mainTheme";
 import Appbar from "../components/app/Appbar";
+import LargeModal from "../components/app/ViewSubmissionLargeModal";
 import store from "../state/store";
 
 function MyApp({ Component, pageProps }) {
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }) {
 			<Provider store={store}>
 				<ThemeProvider theme={mainTheme}>
 					<Appbar />
+					<LargeModal />
 					<Component {...pageProps} />
 				</ThemeProvider>
 			</Provider>

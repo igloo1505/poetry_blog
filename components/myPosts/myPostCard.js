@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { Typography } from "@material-ui/core";
+import * as Types from "../../state/Types";
 
 const useStyles = makeStyles((theme) => ({
 	outerContainer: {
@@ -25,16 +26,24 @@ const useStyles = makeStyles((theme) => ({
 			cursor: "pointer",
 		},
 	},
-	BottomContainer: {},
+	bottomContainer: { padding: "0.5rem" },
 	text: {},
 }));
 
 const myPostCard = ({ submission }) => {
 	const styles = useStyles();
+	const dispatch = useDispatch();
+
+	const handleCardClick = () => {
+		dispatch({
+			type: Types.SET_LARGE_MODAL_DATA,
+			payload: submission,
+		});
+	};
 
 	return (
 		<div className={styles.outerContainer}>
-			<div className={styles.topContainer}>
+			<div className={styles.topContainer} onClick={handleCardClick}>
 				<span
 					variant="h6"
 					component="div"
@@ -43,7 +52,7 @@ const myPostCard = ({ submission }) => {
 					{submission.title}
 				</span>
 			</div>
-			<div className={styles.bottomContainer}></div>
+			<div className={styles.bottomContainer}>{submission.body}</div>
 		</div>
 	);
 };

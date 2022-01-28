@@ -67,9 +67,11 @@ const Appbar = ({
 		});
 	};
 	const hideNavbar = () => {
-		dispatch({
-			type: Types.RESET_NAVBAR_HIDDEN,
-		});
+		if (!navbarHidden) {
+			dispatch({
+				type: Types.RESET_NAVBAR_HIDDEN,
+			});
+		}
 	};
 	const router = useRouter();
 	useEffect(() => {
