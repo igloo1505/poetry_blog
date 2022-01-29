@@ -80,7 +80,8 @@ const submissionForm = ({
 		});
 	};
 	const observeTagInput = (e) => {
-		if (e.key === "Enter" && e.target.length >= 3) {
+		console.log("Dispatching tag", e.target.length);
+		if (e.key === "Enter" && e.target.value.length >= 3) {
 			dispatch({
 				type: Types.SET_NEW_TAG_SUBMISSION_FORM,
 			});
@@ -133,9 +134,9 @@ const submissionForm = ({
 					<Grid item xs={12}>
 						<TextField
 							fullWidth
-							id="tagInput"
+							id="currentTagInput"
 							label="Tags"
-							name="tags"
+							name="currentTag"
 							value={formData.currentTag}
 							onChange={handleChange}
 							onKeyDown={observeTagInput}

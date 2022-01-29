@@ -7,7 +7,7 @@ const initialState = {
 		title: "",
 		body: "",
 		currentTag: "",
-		tags: [],
+		tags: ["Awesome", "Cool", "Fun"],
 	},
 };
 
@@ -21,8 +21,10 @@ const formReducer = createReducer(initialState, (builder) => {
 	builder.addCase(Types.SET_NEW_TAG_SUBMISSION_FORM, (state, action) => {
 		return {
 			...state,
-			tags: [...state.tags, state.currentTag],
-			currentTag: "",
+			submissionForm: {
+				tags: [...state.submissionForm.tags, state.submissionForm.currentTag],
+				currentTag: "",
+			},
 		};
 	});
 	builder.addCase(Types.NEW_SUBMISSION_SUCCESS, (state, action) => {
