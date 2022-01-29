@@ -39,8 +39,7 @@ const MainSearchInput = () => {
 			<div className={styles.innerContainer}>
 				<input
 					type="text"
-					// placeholder="Search for a poem..."
-					placeholder="Search..."
+					placeholder="Search for a poem..."
 					className={styles.mainInput}
 					id={mainSearchInputId}
 				/>

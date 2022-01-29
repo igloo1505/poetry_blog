@@ -37,6 +37,14 @@ const useStyles = makeStyles((theme) => ({
 	submitButton: {
 		margin: "1.5rem 0 !important",
 	},
+	editButton: {
+		margin: "1.5rem 0 !important",
+		backgroundColor: `${theme.palette.warning.main} !important`,
+		transition: "all 0.3s ease-in-out",
+		"&:hover": {
+			backgroundColor: `${theme.palette.warning.dark} !important`,
+		},
+	},
 }));
 
 const submissionForm = ({
@@ -55,7 +63,11 @@ const submissionForm = ({
 	const setFormData = (newData) => {
 		dispatch({
 			type: Types.SET_SUBMISSION_FORM,
-			payload: newData,
+			payload: {
+				...newData,
+				isEditing: isEditing,
+				editingSubmissionId: editingSubmission._id,
+			},
 		});
 	};
 	const resetForm = () => {
@@ -88,6 +100,10 @@ const submissionForm = ({
 		}
 	};
 
+	const handleEdit = (e) => {
+		console.log("HANDLE EDIT HERE");
+		// newSubmission(formData);
+	};
 	const handleSubmit = (e) => {
 		newSubmission(formData);
 	};
@@ -146,10 +162,12 @@ const submissionForm = ({
 				<Button
 					fullWidth
 					variant="contained"
-					onClick={handleSubmit}
-					className={styles.submitButton}
+					onClick={formData.isEditing ? handleEdit : handleSubmit}
+					className={
+						formData.isEditing ? styles.editButton : styles.submitButton
+					}
 				>
-					Submit
+					{formData.isEditing ? "Edit" : "Submit"}
 				</Button>
 			</Box>
 		</div>
