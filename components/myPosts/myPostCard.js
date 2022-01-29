@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	bottomContainer: { padding: "0.5rem 0.5rem 0 0.5rem" },
+	bottomContainerNoButtons: { padding: "0.5rem" },
 	buttonContainer: {
 		padding: "0.5rem",
 		display: "flex",
@@ -102,7 +103,14 @@ const myPostCard = ({
 					{submission.title}
 				</span>
 			</div>
-			<div className={styles.bottomContainer}>{submission.body}</div>
+			<div
+				className={clsx(
+					styles.bottomContainer,
+					!isOwnCard && styles.bottomContainerNoButtons
+				)}
+			>
+				{submission.body}
+			</div>
 			{isOwnCard && (
 				<div className={styles.buttonContainer}>
 					<Button

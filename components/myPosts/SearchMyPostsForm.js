@@ -6,16 +6,15 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
+import * as Types from "../../state/Types";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Cookies from "cookies";
+import Box from "@mui/material/Box";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Copyright from "../authentication/Copyright";
 import { connect, useDispatch } from "react-redux";
+import { queryOwnSubmissions } from "../../state/poemActions";
 import { BsSearch } from "react-icons/bs";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,19 +26,26 @@ const useStyles = makeStyles((theme) => ({
 		// marginLeft: "0.25rem",
 		// marginRight: "0.25rem",
 	},
+	clearSearchButton: {
+		margin: "0.75rem 0",
+		backgroundColor: theme.palette.error.main,
+		transition: "all 0.3s ease-in-out",
+		"&:hover": {
+			backgroundColor: theme.palette.error.dark,
+		},
+		// marginLeft: "0.25rem",
+		// marginRight: "0.25rem",
+	},
 	avatar: {
 		backgroundColor: theme.palette.secondary.main,
 	},
+	formMain: {
+		width: "100%",
+	},
 	formOuterContainer: {
-		// display: "flex",
-		// flexDirection: "column",
-		// alignItems: "center",
-		// justifyContent: "flex-start",
-		// height: "100vh",
-		// width: "100%",
-		// minWidth: "100%",
-		// padding: "0.75rem 1rem",
 		height: "fit-content",
+		width: "100%",
+		borderRadius: "10px",
 	},
 	formInnerContainer: {
 		display: "flex",
@@ -54,14 +60,38 @@ const useStyles = makeStyles((theme) => ({
 	outerGridContainer: {},
 }));
 
-const SearchMyPostsForm = () => {
+const SearchMyPostsForm = ({
+	user: {
+		isAuthenticated,
+		user: { _id: userId },
+	},
+	posts: { filteredAllPosts, filteredOwnPosts },
+	queryOwnSubmissions,
+}) => {
+	const dispatch = useDispatch();
 	const styles = useStyles();
 	const [searchFormData, setSearchFormData] = useState({
-		query: "",
+		searchQuery: "",
 	});
+
+	useEffect(() => {
+		if (userId && isAuthenticated) {
+			setSearchFormData({
+				...searchFormData,
+				userId,
+			});
+		}
+	}, []);
+
 	const handleSearchClick = (e) => {
-		console.log("Search Form data", searchFormData);
+		queryOwnSubmissions(searchFormData);
 	};
+	const handleClearSearchClick = (e) => {
+		dispatch({
+			type: Types.CLEAR_OWN_QUERY_RESULTS,
+		});
+	};
+
 	return (
 		<Grid container component="main" className={styles.outerGridContainer}>
 			<CssBaseline />
@@ -86,7 +116,12 @@ const SearchMyPostsForm = () => {
 					<Typography component="h1" variant="h5">
 						Search
 					</Typography>
-					<Box component="form" noValidate sx={{ mt: 1 }}>
+					<Box
+						component="form"
+						noValidate
+						sx={{ mt: 1 }}
+						className={styles.formMain}
+					>
 						<TextField
 							margin="normal"
 							required
@@ -95,16 +130,38 @@ const SearchMyPostsForm = () => {
 							label="Search Posts"
 							name="searchQuery"
 							autoFocus
+							onChange={(e) => {
+								setSearchFormData({
+									...searchFormData,
+									[e.target.name]: e.target.value,
+								});
+							}}
 						/>
-						<Button
-							fullWidth
-							variant="contained"
-							sx={{ mt: 3, mb: 2 }}
-							onClick={handleSearchClick}
-							className={styles.searchButton}
-						>
-							Search
-						</Button>
+						<div className={styles.buttonContainer}>
+							<Button
+								fullWidth
+								variant="contained"
+								sx={{ mt: 3, mb: 2 }}
+								onClick={handleSearchClick}
+								className={styles.searchButton}
+							>
+								Search
+							</Button>
+							{Boolean(
+								filteredOwnPosts?.byBody?.length > 0 ||
+									filteredOwnPosts?.byTag?.length > 0
+							) && (
+								<Button
+									fullWidth
+									variant="contained"
+									sx={{ mt: 3, mb: 2 }}
+									onClick={handleClearSearchClick}
+									className={styles.clearSearchButton}
+								>
+									Clear
+								</Button>
+							)}
+						</div>
 					</Box>
 				</Box>
 			</Grid>
@@ -112,4 +169,12 @@ const SearchMyPostsForm = () => {
 	);
 };
 
-export default SearchMyPostsForm;
+const mapStateToProps = (state, props) => ({
+	user: state.user,
+	posts: state.posts,
+	props: props,
+});
+
+export default connect(mapStateToProps, { queryOwnSubmissions })(
+	SearchMyPostsForm
+);

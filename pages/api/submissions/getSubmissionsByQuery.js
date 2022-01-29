@@ -9,7 +9,7 @@ import colors from "colors";
 
 const handler = nc();
 
-handler.get(async (req, res) => {
+handler.post(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {

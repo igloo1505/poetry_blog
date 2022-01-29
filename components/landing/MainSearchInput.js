@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
 	mainInput: {
 		position: "absolute",
 		fontSize: "3rem !important",
-		left: "50%",
+		left: "-50vw",
 		top: "50%",
 		transform: "translate(-50%, -50%)",
 		zIndex: 9999,
@@ -26,8 +26,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	innerContainer: {},
 	outerContainer: {
-		// position: "absolute",
-		// fontSize: "3rem !important",
 		zIndex: 9999,
 	},
 }));
@@ -37,13 +35,14 @@ const mainSearchInputId = "main-search-input-id";
 const MainSearchInput = () => {
 	const styles = useStyles();
 	return (
-		<div className={styles.outerContainer} id={mainSearchInputId}>
+		<div className={styles.outerContainer}>
 			<div className={styles.innerContainer}>
 				<input
 					type="text"
 					// placeholder="Search for a poem..."
 					placeholder="Search..."
 					className={styles.mainInput}
+					id={mainSearchInputId}
 				/>
 			</div>
 		</div>

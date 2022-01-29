@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userReducer";
 import formReducer from "./formReducer";
+import postsReducer from "./postsReducer";
 import networkReducer from "./networkReducer";
 import UIReducer from "./UIReducer";
 
@@ -17,6 +18,7 @@ const store = configureStore({
 		forms: formReducer,
 		network: networkReducer,
 		UI: UIReducer,
+		posts: postsReducer,
 	},
 	devTools: () => withDevtools(),
 	// devTools: true,

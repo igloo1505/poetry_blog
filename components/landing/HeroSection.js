@@ -89,15 +89,19 @@ const animateEntrance = ({ dispatch }) => {
 	);
 	tl.fromTo(
 		`#main-search-input-id`,
-		{ x: "-50vw", y: "50vw", opacity: 0.0 },
-		{ x: 0, y: "50vw", opacity: 1, duration: 1 }
-	);
-	setTimeout(() => {
-		if (!isMobile) {
-			dispatch({
-				type: Types.SET_NAVBAR_HIDDEN,
-				payload: true,
-			});
+		{ x: 0, opacity: 0.0 },
+		{
+			x: "100vw",
+			opacity: 1,
+			duration: 1,
+			onComplete: () => {
+				if (!isMobile) {
+					dispatch({
+						type: Types.SET_NAVBAR_HIDDEN,
+						payload: true,
+					});
+				}
+			},
 		}
-	}, 800);
+	);
 };

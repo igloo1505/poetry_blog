@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "cookies";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
@@ -13,20 +13,44 @@ const paginateOffset = 10;
 const useStyles = makeStyles((theme) => ({
 	outerContainer: {
 		display: "flex",
-		flexDirection: "row",
-		// alignItems: "center",
-		justifyContent: "space-around",
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent: "center",
 		width: "min(100vw, 900px)",
 		height: "fit-content",
 		marginTop: "64px",
 		padding: "2rem 1.5rem",
-		marginLeft: "50%",
-		transform: "translateX(-50%)",
+		gap: "1rem",
+		width: "100%",
+		// transform: "translateX(-50%)",
+		// marginLeft: "50%",
+		[theme.breakpoints.up(800)]: {
+			gap: "1.5rem",
+			flexDirection: "row",
+			justifyContent: "space-around",
+			alignItems: "flex-start",
+		},
+		[theme.breakpoints.up(980)]: {
+			gap: "1.5rem",
+			flexDirection: "row",
+			justifyContent: "space-around",
+			alignItems: "flex-start",
+		},
+		[theme.breakpoints.up(1280)]: {
+			gap: "2.5rem",
+			flexDirection: "row",
+			justifyContent: "space-around",
+			alignItems: "flex-start",
+		},
 		// border: "1px solid red",
 		// gap: "0.75rem",
 	},
 	containerLeft: {
-		width: "50%",
+		width: "100%",
+		maxWidth: "600px",
+		[theme.breakpoints.up(800)]: {
+			width: "50%",
+		},
 	},
 	containerRight: {
 		display: "flex",
@@ -37,12 +61,47 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		// marginTop: "64px",
 		gap: "0.75rem",
-		width: "50%",
+		width: "100%",
+		margin: "0 2rem",
+		[theme.breakpoints.up(800)]: {
+			width: "50%",
+		},
 	},
 }));
 
-const myPosts = ({ userSubmissions }) => {
+const myPosts = ({
+	props: { userSubmissions },
+	posts: { filteredOwnPosts },
+}) => {
 	console.log("userSubmissions in component: ", userSubmissions);
+	const [currentDisplayedArray, setCurrentDisplayedArray] = useState([]);
+	useEffect(() => {
+		if (filteredOwnPosts.byBody || filteredOwnPosts.byTag) {
+			let newArr = [];
+			if (filteredOwnPosts?.byBody?.length > 0) {
+				// setCurrentDisplayedArray(filteredOwnPosts);
+				newArr = [...newArr, ...filteredOwnPosts.byBody];
+			}
+			if (filteredOwnPosts?.byTag?.length > 0) {
+				// setCurrentDisplayedArray(filteredOwnPosts);
+				newArr = [...newArr, ...filteredOwnPosts.byTag];
+			}
+			setCurrentDisplayedArray(newArr);
+		}
+		if (
+			Boolean(
+				!filteredOwnPosts ||
+					Boolean(
+						filteredOwnPosts?.byBody?.length === 0 &&
+							filteredOwnPosts?.byTag?.length === 0
+					)
+			) &&
+			userSubmissions?.length > 0
+		) {
+			setCurrentDisplayedArray(userSubmissions);
+		}
+	}, [userSubmissions, filteredOwnPosts]);
+
 	const styles = useStyles();
 	return (
 		<div className={styles.outerContainer}>
@@ -50,7 +109,7 @@ const myPosts = ({ userSubmissions }) => {
 				<SearchMyPostsForm />
 			</div>
 			<div className={styles.containerRight}>
-				{userSubmissions.map((submission, index) => (
+				{currentDisplayedArray.map((submission, index) => (
 					<MyPostCard
 						submission={submission}
 						key={`user-submission-${index}`}
@@ -61,7 +120,13 @@ const myPosts = ({ userSubmissions }) => {
 	);
 };
 
-export default myPosts;
+const mapStateToProps = (state, props) => ({
+	user: state.user,
+	posts: state.posts,
+	props: props,
+});
+
+export default connect(mapStateToProps)(myPosts);
 
 export const getServerSideProps = async (ctx) => {
 	// TODO add paginate to route params, but for now:
