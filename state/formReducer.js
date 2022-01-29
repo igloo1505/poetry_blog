@@ -22,7 +22,18 @@ const formReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			submissionForm: {
+				...state.submissionForm,
 				tags: [...state.submissionForm.tags, state.submissionForm.currentTag],
+				currentTag: "",
+			},
+		};
+	});
+	builder.addCase(Types.REMOVE_TAG, (state, action) => {
+		return {
+			...state,
+			submissionForm: {
+				...state.submissionForm,
+				tags: state.submissionForm.tags.filter((tag) => tag !== action.payload),
 				currentTag: "",
 			},
 		};

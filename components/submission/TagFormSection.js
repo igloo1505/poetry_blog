@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
+import * as Types from "../../state/Types";
 import Tag from "./Tag";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,10 +21,25 @@ const useStyles = makeStyles((theme) => ({
 
 const TagFormSection = ({ tagArray }) => {
 	const styles = useStyles();
+	const dispatch = useDispatch();
+	const handleRemoveTag = ({ event, tag }) => {
+		console.log("_tag: ", tag);
+		dispatch({
+			type: Types.REMOVE_TAG,
+			payload: tag,
+		});
+	};
 	return (
 		<div className={styles.submissionFormTagContainer}>
 			{tagArray?.map((tag, index) => {
-				return <Tag tag={tag} key={`submission-tag-${index}`} />;
+				return (
+					<Tag
+						tag={tag}
+						key={`submission-tag-${index}`}
+						showClose
+						onClose={handleRemoveTag}
+					/>
+				);
 			})}
 		</div>
 	);
