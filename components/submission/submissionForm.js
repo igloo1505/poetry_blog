@@ -13,6 +13,7 @@ import { connect, useDispatch } from "react-redux";
 import * as Types from "../../state/Types";
 import { BiPen } from "react-icons/bi";
 import { gsap } from "gsap";
+import TagFormSection from "./TagFormSection";
 
 const formContainerId = "submissionFormContainer";
 
@@ -34,35 +35,56 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	submitButton: {
-		margin: "1.5rem 0",
+		margin: "1.5rem 0 !important",
 	},
 }));
 
 const submissionForm = ({
 	newSubmission,
 	forms: { submissionForm: formData },
+	isEditing,
+	editingSubmission,
 }) => {
+	console.log("editingSubmission in form: ", isEditing, editingSubmission);
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	useEffect(() => {
 		animateFormEntrance();
 	}, []);
 
-	// const [formData, setFormData] = useState({
-	// 	title: "",
-	// 	body: "",
-	// });
 	const setFormData = (newData) => {
 		dispatch({
 			type: Types.SET_SUBMISSION_FORM,
 			payload: newData,
 		});
 	};
+	const resetForm = () => {
+		dispatch({
+			type: Types.RESET_SUBMISSION_FORM,
+		});
+	};
+
+	useEffect(() => {
+		if (isEditing) {
+			setFormData(editingSubmission);
+		}
+		if (!isEditing) {
+			resetForm();
+		}
+	}, [isEditing, editingSubmission]);
+
 	const handleChange = (e) => {
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
 		});
+	};
+	const observeTagInput = (e) => {
+		if (e.key === "Enter" && e.target.length >= 3) {
+			dispatch({
+				type: Types.SET_NEW_TAG_SUBMISSION_FORM,
+			});
+		}
 	};
 
 	const handleSubmit = (e) => {
@@ -105,6 +127,18 @@ const submissionForm = ({
 							minRows={5}
 							value={formData.body}
 							onChange={handleChange}
+						/>
+					</Grid>
+					<TagFormSection tagArray={formData.tags} />
+					<Grid item xs={12}>
+						<TextField
+							fullWidth
+							id="tagInput"
+							label="Tags"
+							name="tags"
+							value={formData.currentTag}
+							onChange={handleChange}
+							onKeyDown={observeTagInput}
 						/>
 					</Grid>
 				</Grid>

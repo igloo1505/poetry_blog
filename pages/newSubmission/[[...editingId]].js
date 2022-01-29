@@ -3,15 +3,18 @@ import SubmissionForm from "../../components/submission/submissionForm";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { autoLoginOnFirstRequest } from "../../util/autoLogin";
 import Cookies from "cookies";
+import Submission from "../../models/Submission";
+import mongoose from "mongoose";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		justifyContent: "flex-start",
 		minHeight: "calc(100vh - 64px)",
 		padding: "1rem 0px",
+		justifyContent: "flex-start",
+		marginTop: "64px",
 		[theme.breakpoints.up(800)]: {
 			// backgroundColor: green[500],xj
 			justifyContent: "center",
@@ -19,20 +22,46 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const NewSubmission = () => {
+const NewSubmission = ({ isEditing, editingSubmission, hasUser }) => {
+	console.log(
+		"isEditing, editingSubmission, hasUser: ",
+		isEditing,
+		editingSubmission,
+		hasUser
+	);
 	const styles = useStyles();
+	// TODO add check here and handle appropriately if unauthenticated
 	return (
 		<div className={styles.container}>
-			<SubmissionForm />
+			<SubmissionForm
+				isEditing={isEditing}
+				editingSubmission={editingSubmission}
+			/>
 		</div>
 	);
 };
 
 export default NewSubmission;
 
-export const getServerSideProps = async ({ req, res }) => {
-	console.log("req: ", req);
+export const getServerSideProps = async ({ req, res, query }) => {
+	console.log("req.params : ", query);
 	let cookies = new Cookies(req, res);
+	let isEditing = false;
+	let editingSubmission = false;
+	if (query.editingId) {
+		editingSubmission = await mongoose
+			.connect(process.env.MONGO_URI, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			})
+			.then(async () => {
+				let submission = await Submission.findById(query.editingId);
+				if (submission) {
+					isEditing = true;
+				}
+				return submission;
+			});
+	}
 	let hasUser = false;
 	let token = cookies.get("token");
 	let userId = cookies.get("userId");
@@ -53,6 +82,8 @@ export const getServerSideProps = async ({ req, res }) => {
 	return {
 		props: {
 			hasUser: hasUser,
+			isEditing: isEditing,
+			editingSubmission: JSON.parse(JSON.stringify(editingSubmission)),
 		},
 	};
 };

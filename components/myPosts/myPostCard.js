@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { Typography, Button } from "@material-ui/core";
 import * as Types from "../../state/Types";
+import { useRouter } from "next/router";
 import clsx from "clsx";
 import { setCurrentEditing } from "../../state/poemActions";
 
@@ -70,6 +71,7 @@ const myPostCard = ({
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const [isOwnCard, setIsOwnCard] = useState(false);
 
 	useEffect(() => {
@@ -84,6 +86,7 @@ const myPostCard = ({
 
 	const handleEditClick = (e) => {
 		setCurrentEditing(submission);
+		router.push(`/newSubmission/${submission._id}`);
 	};
 
 	const handleCardClick = (e) => {

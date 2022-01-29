@@ -6,6 +6,8 @@ const initialState = {
 	submissionForm: {
 		title: "",
 		body: "",
+		currentTag: "",
+		tags: [],
 	},
 };
 
@@ -14,6 +16,13 @@ const formReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			submissionForm: action.payload,
+		};
+	});
+	builder.addCase(Types.SET_NEW_TAG_SUBMISSION_FORM, (state, action) => {
+		return {
+			...state,
+			tags: [...state.tags, state.currentTag],
+			currentTag: "",
 		};
 	});
 	builder.addCase(Types.NEW_SUBMISSION_SUCCESS, (state, action) => {
