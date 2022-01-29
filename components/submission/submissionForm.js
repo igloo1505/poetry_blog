@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
 	icon: {
 		backgroundColor: theme.palette.secondary.main,
 	},
+	submitButton: {
+		margin: "1.5rem 0",
+	},
 }));
 
 const submissionForm = ({
@@ -108,8 +111,8 @@ const submissionForm = ({
 				<Button
 					fullWidth
 					variant="contained"
-					sx={{ mt: 3, mb: 2 }}
 					onClick={handleSubmit}
+					className={styles.submitButton}
 				>
 					Submit
 				</Button>

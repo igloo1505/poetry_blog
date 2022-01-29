@@ -43,3 +43,10 @@ export const queryOwnSubmissions = (queryData) => async (dispatch) => {
 		dispatch({ type: Types.SERVER_ERROR, payload: error });
 	}
 };
+
+export const setCurrentEditing = (editingPoem) => (dispatch) => {
+	dispatch({
+		type: Types.SET_CURRENTLY_EDITING_POST,
+		payload: editingPoem,
+	});
+};

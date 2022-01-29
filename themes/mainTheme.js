@@ -40,7 +40,7 @@ const MUITheme = createTheme({
 	],
 	typography: {
 		htmlFontSize: 16,
-		fontFamily: defaultFontFamily,
+		fontFamily: "'Roboto Condensed', sans-serif",
 		fontSize: 14,
 		color: defaultTextColor,
 		fontWeightLight: 300,

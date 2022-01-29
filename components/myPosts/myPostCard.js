@@ -4,6 +4,7 @@ import { connect, useDispatch } from "react-redux";
 import { Typography, Button } from "@material-ui/core";
 import * as Types from "../../state/Types";
 import clsx from "clsx";
+import { setCurrentEditing } from "../../state/poemActions";
 
 const useStyles = makeStyles((theme) => ({
 	outerContainer: {
@@ -65,16 +66,14 @@ const myPostCard = ({
 		isAuthenticated,
 		user: { _id: userId },
 	},
+	setCurrentEditing,
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	const [isOwnCard, setIsOwnCard] = useState(false);
 
 	useEffect(() => {
-		console.log("Submission", submission);
 		let authorId = submission?.author?._id;
-		console.log("userId: ", userId);
-		console.log("authorId: ", authorId);
 		if (authorId === userId) {
 			setIsOwnCard(true);
 		}
@@ -82,6 +81,10 @@ const myPostCard = ({
 			setIsOwnCard(false);
 		}
 	}, []);
+
+	const handleEditClick = (e) => {
+		setCurrentEditing(submission);
+	};
 
 	const handleCardClick = (e) => {
 		e.stopPropagation();
@@ -116,6 +119,7 @@ const myPostCard = ({
 					<Button
 						variant="contained"
 						className={clsx(styles.containedButton, styles.editButton)}
+						onClick={handleEditClick}
 					>
 						Edit
 					</Button>
@@ -130,4 +134,4 @@ const mapStateToProps = (state, props) => ({
 	props: props,
 });
 
-export default connect(mapStateToProps)(myPostCard);
+export default connect(mapStateToProps, { setCurrentEditing })(myPostCard);

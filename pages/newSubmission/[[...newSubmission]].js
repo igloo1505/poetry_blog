@@ -1,7 +1,7 @@
 import React from "react";
-import SubmissionForm from "../components/submission/submissionForm";
+import SubmissionForm from "../../components/submission/submissionForm";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { autoLoginOnFirstRequest } from "../util/autoLogin";
+import { autoLoginOnFirstRequest } from "../../util/autoLogin";
 import Cookies from "cookies";
 
 const useStyles = makeStyles((theme) => ({

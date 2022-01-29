@@ -16,13 +16,13 @@ function MyApp({ Component, pageProps }) {
 	}, []);
 	return (
 		<Fragment>
-			<Provider store={store}>
-				<ThemeProvider theme={mainTheme}>
+			<ThemeProvider theme={mainTheme}>
+				<Provider store={store}>
 					<Appbar />
 					<LargeModal />
 					<Component {...pageProps} />
-				</ThemeProvider>
-			</Provider>
+				</Provider>
+			</ThemeProvider>
 		</Fragment>
 	);
 }
