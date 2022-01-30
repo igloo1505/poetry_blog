@@ -8,6 +8,9 @@ import mongoose from "mongoose";
 import PopupCard from "../../components/landing/popupCard";
 import MyPostCard from "../../components/myPosts/myPostCard";
 import SearchMyPostsForm from "../../components/myPosts/SearchMyPostsForm";
+import { gsap } from "gsap";
+
+const myPostCardClassName = "my-post-card-animated-class";
 
 const paginateOffset = 10;
 
@@ -105,6 +108,10 @@ const myPosts = ({
 		}
 	}, [userSubmissions, filteredOwnPosts]);
 
+	useEffect(() => {
+		animateEntrance();
+	}, [currentDisplayedArray]);
+
 	const styles = useStyles();
 	return (
 		<div className={styles.outerContainer}>
@@ -174,5 +181,26 @@ const NoResult = ({ styles }) => {
 				No results found
 			</Typography>
 		</div>
+	);
+};
+
+const animateEntrance = () => {
+	gsap.fromTo(
+		`.${myPostCardClassName}`,
+		{
+			opacity: 0,
+			y: "-50px",
+			scaleY: 0,
+			transformOrigin: "50% 0%",
+		},
+		{
+			opacity: 1,
+			y: "0px",
+			scaleY: 1,
+			duration: 0.3,
+			stagger: 0.1,
+			// ease: "power3.inOut",
+			ease: "back.out(1.7)",
+		}
 	);
 };

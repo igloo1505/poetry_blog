@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { setCurrentEditing } from "../../state/poemActions";
 import MyPostsCardTagSection from "./MyPostsCardTagSection";
 
+const myPostCardClassName = "my-post-card-animated-class";
 const useStyles = makeStyles((theme) => ({
 	outerContainer: {
 		minHeight: "100px",
@@ -100,7 +101,7 @@ const myPostCard = ({
 	};
 
 	return (
-		<div className={styles.outerContainer}>
+		<div className={clsx(styles.outerContainer, myPostCardClassName)}>
 			<div className={styles.topContainer} onClick={handleCardClick}>
 				<span
 					variant="h6"
