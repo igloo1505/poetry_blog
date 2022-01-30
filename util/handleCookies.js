@@ -28,12 +28,16 @@ export const handleAuth = (cookies, user) => {
 	if (token) {
 		let decoded = jwt.verify(token, process.env.JWT_SECRET);
 		console.log(colors.bgBlack.red("decoded: ", decoded));
-		if (decoded._id === user._id.toString()) {
+		// console.log(
+		// 	"user._id.toString() === token: ",
+		// 	user._id.toString() === decoded.userId
+		// );
+		if (decoded.userId === user._id.toString()) {
 			console.log("user: ", user);
 			auth.success = true;
 			handleCookies(cookies, user);
 		}
-		if (decoded._id !== user._id.toString()) {
+		if (decoded.userId !== user._id.toString()) {
 			console.log("user: ", user);
 			auth.success = false;
 			cookies

@@ -56,3 +56,24 @@ export const setCurrentEditing = (editingPoem) => (dispatch) => {
 		payload: editingPoem,
 	});
 };
+
+export const updatePost = (postData) => async (dispatch) => {
+	try {
+		let res = await useAxios({
+			method: "post",
+			url: `/api/submissions/editSubmission`,
+			data: postData,
+		});
+		if (res.status === 200 && res.data.success) {
+			dispatch({ type: Types.UPDATE_POST_SUCCESS, payload: res.data });
+		}
+		if (res.status === 401) {
+			dispatch({ type: Types.UNAUTHORIZED, payload: res.data });
+		}
+		if (res.status !== 200 && res.status !== 401) {
+			dispatch({ type: Types.SERVER_ERROR, payload: error });
+		}
+	} catch (error) {
+		dispatch({ type: Types.SERVER_ERROR, payload: error });
+	}
+};

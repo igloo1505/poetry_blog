@@ -14,15 +14,21 @@ handler.post(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
-		let { searchQuery, userId } = req.body;
+		let { submissionId, fields, userId } = req.body;
 		let _userId = cookies.get("userId") || userId;
-		console.log("userId: from cookies", _userId);
+
 		const user = await User.findById(_userId);
-		let _uu = await handleAuth(cookies, user);
-		console.log("_uu: ", _uu);
-		if (!user) {
-			return res.status(401).json({ msg: "Unauthorized." });
+		let _auth = await handleAuth(cookies, user);
+
+		if (!user || !_auth.success) {
+			return res.status(401).json({ msg: "Unauthorized.", success: false });
 		}
+
+		let updatedSubmission = await Submission.findByIdAndUpdate(
+			submissionId,
+			{ ...fields },
+			{ new: true }
+		);
 
 		// if (_userId) {
 		// 	bodyQuery.author = _userId;
@@ -31,11 +37,14 @@ handler.post(async (req, res) => {
 
 		return res.status(200).json({
 			msg: "Posts retrieved successfully",
-			updatedPost: updatedPost,
+			success: true,
+			updatedPost: updatedSubmission,
 		});
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ error: "There was an error editing that post.." });
+		res
+			.status(500)
+			.json({ error: "There was an error editing that post..", success: true });
 	}
 });
 

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { registerNewUser } from "../../state/userActions";
-import { newSubmission } from "../../state/poemActions";
+import { newSubmission, updatePost } from "../../state/poemActions";
 import { connect, useDispatch } from "react-redux";
 import * as Types from "../../state/Types";
 import { BiPen } from "react-icons/bi";
@@ -24,6 +24,16 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		justifyContent: "center",
 		maxWidth: "min(800px, 85vw)",
+		width: "85vw",
+		[theme.breakpoints.up(980)]: {
+			width: "70vw",
+		},
+		[theme.breakpoints.up(1280)]: {
+			width: "80vw",
+		},
+	},
+	formContainerMain: {
+		width: "100%",
 	},
 	cardInner: {
 		display: "flex",
@@ -33,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	icon: {
 		backgroundColor: theme.palette.secondary.main,
+	},
+	tagInputMain: {},
+	tagInputContainer: {
+		padding: "0 0 0 1rem !important",
 	},
 	submitButton: {
 		margin: "1.5rem 0 !important",
@@ -52,7 +66,12 @@ const useStyles = makeStyles((theme) => ({
 
 const submissionForm = ({
 	newSubmission,
+	updatePost,
 	forms: { submissionForm: formData },
+	user: {
+		isAuthenticated,
+		user: { _id: userId },
+	},
 	isEditing,
 	editingSubmission,
 }) => {
@@ -103,6 +122,16 @@ const submissionForm = ({
 
 	const handleEdit = (e) => {
 		// newSubmission(formData);
+		let editSubmission = {
+			fields: {
+				title: formData.title,
+				body: formData.body,
+				tags: formData.tags,
+			},
+			submissionId: editingSubmission._id,
+			userId: userId,
+		};
+		updatePost(editSubmission);
 	};
 	const handleSubmit = (e) => {
 		newSubmission(formData);
@@ -128,7 +157,12 @@ const submissionForm = ({
 					New Post
 				</Typography>
 			</div>
-			<Box component="form" noValidate sx={{ mt: 3 }}>
+			<Box
+				component="form"
+				noValidate
+				sx={{ mt: 3 }}
+				className={styles.formContainerMain}
+			>
 				<Grid container spacing={2}>
 					<Grid item xs={12} sm={12}>
 						<TextField
@@ -155,7 +189,7 @@ const submissionForm = ({
 						/>
 					</Grid>
 					<TagFormSection tagArray={formData.tags} />
-					<Grid item xs={12}>
+					<Grid item xs={12} className={styles.tagInputContainer}>
 						<TextField
 							fullWidth
 							id="currentTagInput"
@@ -164,6 +198,7 @@ const submissionForm = ({
 							value={formData.currentTag}
 							onChange={handleChange}
 							onKeyDown={observeTagInput}
+							className={styles.tagInputMain}
 						/>
 					</Grid>
 				</Grid>
@@ -198,7 +233,9 @@ const mapStateToProps = (state, props) => ({
 	props: props,
 });
 
-export default connect(mapStateToProps, { newSubmission })(submissionForm);
+export default connect(mapStateToProps, { newSubmission, updatePost })(
+	submissionForm
+);
 
 const animateFormEntrance = () => {
 	gsap.fromTo(

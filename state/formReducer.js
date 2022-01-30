@@ -28,6 +28,14 @@ const formReducer = createReducer(initialState, (builder) => {
 			},
 		};
 	});
+	builder.addCase(Types.UPDATE_POST_SUCCESS, (state, action) => {
+		return {
+			...state,
+			submissionForm: {
+				...initialState.submissionForm,
+			},
+		};
+	});
 	builder.addCase(Types.REMOVE_TAG, (state, action) => {
 		return {
 			...state,
