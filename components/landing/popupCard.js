@@ -5,6 +5,7 @@ import { Typography } from "@material-ui/core";
 import clsx from "clsx";
 import { isMobile } from "mobile-device-detect";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
 	popupCardContainer: {
@@ -168,6 +169,11 @@ const useStyles = makeStyles((theme) => ({
 		transition: "all 0.3s ease-in-out",
 		color: "#fff",
 	},
+	bodyTextSpan: {
+		display: "block",
+	},
+	bodyText: {},
+	bodyTextContainer: {},
 }));
 
 const PopupCard = ({
@@ -183,9 +189,14 @@ const PopupCard = ({
 }) => {
 	console.log("submission: ", submission);
 	const styles = useStyles();
+	const router = useRouter();
 	const [animatedIn, setAnimatedIn] = useState(true);
 	const handleCardClick = () => {
 		console.log("Clicked", featuredImage);
+	};
+	const viewSingleSubmission = () => {
+		console.log("Clicked", featuredImage);
+		router.push(`/post/${submission._id}`);
 	};
 	console.log("textColor: ", textColor);
 	return (
@@ -260,12 +271,21 @@ const PopupCard = ({
 					"popup-card-bottom-container-animated"
 				)}
 			>
-				<div className={styles.bodyText}>{submission.body}</div>
+				<div className={styles.bodyTextContainer}>
+					<div className={styles.bodyText}>
+						{submission.body.split(/\r?\n/).map((t, i) => (
+							<span key={`text-i`} className={styles.bodyTextSpan}>
+								{t}
+							</span>
+						))}
+					</div>
+				</div>
 				<div
 					className={clsx(
 						styles.viewButton
 						// isMobile && styles.mobileViewButton
 					)}
+					onClick={viewSingleSubmission}
 				>
 					View
 				</div>

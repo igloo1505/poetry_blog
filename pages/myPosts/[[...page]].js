@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Cookies from "cookies";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { connect, useDispatch } from "react-redux";
+import Cookies from "cookies";
 import Submission from "../../models/Submission";
 import mongoose from "mongoose";
 import PopupCard from "../../components/landing/popupCard";
