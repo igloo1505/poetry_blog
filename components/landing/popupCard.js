@@ -90,26 +90,60 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 1,
 		transition: "all 0.5s ease-in-out",
 		"&:hover": {
-			backgroundColor: "rgba(0,0,0,0.5)",
+			backgroundColor: "rgba(0,0,0,0.7)",
 			cursor: "pointer",
 		},
 	},
 	imageOverlayDark: {
-		backgroundColor: "rgba(0,0,0,0.5)",
+		backgroundColor: "rgba(0,0,0,0.7)",
+		// background:
+		// 	"linear-gradient (135deg, rgba (0,0,0,1) 30%, rgba (0,0,0,0.2) 100%) ",
 	},
 	titleTextContainer: {
 		position: "absolute",
 		top: "8px",
 		left: "8px",
 		maxWidth: "50%",
+		width: "50%",
+		height: "100%",
 		textAlign: "left",
 	},
+	titleTextContainerInner: {
+		padding: "0.5rem",
+	},
+	titleTextContainerBorderTop: {
+		width: "100px",
+		height: "2px",
+		position: "absolute",
+		backgroundColor: theme.palette.primary.main,
+		transition: "all 0.3s ease-in-out",
+	},
+	titleTextContainerBorderTopEmphasize: {
+		height: "4px",
+		backgroundColor: theme.palette.primary.main,
+	},
+	titleTextContainerBorderLeft: {
+		transform: "rotate(90deg) translate(50%, 50px)",
+		width: "100px",
+		height: "2px",
+		position: "absolute",
+		transition: "all 0.3s ease-in-out",
+		// backgroundColor: theme.palette.primary.main,
+		backgroundColor: theme.palette.secondary.main,
+	},
+	titleTextContainerBorderLeftEmphasize: {
+		transform: "rotate(90deg) translate(50%, 50px)",
+		width: "100px",
+		height: "4px",
+		position: "absolute",
+		backgroundColor: theme.palette.secondary.main,
+	},
 	titleText: {
-		// color: "#fff",
 		fontSize: "2rem",
 		fontWeight: "400",
-		// fontStyle: "italic",
 		fontFamily: "'Roboto Condensed', sans-serif",
+		// margin: "1rem",
+		lineHeight: 1,
 		// textShadow: "3px 3px 4px #fff, -3px -3px 4px #000",
 	},
 	textLight: {
@@ -191,18 +225,32 @@ const PopupCard = ({
 						}}
 					/>
 					<div className={styles.titleTextContainer}>
-						<span
-							variant="h6"
-							component="div"
+						<div
 							className={clsx(
-								styles.titleText,
-								textColor === "light" && styles.textLight,
-								textColor === "dark" && styles.textDark,
-								emphasizeOverlay && styles?.[`subdueText-${textColor}`]
+								styles.titleTextContainerBorderTop,
+								emphasizeOverlay && styles.titleTextContainerBorderTopEmphasize
 							)}
-						>
-							{submission.title}
-						</span>
+						/>
+						<div
+							className={clsx(
+								styles.titleTextContainerBorderLeft,
+								emphasizeOverlay && styles.titleTextContainerBorderLeftEmphasize
+							)}
+						/>
+						<div className={styles.titleTextContainerInner}>
+							<span
+								variant="h6"
+								component="div"
+								className={clsx(
+									styles.titleText,
+									textColor === "light" && styles.textLight,
+									textColor === "dark" && styles.textDark,
+									emphasizeOverlay && styles?.[`subdueText-${textColor}`]
+								)}
+							>
+								{submission.title}
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>

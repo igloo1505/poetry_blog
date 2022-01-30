@@ -7,9 +7,6 @@ const useStyles = makeStyles((theme) => ({
 	mainInput: {
 		position: "relative",
 		fontSize: "3rem !important",
-		// left: "-50vw",
-		// top: "50%",
-		// transform: "translate(-50%, -50%)",
 		zIndex: 9999,
 		borderRadius: "50px",
 		padding: "0.75rem 1rem",
@@ -17,10 +14,8 @@ const useStyles = makeStyles((theme) => ({
 		fontFamily: "'Roboto Condensed', sans-serif",
 		transition: "all 0.3s ease-in-out",
 		border: "8px solid #fff",
-		// opacity: 0,
 		"&:focus-visible": {
 			outline: "none",
-			// border: "1px solid #000",
 			border: `8px solid ${theme.palette.primary.main}`,
 			boxShadow: "5px 5px 15px #7b7b7a, -5px -5px 15px #a3a3a2",
 		},

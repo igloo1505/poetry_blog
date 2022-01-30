@@ -37,10 +37,13 @@ export const getServerSideProps = async (ctx) => {
 			useUnifiedTopology: true,
 		})
 		.then(async () => {
-			let r = await Submission.find({ date: -1 }).limit(10).populate({
-				path: "author",
-				select: "firstName lastName email _id",
-			});
+			let r = await Submission.find()
+				.sort({ createdAt: -1 })
+				.limit(10)
+				.populate({
+					path: "author",
+					select: "firstName lastName email _id",
+				});
 			return r;
 		});
 	return {
