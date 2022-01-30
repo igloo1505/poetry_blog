@@ -44,7 +44,6 @@ const NewSubmission = ({ isEditing, editingSubmission, hasUser }) => {
 export default NewSubmission;
 
 export const getServerSideProps = async ({ req, res, query }) => {
-	console.log("req.params : ", query);
 	let cookies = new Cookies(req, res);
 	let isEditing = false;
 	let editingSubmission = false;

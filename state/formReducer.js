@@ -7,7 +7,7 @@ const initialState = {
 		title: "",
 		body: "",
 		currentTag: "",
-		tags: ["Awesome", "Cool", "Fun"],
+		tags: [],
 	},
 };
 

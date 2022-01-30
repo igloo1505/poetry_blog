@@ -19,11 +19,11 @@ const formContainerId = "submissionFormContainer";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
-		maxWidth: "min(800px, 85vw)",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
+		maxWidth: "min(800px, 85vw)",
 	},
 	cardInner: {
 		display: "flex",
@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: `${theme.palette.warning.dark} !important`,
 		},
 	},
+	cancelButton: {
+		margin: "0 0 1.5rem 0 !important",
+	},
 }));
 
 const submissionForm = ({
@@ -53,7 +56,6 @@ const submissionForm = ({
 	isEditing,
 	editingSubmission,
 }) => {
-	console.log("editingSubmission in form: ", isEditing, editingSubmission);
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -92,7 +94,6 @@ const submissionForm = ({
 		});
 	};
 	const observeTagInput = (e) => {
-		console.log("Dispatching tag", e.target.length);
 		if (e.key === "Enter" && e.target.value.length >= 3) {
 			dispatch({
 				type: Types.SET_NEW_TAG_SUBMISSION_FORM,
@@ -101,12 +102,19 @@ const submissionForm = ({
 	};
 
 	const handleEdit = (e) => {
-		console.log("HANDLE EDIT HERE");
 		// newSubmission(formData);
 	};
 	const handleSubmit = (e) => {
 		newSubmission(formData);
 	};
+	const handleCancelEdit = (e) => {
+		// remove param from url here too
+		if (typeof window !== "undefined") {
+			window.history.pushState({}, document.title, "/" + "newSubmission");
+		}
+		resetForm();
+	};
+
 	return (
 		<div className={styles.card} id={formContainerId}>
 			<div className={styles.cardInner}>
@@ -169,6 +177,16 @@ const submissionForm = ({
 				>
 					{formData.isEditing ? "Edit" : "Submit"}
 				</Button>
+				{formData.isEditing && (
+					<Button
+						fullWidth
+						variant="contained"
+						onClick={handleCancelEdit}
+						className={styles.cancelButton}
+					>
+						Cancel
+					</Button>
+				)}
 			</Box>
 		</div>
 	);

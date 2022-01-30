@@ -30,7 +30,13 @@ export const queryOwnSubmissions = (queryData) => async (dispatch) => {
 			url: `/api/submissions/getSubmissionsByQuery`,
 			data: queryData,
 		});
-		if (res.status === 200) {
+		if (res.status === 200 && res.data.success) {
+			if (res.data?.byBody?.length === 0 && res.data?.byTag?.length === 0) {
+				return dispatch({
+					type: Types.QUERY_OWN_SUBMISSION_NO_RESULT,
+					payload: res.data,
+				});
+			}
 			dispatch({ type: Types.QUERY_OWN_SUBMISSION_RESULT, payload: res.data });
 		}
 		if (res.status === 401) {

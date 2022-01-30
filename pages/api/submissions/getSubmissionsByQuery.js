@@ -18,7 +18,7 @@ handler.post(async (req, res) => {
 		console.log("userId: from cookies", _userId);
 		const user = await User.findById(_userId);
 		if (!user) {
-			return res.status(401).json({ msg: "Unauthorized." });
+			return res.status(401).json({ msg: "Unauthorized.", success: false });
 		}
 		let bodyQuery = {
 			body: {
@@ -42,6 +42,7 @@ handler.post(async (req, res) => {
 
 		return res.status(200).json({
 			msg: "Posts retrieved successfully",
+			success: true,
 			byBody: _byBody,
 			byTag: _byTag,
 		});
