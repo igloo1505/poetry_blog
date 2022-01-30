@@ -56,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
 	overlayFadeIn: {
 		width: "100%",
 		height: "100%",
-		backgroundColor: "rgba(0, 0, 0, 0.2)",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
 	},
 	overlayEmphasized: {
-		backgroundColor: "rgba(0, 0, 0, 0.5) !important",
+		backgroundColor: "rgba(0, 0, 0, 0.7) !important",
 	},
 	image: {
 		zIndex: -1,
@@ -69,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
 const HeroSection = ({ props: { poemCardArray } }) => {
 	const styles = useStyles();
 	const [emphasizeOverlay, setEmphasizeOverlay] = useState(false);
+	const [indexHovered, setIndexHovered] = useState(-1);
+	useEffect(() => {
+		console.log("indexHovered: ", indexHovered);
+	}, [indexHovered]);
+
 	const [shouldAnimateLandingEntrance, setShouldAnimateLandingEntrance] =
 		useState(false);
 	const router = useRouter();
@@ -104,6 +109,9 @@ const HeroSection = ({ props: { poemCardArray } }) => {
 						poemCardArray={poemCardArray}
 						shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}
 						setShouldAnimateLandingEntrance={setShouldAnimateLandingEntrance}
+						emphasizeOverlay={emphasizeOverlay}
+						indexHovered={indexHovered}
+						setIndexHovered={setIndexHovered}
 					/>
 				</div>
 			</div>

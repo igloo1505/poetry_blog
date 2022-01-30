@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { Typography } from "@material-ui/core";
 import clsx from "clsx";
+import { isMobile } from "mobile-device-detect";
 import Image from "next/image";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +24,16 @@ const useStyles = makeStyles((theme) => ({
 			boxShadow: "0px -3px 4px #bebebe !important",
 		},
 	},
+	popupCardSubdue: {
+		boxShadow: "0px -1px 8px #bebebe !important",
+	},
+	popupCardSubduedark: {
+		boxShadow: "0px -1px 8px #bebebe !important",
+	},
+	popupCardSubduelight: {
+		boxShadow: "0px -1px 8px #bebebe !important",
+	},
+
 	topContainer: {
 		position: "relative",
 		height: "70%",
@@ -38,8 +49,38 @@ const useStyles = makeStyles((theme) => ({
 		padding: "1rem",
 		gridArea: "popupCardBottom",
 		width: "100%",
+		position: "relative",
 	},
 	text: {},
+	viewButton: {
+		position: "absolute",
+		bottom: "0",
+		left: "50%",
+		transform: "translateX(-50%)",
+		// backgroundColor: `${theme.palette.primary.main}cc`,
+		backgroundColor: `#fff`,
+		width: "100%",
+		padding: "0.25rem",
+		color: "#fff",
+		boxShadow: "0px -2px 8px #bebebe",
+		color: `${theme.palette.primary.light}ff`,
+		backgroundColor: theme.palette.primary.main,
+		color: `#fff`,
+		transition: "all 0.3s ease-in-out",
+		"&:hover": {
+			color: `#fff`,
+			backgroundColor: theme.palette.primary.dark,
+			boxShadow: "0px -1px 4px #bebebe",
+			cursor: "pointer",
+		},
+	},
+	mobileViewButton: {
+		// color: `${theme.palette.primary.main}ff`,
+		backgroundColor: "#fff",
+		boxShadow: "0px -2px 8px #bebebe",
+		// boxShadow: `0px -5px 8px ${theme.palette.primary.main}`,
+	},
+
 	image: {
 		zIndex: -1,
 	},
@@ -53,6 +94,46 @@ const useStyles = makeStyles((theme) => ({
 			cursor: "pointer",
 		},
 	},
+	imageOverlayDark: {
+		backgroundColor: "rgba(0,0,0,0.5)",
+	},
+	titleTextContainer: {
+		position: "absolute",
+		top: "8px",
+		left: "8px",
+		maxWidth: "50%",
+		textAlign: "left",
+	},
+	titleText: {
+		// color: "#fff",
+		fontSize: "2rem",
+		fontWeight: "400",
+		// fontStyle: "italic",
+		fontFamily: "'Roboto Condensed', sans-serif",
+		// textShadow: "3px 3px 4px #fff, -3px -3px 4px #000",
+	},
+	textLight: {
+		color: "#fff",
+		transition: "all 0.3s ease-in-out",
+	},
+	textDark: {
+		color: "#000",
+		transition: "all 0.3s ease-in-out",
+	},
+	textLightEmphasize: {
+		color: "#fff",
+	},
+	textDarkEmphasize: {
+		color: "#fff",
+	},
+	"subdueText-light": {
+		transition: "all 0.3s ease-in-out",
+		color: "#fff",
+	},
+	"subdueText-dark": {
+		transition: "all 0.3s ease-in-out",
+		color: "#fff",
+	},
 }));
 
 const PopupCard = ({
@@ -61,6 +142,10 @@ const PopupCard = ({
 	_index,
 	shouldAnimateLandingEntrance,
 	setShouldAnimateLandingEntrance,
+	emphasizeOverlay,
+	textColor,
+	indexHovered,
+	setIndexHovered,
 }) => {
 	console.log("submission: ", submission);
 	const styles = useStyles();
@@ -68,6 +153,7 @@ const PopupCard = ({
 	const handleCardClick = () => {
 		console.log("Clicked", featuredImage);
 	};
+	console.log("textColor: ", textColor);
 	return (
 		<div
 			className={clsx(
@@ -76,6 +162,8 @@ const PopupCard = ({
 				animatedIn && styles.popupCardContainerIn
 			)}
 			onClick={handleCardClick}
+			onMouseEnter={() => setIndexHovered(_index)}
+			onMouseLeave={() => setIndexHovered(-1)}
 		>
 			<div
 				className={clsx(
@@ -83,7 +171,12 @@ const PopupCard = ({
 					"popup-card-top-container-animated"
 				)}
 			>
-				<div className={styles.imageOverlayDiv}>
+				<div
+					className={clsx(
+						styles.imageOverlayDiv,
+						emphasizeOverlay && styles.imageOverlayDark
+					)}
+				>
 					<Image
 						src={featuredImage}
 						alt="Featured Image"
@@ -97,14 +190,21 @@ const PopupCard = ({
 							}
 						}}
 					/>
+					<div className={styles.titleTextContainer}>
+						<span
+							variant="h6"
+							component="div"
+							className={clsx(
+								styles.titleText,
+								textColor === "light" && styles.textLight,
+								textColor === "dark" && styles.textDark,
+								emphasizeOverlay && styles?.[`subdueText-${textColor}`]
+							)}
+						>
+							{submission.title}
+						</span>
+					</div>
 				</div>
-				<span
-					variant="h6"
-					component="div"
-					sx={{ flexGrow: 1, fontFamily: "'Roboto Condensed', sans-serif" }}
-				>
-					{submission.title}
-				</span>
 			</div>
 			<div
 				className={clsx(
@@ -112,7 +212,15 @@ const PopupCard = ({
 					"popup-card-bottom-container-animated"
 				)}
 			>
-				{submission.body}
+				<div className={styles.bodyText}>{submission.body}</div>
+				<div
+					className={clsx(
+						styles.viewButton
+						// isMobile && styles.mobileViewButton
+					)}
+				>
+					View
+				</div>
 			</div>
 		</div>
 	);

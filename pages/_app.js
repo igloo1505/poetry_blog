@@ -4,7 +4,9 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import mainTheme from "../themes/mainTheme";
 import Appbar from "../components/app/Appbar";
+import MobileAppbar from "../components/app/MobileAppbar";
 import LargeModal from "../components/app/ViewSubmissionLargeModal";
+import { isMobile } from "mobile-device-detect";
 import store from "../state/store";
 
 function MyApp({ Component, pageProps }) {
@@ -18,7 +20,7 @@ function MyApp({ Component, pageProps }) {
 		<Fragment>
 			<ThemeProvider theme={mainTheme}>
 				<Provider store={store}>
-					<Appbar />
+					{isMobile ? <MobileAppbar /> : <Appbar />}
 					<LargeModal />
 					<Component {...pageProps} />
 				</Provider>

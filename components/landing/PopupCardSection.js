@@ -2,21 +2,16 @@ import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import PopupCard from "./popupCard";
-import FeaturedImageOne from "../../public/penWithCoffeeAndRoses.jpg";
-import FeaturedImageTwo from "../../public/clutteredOldDesk.jpg";
-import FeaturedImageThree from "../../public/girlReadingOutside.jpg";
-import FeaturedImageFour from "../../public/pagesFoldedHeart.jpg";
+import FeaturedImage_A from "../../public/pagesFoldedHeart.jpg";
+import FeaturedImage_B from "../../public/clutteredOldDesk.jpg";
+// import FeaturedImage_C from "../../public/girlReadingOutside.jpg";
+import FeaturedImage_C from "../../public/lonelyDudeWithARose.jpg";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
-		// display: "flex",
-		// flexDirection: "row",
-		// justifyContent: "center",
-		// alignItems: "center",
 		gap: "0rem",
 		width: "100vw",
 		display: "grid",
-		// gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
 		gridTemplateColumns: "repeat(3, 1fr)",
 		// height: "30vw",
 		height: "100%",
@@ -41,14 +36,27 @@ const PopupCardSection = ({
 	poemCardArray,
 	shouldAnimateLandingEntrance,
 	setShouldAnimateLandingEntrance,
+	emphasizeOverlay,
+	indexHovered,
+	setIndexHovered,
 }) => {
 	console.log("poemCardArray: ", poemCardArray);
 	const styles = useStyles();
 	let images = {
-		1: FeaturedImageOne,
-		2: FeaturedImageTwo,
-		3: FeaturedImageThree,
+		1: {
+			image: FeaturedImage_A,
+			textColor: "light",
+		},
+		2: {
+			image: FeaturedImage_B,
+			textColor: "light",
+		},
+		3: {
+			image: FeaturedImage_C,
+			textColor: "dark",
+		},
 	};
+
 	return (
 		<div className={styles.bottomSectionContainer}>
 			<div className={styles.container}>
@@ -57,13 +65,19 @@ const PopupCardSection = ({
 						return (
 							<PopupCard
 								submission={poem}
+								emphasizeOverlay={Boolean(
+									emphasizeOverlay || index === indexHovered
+								)}
 								key={`pop-up-featured-card-${index}`}
-								featuredImage={images[index + 1]}
+								featuredImage={images[index + 1].image}
+								textColor={images[index + 1].textColor}
 								_index={index}
 								shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}
 								setShouldAnimateLandingEntrance={
 									setShouldAnimateLandingEntrance
 								}
+								indexHovered={indexHovered}
+								setIndexHovered={setIndexHovered}
 							/>
 						);
 					})}

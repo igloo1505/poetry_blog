@@ -12,8 +12,6 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";
 
-const hoverLimit = 100;
-
 const useStyles = makeStyles((theme) => ({
 	toolbarMain: {
 		position: "absolute",
@@ -21,11 +19,10 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 10,
 		top: 0,
 		transition: "all 0.3s ease-in-out",
-		// backgroundColor: `${theme.palette.primary.main} !important`,
 		backgroundColor: theme.palette.primary.main,
 	},
 	toolbarHidden: {
-		transform: "translateY(-100%)",
+		// transform: "translateY(-100%)",
 	},
 	toolbarRight: {
 		display: "flex",
@@ -37,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	toolbarTitleText: {
 		color: "#fff !important",
-	},
-	appbarHeader: {
-		backgroundColor: "transparent",
 	},
 	aTag: {
 		height: "100%",
@@ -54,9 +48,12 @@ const useStyles = makeStyles((theme) => ({
 			transition: "all 0.2s ease-in-out",
 		},
 	},
+	appbarHeader: {
+		backgroundColor: "transparent",
+	},
 }));
 
-const Appbar = ({
+const MobileAppbar = ({
 	user: {
 		isAuthenticated,
 		user: { _id },
@@ -64,81 +61,15 @@ const Appbar = ({
 	UI: { navbarHidden },
 	handleLogout,
 }) => {
+	const styles = useStyles();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isAuthed, setIsAuthed] = useState(false);
 	const dispatch = useDispatch();
-
-	const showNavbar = () => {
-		dispatch({
-			type: Types.SET_NAVBAR_HIDDEN,
-			payload: false,
-		});
-	};
-	const hideNavbar = () => {
-		if (!navbarHidden && !isMobile) {
-			dispatch({
-				type: Types.RESET_NAVBAR_HIDDEN,
-			});
-		}
-	};
-	const router = useRouter();
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			if (!isMobile) {
-				document.addEventListener("mousemove", (e) => {
-					if (e.y < hoverLimit) {
-						showNavbar();
-					}
-					if (e.y >= hoverLimit) {
-						hideNavbar();
-					}
-				});
-				document.addEventListener("touch", (e) => {
-					if (e.y < hoverLimit) {
-						showNavbar();
-					}
-					if (e.y >= hoverLimit) {
-						hideNavbar();
-					}
-				});
-			}
-			if (isMobile) {
-				document.addEventListener("touch", (e) => {
-					if (e.y < hoverLimit) {
-						showNavbar();
-					}
-					if (e.y >= hoverLimit) {
-						hideNavbar();
-					}
-				});
-				showNavbar();
-			}
-		}
-	}, [isMobile]);
-
-	useEffect(() => {
-		if (isAuthenticated && _id) {
-			setIsAuthed(true);
-		}
-		if (!isAuthenticated || !_id) {
-			setIsAuthed(false);
-		}
-	}, [isAuthenticated, _id]);
-
-	const styles = useStyles();
-	const handleChange = (event) => {
-		setAuth(event.target.checked);
-	};
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
 	return (
 		<Box
 			sx={{ flexGrow: 1 }}
+			// onMouseEnter={showNavbar}
+			// onMouseLeave={hideNavbar}
 			className={clsx(styles.toolbarMain, navbarHidden && styles.toolbarHidden)}
 		>
 			<AppBar position="static" className={styles.appbarHeader}>
@@ -187,4 +118,4 @@ const mapStateToProps = (state, props) => ({
 	props: props,
 });
 
-export default connect(mapStateToProps, { handleLogout })(Appbar);
+export default connect(mapStateToProps)(MobileAppbar);

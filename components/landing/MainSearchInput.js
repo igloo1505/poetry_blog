@@ -16,14 +16,13 @@ const useStyles = makeStyles((theme) => ({
 		border: "none",
 		fontFamily: "'Roboto Condensed', sans-serif",
 		transition: "all 0.3s ease-in-out",
-		border: "4px solid #fff",
-
+		border: "8px solid #fff",
 		// opacity: 0,
 		"&:focus-visible": {
 			outline: "none",
 			// border: "1px solid #000",
-			border: `4px solid ${theme.palette.primary.main}`,
-			boxShadow: "20px 20px 19px #7b7b7a, -20px -20px 19px #a3a3a2",
+			border: `8px solid ${theme.palette.primary.main}`,
+			boxShadow: "5px 5px 15px #7b7b7a, -5px -5px 15px #a3a3a2",
 		},
 	},
 	innerContainer: {},
