@@ -29,7 +29,9 @@ handler.post(async (req, res) => {
 			_tagQuery.author = user._id;
 		}
 
-		let _byTag = await Submission.find(_tagQuery).limit(20);
+		let _byTag = await Submission.find(_tagQuery)
+			.sort({ createdAt: -1 })
+			.limit(20);
 
 		return res.status(200).json({
 			msg: "Posts retrieved successfully",

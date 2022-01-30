@@ -5,11 +5,11 @@ import { gsap } from "gsap";
 
 const useStyles = makeStyles((theme) => ({
 	mainInput: {
-		position: "absolute",
+		position: "relative",
 		fontSize: "3rem !important",
-		left: "-50vw",
-		top: "50%",
-		transform: "translate(-50%, -50%)",
+		// left: "-50vw",
+		// top: "50%",
+		// transform: "translate(-50%, -50%)",
 		zIndex: 9999,
 		borderRadius: "50px",
 		padding: "0.75rem 1rem",
@@ -17,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
 		fontFamily: "'Roboto Condensed', sans-serif",
 		transition: "all 0.3s ease-in-out",
 		border: "4px solid #fff",
+
+		// opacity: 0,
 		"&:focus-visible": {
 			outline: "none",
 			// border: "1px solid #000",
@@ -27,21 +29,24 @@ const useStyles = makeStyles((theme) => ({
 	innerContainer: {},
 	outerContainer: {
 		zIndex: 9999,
+		transform: "translateY(-100px)",
+		opacity: 0,
 	},
 }));
 
 const mainSearchInputId = "main-search-input-id";
 
-const MainSearchInput = () => {
+const MainSearchInput = ({ setEmphasizeOverlay }) => {
 	const styles = useStyles();
 	return (
-		<div className={styles.outerContainer}>
+		<div className={styles.outerContainer} id={mainSearchInputId}>
 			<div className={styles.innerContainer}>
 				<input
 					type="text"
 					placeholder="Search for a poem..."
 					className={styles.mainInput}
-					id={mainSearchInputId}
+					onFocus={() => setEmphasizeOverlay(true)}
+					onBlur={() => setEmphasizeOverlay(false)}
 				/>
 			</div>
 		</div>

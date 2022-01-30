@@ -23,6 +23,10 @@ const SubmissionSchema = mongoose.Schema(
 			required: true,
 			default: [],
 		},
+		featuredImageUrl: {
+			type: String,
+			required: false,
+		},
 	},
 	{ timestamps: true }
 );

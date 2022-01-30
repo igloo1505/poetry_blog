@@ -134,7 +134,7 @@ const submissionForm = ({
 			userId: userId,
 		};
 		let { success } = await updatePost(editSubmission);
-		console.log("success: ", success);
+
 		if (success) {
 			router.push("/myPosts");
 		}

@@ -9,6 +9,7 @@ import { setCurrentEditing } from "../../state/poemActions";
 import MyPostsCardTagSection from "./MyPostsCardTagSection";
 
 const myPostCardClassName = "my-post-card-animated-class";
+
 const useStyles = makeStyles((theme) => ({
 	outerContainer: {
 		minHeight: "100px",

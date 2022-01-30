@@ -197,7 +197,7 @@ const animateEntrance = () => {
 			opacity: 1,
 			y: "0px",
 			scaleY: 1,
-			duration: 0.3,
+			duration: 0.2,
 			stagger: 0.1,
 			// ease: "power3.inOut",
 			ease: "back.out(1.7)",
