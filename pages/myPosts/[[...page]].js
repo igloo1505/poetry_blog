@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "cookies";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 import { connect, useDispatch } from "react-redux";
 import Submission from "../../models/Submission";
 import mongoose from "mongoose";
@@ -67,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
 			width: "50%",
 		},
 	},
+	noResultsText: {},
+	noResultsContainer: {},
 }));
 
 const myPosts = ({
@@ -109,12 +112,16 @@ const myPosts = ({
 				<SearchMyPostsForm />
 			</div>
 			<div className={styles.containerRight}>
-				{currentDisplayedArray.map((submission, index) => (
-					<MyPostCard
-						submission={submission}
-						key={`user-submission-${index}`}
-					/>
-				))}
+				{filteredOwnPosts.noResult ? (
+					<NoResult styles={styles} />
+				) : (
+					currentDisplayedArray.map((submission, index) => (
+						<MyPostCard
+							submission={submission}
+							key={`user-submission-${index}`}
+						/>
+					))
+				)}
 			</div>
 		</div>
 	);
@@ -158,4 +165,14 @@ export const getServerSideProps = async (ctx) => {
 			userSubmissions: JSON.parse(JSON.stringify(userSubmissions)),
 		},
 	};
+};
+
+const NoResult = ({ styles }) => {
+	return (
+		<div className={styles.noResultsContainer}>
+			<Typography variant="h5" component="h2" className={styles.noResultsText}>
+				No results found
+			</Typography>
+		</div>
+	);
 };

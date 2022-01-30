@@ -6,6 +6,7 @@ import * as Types from "../../state/Types";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 import { setCurrentEditing } from "../../state/poemActions";
+import MyPostsCardTagSection from "./MyPostsCardTagSection";
 
 const useStyles = makeStyles((theme) => ({
 	outerContainer: {
@@ -117,17 +118,20 @@ const myPostCard = ({
 			>
 				{submission.body}
 			</div>
-			{isOwnCard && (
-				<div className={styles.buttonContainer}>
-					<Button
-						variant="contained"
-						className={clsx(styles.containedButton, styles.editButton)}
-						onClick={handleEditClick}
-					>
-						Edit
-					</Button>
-				</div>
-			)}
+			<div className={styles.buttonContainer}>
+				<MyPostsCardTagSection tagArray={submission.tags} />
+				{isOwnCard && (
+					<div className={styles.buttonContainer}>
+						<Button
+							variant="contained"
+							className={clsx(styles.containedButton, styles.editButton)}
+							onClick={handleEditClick}
+						>
+							Edit
+						</Button>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

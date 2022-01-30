@@ -9,6 +9,9 @@ const initialState = {
 		currentTag: "",
 		tags: [],
 	},
+	searchOwnPostsForm: {
+		searchQuery: "",
+	},
 };
 
 const formReducer = createReducer(initialState, (builder) => {
@@ -16,6 +19,34 @@ const formReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			submissionForm: action.payload,
+		};
+	});
+	builder.addCase(Types.SET_SEARCH_OWN_POSTS_SEARCH_INPUT, (state, action) => {
+		return {
+			...state,
+			searchOwnPostsForm: {
+				...state.searchOwnPostsForm,
+				...action.payload,
+			},
+		};
+	});
+	builder.addCase(
+		Types.RESET_SEARCH_OWN_POSTS_SEARCH_INPUT,
+		(state, action) => {
+			return {
+				...state,
+				searchOwnPostsForm: {
+					...initialState.searchOwnPostsForm,
+				},
+			};
+		}
+	);
+	builder.addCase(Types.CLEAR_OWN_QUERY_RESULTS, (state, action) => {
+		return {
+			...state,
+			searchOwnPostsForm: {
+				...initialState.searchOwnPostsForm,
+			},
 		};
 	});
 	builder.addCase(Types.SET_NEW_TAG_SUBMISSION_FORM, (state, action) => {

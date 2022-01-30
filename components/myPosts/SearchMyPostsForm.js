@@ -65,14 +65,19 @@ const SearchMyPostsForm = ({
 		isAuthenticated,
 		user: { _id: userId },
 	},
+	forms: { searchOwnPostsForm: searchFormData },
 	posts: { filteredAllPosts, filteredOwnPosts },
 	queryOwnSubmissions,
 }) => {
 	const dispatch = useDispatch();
 	const styles = useStyles();
-	const [searchFormData, setSearchFormData] = useState({
-		searchQuery: "",
-	});
+
+	const setSearchFormData = (newData) => {
+		dispatch({
+			type: Types.SET_SEARCH_OWN_POSTS_SEARCH_INPUT,
+			payload: newData,
+		});
+	};
 
 	useEffect(() => {
 		if (userId && isAuthenticated) {
@@ -83,7 +88,7 @@ const SearchMyPostsForm = ({
 		}
 	}, []);
 
-	const handleSearchClick = (e) => {
+	const handleSearchClick = () => {
 		queryOwnSubmissions(searchFormData);
 	};
 	const handleClearSearchClick = (e) => {
@@ -136,6 +141,15 @@ const SearchMyPostsForm = ({
 									[e.target.name]: e.target.value,
 								});
 							}}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									e.preventDefault();
+									e.stopPropagation();
+									handleSearchClick();
+								}
+								console.log("Submit here");
+							}}
+							value={searchFormData.searchQuery}
 						/>
 						<div className={styles.buttonContainer}>
 							<Button
@@ -149,7 +163,8 @@ const SearchMyPostsForm = ({
 							</Button>
 							{Boolean(
 								filteredOwnPosts?.byBody?.length > 0 ||
-									filteredOwnPosts?.byTag?.length > 0
+									filteredOwnPosts?.byTag?.length > 0 ||
+									filteredOwnPosts.noResult
 							) && (
 								<Button
 									fullWidth
@@ -172,6 +187,7 @@ const SearchMyPostsForm = ({
 const mapStateToProps = (state, props) => ({
 	user: state.user,
 	posts: state.posts,
+	forms: state.forms,
 	props: props,
 });
 

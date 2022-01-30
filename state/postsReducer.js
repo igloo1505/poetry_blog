@@ -26,10 +26,12 @@ const replaceEverywhere = (updatedPost, state) => {
 const initialState = {
 	myPosts: [],
 	filteredAllPosts: {
+		noResult: false,
 		byTag: [],
 		byBody: [],
 	},
 	filteredOwnPosts: {
+		noResult: false,
 		byTag: [],
 		byBody: [],
 	},
@@ -48,6 +50,26 @@ const formReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			filteredAllPosts: action.payload,
+		};
+	});
+	builder.addCase(Types.QUERY_OWN_SUBMISSION_NO_RESULT, (state, action) => {
+		return {
+			...state,
+			filteredOwnPosts: {
+				noResult: true,
+				byTag: [],
+				byBody: [],
+			},
+		};
+	});
+	builder.addCase(Types.QUERY_ALL_SUBMISSION_NO_RESULT, (state, action) => {
+		return {
+			...state,
+			filteredAllPosts: {
+				noResult: true,
+				byTag: [],
+				byBody: [],
+			},
 		};
 	});
 

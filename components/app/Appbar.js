@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
 		// gap: "1rem",
 		height: "64px",
 	},
+	toolbarTitleText: {
+		color: "#fff !important",
+	},
 	aTag: {
 		height: "100%",
 		display: "flex",
@@ -142,6 +145,7 @@ const Appbar = ({
 						variant="h6"
 						component="div"
 						sx={{ flexGrow: 1, fontFamily: "'Roboto Condensed', sans-serif" }}
+						className={styles.toolbarTitleText}
 					>
 						Poetry Blog
 					</Typography>
