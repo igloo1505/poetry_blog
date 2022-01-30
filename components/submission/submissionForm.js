@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { registerNewUser } from "../../state/userActions";
 import { newSubmission, updatePost } from "../../state/poemActions";
 import { connect, useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import * as Types from "../../state/Types";
 import { BiPen } from "react-icons/bi";
 import { gsap } from "gsap";
@@ -77,6 +78,7 @@ const submissionForm = ({
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
+	const router = useRouter();
 	useEffect(() => {
 		animateFormEntrance();
 	}, []);
@@ -120,7 +122,7 @@ const submissionForm = ({
 		}
 	};
 
-	const handleEdit = (e) => {
+	const handleEdit = async (e) => {
 		// newSubmission(formData);
 		let editSubmission = {
 			fields: {
@@ -131,7 +133,11 @@ const submissionForm = ({
 			submissionId: editingSubmission._id,
 			userId: userId,
 		};
-		updatePost(editSubmission);
+		let { success } = await updatePost(editSubmission);
+		console.log("success: ", success);
+		if (success) {
+			router.push("/myPosts");
+		}
 	};
 	const handleSubmit = (e) => {
 		newSubmission(formData);

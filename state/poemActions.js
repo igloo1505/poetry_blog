@@ -66,14 +66,18 @@ export const updatePost = (postData) => async (dispatch) => {
 		});
 		if (res.status === 200 && res.data.success) {
 			dispatch({ type: Types.UPDATE_POST_SUCCESS, payload: res.data });
+			return { success: true };
 		}
 		if (res.status === 401) {
 			dispatch({ type: Types.UNAUTHORIZED, payload: res.data });
+			return { success: false };
 		}
 		if (res.status !== 200 && res.status !== 401) {
 			dispatch({ type: Types.SERVER_ERROR, payload: error });
+			return { success: false };
 		}
 	} catch (error) {
 		dispatch({ type: Types.SERVER_ERROR, payload: error });
+		return { success: false };
 	}
 };

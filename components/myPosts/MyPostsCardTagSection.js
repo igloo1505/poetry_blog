@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	tagContainerHovered: {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: theme.palette.primary.dark,
 		color: "#fff",
 	},
 	tagAnimatedBorder: {
@@ -48,12 +48,13 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "flex-start",
 		alignItems: "center",
 		width: "100%",
+		gap: "0.5rem",
 	},
 }));
 
 const MyPostsCardTagSection = ({ tagArray }) => {
 	const styles = useStyles();
-	const [isHovered, setIsHovered] = useState(false);
+
 	return (
 		<div className={styles.tagSectionContainer}>
 			{tagArray &&
@@ -63,8 +64,6 @@ const MyPostsCardTagSection = ({ tagArray }) => {
 							key={`my-post-card-tag-${index}`}
 							tag={tag}
 							styles={styles}
-							isHovered={isHovered}
-							setIsHovered={setIsHovered}
 						/>
 					);
 				})}
@@ -74,7 +73,8 @@ const MyPostsCardTagSection = ({ tagArray }) => {
 
 export default MyPostsCardTagSection;
 
-const MyPostCardTag = ({ tag, styles, isHovered, setIsHovered }) => {
+const MyPostCardTag = ({ tag, styles }) => {
+	const [isHovered, setIsHovered] = useState(false);
 	return (
 		<div
 			className={clsx(
