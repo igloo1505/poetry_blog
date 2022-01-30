@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PopupCard = ({ submission, featuredImage, _index }) => {
+	console.log("submission: ", submission);
 	const styles = useStyles();
 	const [animatedIn, setAnimatedIn] = useState(true);
 	const handleCardClick = () => {

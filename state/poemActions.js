@@ -116,3 +116,32 @@ export const getByTag =
 			return { success: false };
 		}
 	};
+
+export const removePost = (_data) => async (dispatch) => {
+	try {
+		let res = await useAxios({
+			method: "post",
+			url: `/api/submissions/removePost`,
+			data: _data,
+		});
+		if (res.status === 200 && res.data.success) {
+			console.log("dispatching: ");
+			dispatch({
+				type: Types.REMOVE_SUBMISSION_SUCCESS,
+				payload: res.data,
+			});
+			return { success: true };
+		}
+		if (res.status === 401) {
+			dispatch({ type: Types.UNAUTHORIZED, payload: res.data });
+			return { success: false };
+		}
+		if (res.status !== 200 && res.status !== 401) {
+			dispatch({ type: Types.SERVER_ERROR, payload: error });
+			return { success: false };
+		}
+	} catch (error) {
+		dispatch({ type: Types.SERVER_ERROR, payload: error });
+		return { success: false };
+	}
+};

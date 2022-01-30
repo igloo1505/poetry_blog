@@ -27,7 +27,7 @@ handler.post(async (req, res) => {
 			author: user._id,
 			title,
 			body,
-			_tags,
+			tags: _tags,
 		});
 		let savedSubmission = await newSubmission.save();
 		let _user = await User.findByIdAndUpdate(

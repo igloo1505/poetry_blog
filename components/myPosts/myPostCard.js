@@ -5,7 +5,7 @@ import { Typography, Button } from "@material-ui/core";
 import * as Types from "../../state/Types";
 import { useRouter } from "next/router";
 import clsx from "clsx";
-import { setCurrentEditing } from "../../state/poemActions";
+import { setCurrentEditing, removePost } from "../../state/poemActions";
 import MyPostsCardTagSection from "./MyPostsCardTagSection";
 
 const myPostCardClassName = "my-post-card-animated-class";
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: "row",
 		justifyContent: "flex-end",
 		alignItems: "center",
+		gap: "0.5rem",
 	},
 	containedButton: {
 		backgroundColor: theme.palette.primary.light,
@@ -61,6 +62,12 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: theme.palette.warning.dark,
 		},
 	},
+	deleteButton: {
+		backgroundColor: theme.palette.error.main,
+		"&:hover": {
+			backgroundColor: theme.palette.error.dark,
+		},
+	},
 	text: {},
 }));
 
@@ -71,6 +78,7 @@ const myPostCard = ({
 		user: { _id: userId },
 	},
 	setCurrentEditing,
+	removePost,
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
@@ -90,6 +98,14 @@ const myPostCard = ({
 	const handleEditClick = (e) => {
 		setCurrentEditing(submission);
 		router.push(`/newSubmission/${submission._id}`);
+	};
+	const handleDeleteClick = (e) => {
+		if (userId) {
+			removePost({
+				submissionId: submission._id,
+				userId: userId,
+			});
+		}
 	};
 
 	const handleCardClick = (e) => {
@@ -126,6 +142,13 @@ const myPostCard = ({
 					<div className={styles.buttonContainer}>
 						<Button
 							variant="contained"
+							className={clsx(styles.containedButton, styles.deleteButton)}
+							onClick={handleDeleteClick}
+						>
+							Delete
+						</Button>
+						<Button
+							variant="contained"
 							className={clsx(styles.containedButton, styles.editButton)}
 							onClick={handleEditClick}
 						>
@@ -143,4 +166,6 @@ const mapStateToProps = (state, props) => ({
 	props: props,
 });
 
-export default connect(mapStateToProps, { setCurrentEditing })(myPostCard);
+export default connect(mapStateToProps, { setCurrentEditing, removePost })(
+	myPostCard
+);

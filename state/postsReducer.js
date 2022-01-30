@@ -23,6 +23,10 @@ const replaceEverywhere = (updatedPost, state) => {
 	});
 };
 
+const filterById = ({ array, id }) => {
+	return array.filter((item) => item._id !== id);
+};
+
 const initialState = {
 	myPosts: [],
 	filteredAllPosts: {
@@ -139,6 +143,34 @@ const formReducer = createReducer(initialState, (builder) => {
 			};
 		}
 	);
+	builder.addCase(Types.REMOVE_SUBMISSION_SUCCESS, (state, action) => {
+		return {
+			...state,
+			myPosts: filterById({ array: state.myPosts, id: action.payload }),
+			filteredOwnPosts: {
+				...state.filteredOwnPosts,
+				byTag: filterById({
+					array: state.filteredOwnPosts.byTag,
+					id: action.payload,
+				}),
+				byBody: filterById({
+					array: state.filteredOwnPosts.byBody,
+					id: action.payload,
+				}),
+			},
+			filteredAllPosts: {
+				...state.filteredAllPosts,
+				byTag: filterById({
+					array: state.filteredAllPosts.byBody,
+					id: action.payload,
+				}),
+				byBody: filterById({
+					array: state.filteredAllPosts.byBody,
+					id: action.payload,
+				}),
+			},
+		};
+	});
 });
 
 export default formReducer;
