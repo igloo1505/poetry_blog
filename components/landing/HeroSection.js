@@ -11,7 +11,7 @@ import gsap from "gsap";
 import PopupCardSection from "./PopupCardSection";
 import LandingTopSection from "./LandingTopSection";
 
-const overlayTimeout = 2000;
+const overlayTimeout = 800;
 const overlayId = "hero-overlay-id";
 const imageId = "hero-image-id";
 
@@ -69,13 +69,17 @@ const useStyles = makeStyles((theme) => ({
 const HeroSection = ({ props: { poemCardArray } }) => {
 	const styles = useStyles();
 	const [emphasizeOverlay, setEmphasizeOverlay] = useState(false);
+	const [shouldAnimateLandingEntrance, setShouldAnimateLandingEntrance] =
+		useState(false);
 	const router = useRouter();
 	const dispatch = useDispatch();
 	useEffect(() => {
-		setTimeout(() => {
+		// setTimeout(() => {
+		// }, overlayTimeout);
+		if (shouldAnimateLandingEntrance) {
 			animateSearchInputEntrance({ dispatch });
-		}, overlayTimeout);
-	}, []);
+		}
+	}, [shouldAnimateLandingEntrance]);
 
 	return (
 		<div className={styles.heroContainer}>
@@ -96,7 +100,11 @@ const HeroSection = ({ props: { poemCardArray } }) => {
 				/>
 				<div className={styles.innerContainer}>
 					<LandingTopSection setEmphasizeOverlay={setEmphasizeOverlay} />
-					<PopupCardSection poemCardArray={poemCardArray} />
+					<PopupCardSection
+						poemCardArray={poemCardArray}
+						shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}
+						setShouldAnimateLandingEntrance={setShouldAnimateLandingEntrance}
+					/>
 				</div>
 			</div>
 		</div>
@@ -128,14 +136,14 @@ const animateSearchInputEntrance = ({ dispatch }) => {
 			y: "0px",
 			opacity: 1,
 			duration: 0.7,
-			onComplete: () => {
-				if (!isMobile) {
-					dispatch({
-						type: Types.SET_NAVBAR_HIDDEN,
-						payload: true,
-					});
-				}
-			},
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
 		}
 	);
 	tl.fromTo(
@@ -145,14 +153,14 @@ const animateSearchInputEntrance = ({ dispatch }) => {
 			y: "0px",
 			opacity: 1,
 			duration: 0.5,
-			// onComplete: () => {
-			// 	if (!isMobile) {
-			// 		dispatch({
-			// 			type: Types.SET_NAVBAR_HIDDEN,
-			// 			payload: true,
-			// 		});
-			// 	}
-			// },
+			onComplete: () => {
+				if (!isMobile) {
+					dispatch({
+						type: Types.SET_NAVBAR_HIDDEN,
+						payload: true,
+					});
+				}
+			},
 		},
 		">-=0.3"
 	);
@@ -181,16 +189,16 @@ const animateSearchInputEntrance = ({ dispatch }) => {
 	tl.fromTo(
 		`.popup-card-container-animated`,
 		{
-			// scaleY: 0,
 			opacity: 0.0,
 			transform: "translateY(100%)",
 			transformOrigin: "top center",
 		},
 		{
-			// scaleY: 1,
 			transform: "translateY(0)",
 			opacity: 1,
-			duration: 0.5,
+			duration: 1,
+			// ease: "back.out(1.7)",
+			ease: "elastic.out(1, 0.7)",
 			// onComplete: () => {
 			// 	if (!isMobile) {
 			// 		dispatch({
@@ -201,5 +209,25 @@ const animateSearchInputEntrance = ({ dispatch }) => {
 			// },
 			stagger: 0.2,
 		}
+	);
+	tl.fromTo(
+		`.popup-card-container-animated`,
+		{
+			boxShadow: "0px 0px 8px #bebebe",
+		},
+		{
+			boxShadow: "0px -5px 8px #bebebe",
+			ease: "elastic.out(1, 0.7)",
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
+			stagger: 0.2,
+		},
+		">-=0.5"
 	);
 };

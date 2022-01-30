@@ -37,7 +37,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const PopupCardSection = ({ poemCardArray }) => {
+const PopupCardSection = ({
+	poemCardArray,
+	shouldAnimateLandingEntrance,
+	setShouldAnimateLandingEntrance,
+}) => {
 	console.log("poemCardArray: ", poemCardArray);
 	const styles = useStyles();
 	let images = {
@@ -56,6 +60,10 @@ const PopupCardSection = ({ poemCardArray }) => {
 								key={`pop-up-featured-card-${index}`}
 								featuredImage={images[index + 1]}
 								_index={index}
+								shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}
+								setShouldAnimateLandingEntrance={
+									setShouldAnimateLandingEntrance
+								}
 							/>
 						);
 					})}

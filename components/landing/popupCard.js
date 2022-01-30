@@ -17,9 +17,11 @@ const useStyles = makeStyles((theme) => ({
 		// opacity: 0,
 	},
 	popupCardContainerIn: {
-		// position: "absolute",
-		// bottom: 0,
-		// transform: "translateY(-100%)",
+		// boxShadow: "0px -5px 8px #bebebe",
+		transition: "box-shadow 0.3s ease-in-out",
+		"&:hover": {
+			boxShadow: "0px -3px 4px #bebebe !important",
+		},
 	},
 	topContainer: {
 		position: "relative",
@@ -39,16 +41,27 @@ const useStyles = makeStyles((theme) => ({
 	},
 	text: {},
 	image: {
+		zIndex: -1,
+	},
+	imageOverlayDiv: {
 		width: "100%",
 		height: "100%",
-		// transform: "scaleY(0)",
-		// opacity: 0,
-
-		// opacity: 0,
+		zIndex: 1,
+		transition: "all 0.5s ease-in-out",
+		"&:hover": {
+			backgroundColor: "rgba(0,0,0,0.5)",
+			cursor: "pointer",
+		},
 	},
 }));
 
-const PopupCard = ({ submission, featuredImage, _index }) => {
+const PopupCard = ({
+	submission,
+	featuredImage,
+	_index,
+	shouldAnimateLandingEntrance,
+	setShouldAnimateLandingEntrance,
+}) => {
 	console.log("submission: ", submission);
 	const styles = useStyles();
 	const [animatedIn, setAnimatedIn] = useState(true);
@@ -70,14 +83,21 @@ const PopupCard = ({ submission, featuredImage, _index }) => {
 					"popup-card-top-container-animated"
 				)}
 			>
-				<Image
-					src={featuredImage}
-					alt="Featured Image"
-					layout="fill"
-					objectFit="cover"
-					className={clsx(styles.image, "popup-card-image-animated")}
-					id={`imageId-${_index}`}
-				/>
+				<div className={styles.imageOverlayDiv}>
+					<Image
+						src={featuredImage}
+						alt="Featured Image"
+						layout="fill"
+						objectFit="cover"
+						className={clsx(styles.image, "popup-card-image-animated")}
+						id={`imageId-${_index}`}
+						onLoad={() => {
+							if (!shouldAnimateLandingEntrance) {
+								setShouldAnimateLandingEntrance(true);
+							}
+						}}
+					/>
+				</div>
 				<span
 					variant="h6"
 					component="div"
