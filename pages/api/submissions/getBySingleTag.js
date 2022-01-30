@@ -15,31 +15,33 @@ handler.post(async (req, res) => {
 	try {
 		// Include byUser as Boolean to indicate if filtering by user as well
 		let { tagQuery, userId, byUser } = req.body;
-
 		let _userId = cookies.get("userId") || userId;
 		console.log("userId: from cookies", _userId);
 		const user = await User.findById(_userId);
-
-		let tagQuery = {
+		let _tagQuery = {
 			tags: {
-				$regex: searchQuery,
+				$regex: tagQuery,
 				$options: "i",
 			},
 		};
-		let _byTag = await Submission.find(tagQuery).limit(10);
+
 		if (user && byUser) {
-			tagQuery.author = user._id;
+			_tagQuery.author = user._id;
 		}
+
+		let _byTag = await Submission.find(_tagQuery).limit(20);
 
 		return res.status(200).json({
 			msg: "Posts retrieved successfully",
+			success: true,
 			byTag: _byTag,
 		});
 	} catch (error) {
 		console.log(error);
-		res
-			.status(500)
-			.json({ error: "There was an error querying those posts.." });
+		res.status(500).json({
+			error: "There was an error querying those posts..",
+			success: false,
+		});
 	}
 });
 

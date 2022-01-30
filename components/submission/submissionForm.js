@@ -143,7 +143,6 @@ const submissionForm = ({
 		newSubmission(formData);
 	};
 	const handleCancelEdit = (e) => {
-		// remove param from url here too
 		if (typeof window !== "undefined") {
 			window.history.pushState({}, document.title, "/" + "newSubmission");
 		}

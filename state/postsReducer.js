@@ -52,6 +52,26 @@ const formReducer = createReducer(initialState, (builder) => {
 			filteredAllPosts: action.payload,
 		};
 	});
+	builder.addCase(Types.GET_BY_TAG_SUCCESS, (state, action) => {
+		let _ns = {
+			filteredOwnPosts: {
+				...initialState.filteredOwnPosts,
+			},
+			filteredAllPosts: {
+				...initialState.filteredAllPosts,
+			},
+		};
+		if (action.payload?.byUser) {
+			_ns.filteredOwnPosts.byTag = action.payload.byTag;
+		}
+		if (!action.payload?.byUser) {
+			_ns.filteredAllPosts.byTag = action.payload.byTag;
+		}
+		return {
+			...state,
+			..._ns,
+		};
+	});
 	builder.addCase(Types.QUERY_OWN_SUBMISSION_NO_RESULT, (state, action) => {
 		return {
 			...state,

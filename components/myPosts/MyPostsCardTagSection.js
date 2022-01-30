@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { Typography, Button } from "@material-ui/core";
+import { getByTag } from "../../state/poemActions";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,9 +53,33 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const MyPostsCardTagSection = ({ tagArray }) => {
+const MyPostsCardTagSection = ({
+	props: { tagArray },
+	user: {
+		isAuthenticated,
+		user: { _id: userId },
+	},
+	getByTag,
+}) => {
 	const styles = useStyles();
+	const [byUser, setByUser] = useState(false);
+	useEffect(() => {
+		if (isAuthenticated && userId) {
+			setByUser(userId);
+		}
+		if (!isAuthenticated || !userId) {
+			setByUser(false);
+		}
+	}, [userId, isAuthenticated]);
 
+	const handleTagClick = async (tag) => {
+		let { success } = await getByTag({
+			tagText: tag,
+			byUser: Boolean(byUser),
+			...(byUser && { userId: userId }),
+		});
+		console.log("getByTag success: ", success);
+	};
 	return (
 		<div className={styles.tagSectionContainer}>
 			{tagArray &&
@@ -64,6 +89,7 @@ const MyPostsCardTagSection = ({ tagArray }) => {
 							key={`my-post-card-tag-${index}`}
 							tag={tag}
 							styles={styles}
+							handleTagClick={handleTagClick}
 						/>
 					);
 				})}
@@ -71,9 +97,14 @@ const MyPostsCardTagSection = ({ tagArray }) => {
 	);
 };
 
-export default MyPostsCardTagSection;
+const mapStateToProps = (state, props) => ({
+	props: props,
+	user: state.user,
+});
 
-const MyPostCardTag = ({ tag, styles }) => {
+export default connect(mapStateToProps, { getByTag })(MyPostsCardTagSection);
+
+const MyPostCardTag = ({ tag, styles, handleTagClick }) => {
 	const [isHovered, setIsHovered] = useState(false);
 	return (
 		<div
@@ -83,6 +114,7 @@ const MyPostCardTag = ({ tag, styles }) => {
 			)}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
+			onClick={() => handleTagClick(tag)}
 		>
 			<div
 				className={clsx(

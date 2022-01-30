@@ -81,3 +81,38 @@ export const updatePost = (postData) => async (dispatch) => {
 		return { success: false };
 	}
 };
+
+export const getByTag =
+	({ tagText, byUser }) =>
+	async (dispatch) => {
+		let _byUser = byUser || false;
+		try {
+			let res = await useAxios({
+				method: "post",
+				url: `/api/submissions/getBySingleTag`,
+				data: {
+					tagQuery: tagText,
+					byUser: _byUser,
+				},
+			});
+			if (res.status === 200 && res.data.success) {
+				console.log("dispatching: ");
+				dispatch({
+					type: Types.GET_BY_TAG_SUCCESS,
+					payload: { ...res.data, byUser: _byUser },
+				});
+				return { success: true };
+			}
+			if (res.status === 401) {
+				dispatch({ type: Types.UNAUTHORIZED, payload: res.data });
+				return { success: false };
+			}
+			if (res.status !== 200 && res.status !== 401) {
+				dispatch({ type: Types.SERVER_ERROR, payload: error });
+				return { success: false };
+			}
+		} catch (error) {
+			dispatch({ type: Types.SERVER_ERROR, payload: error });
+			return { success: false };
+		}
+	};
