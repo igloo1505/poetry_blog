@@ -11,16 +11,50 @@ import User from "../../models/User";
 import mongoose from "mongoose";
 
 const useStyles = makeStyles((theme) => ({
-	byPostIdOuterContainer: {},
-	byPostIdInnerContainer: {},
+	byAuthorOuterContainer: {
+		width: "calc(100% - 4rem)",
+		height: "100%",
+		minHeight: "calc(100vh - 64px)",
+		margin: "64px 2rem",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	byAuthorTitleContainer: {
+		margin: "0.5rem 0 0 0",
+		fontSize: "2rem",
+		fontWeight: "400",
+		fontFamily: "'Roboto Condensed', sans-serif",
+	},
+	byAuthorSubtitleContainer: {
+		margin: "0.5rem 0 1rem 0",
+		"&:hover": {
+			cursor: "pointer",
+		},
+	},
+	byAuthorRecentPostsSection: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+		gap: "0.5rem",
+	},
 }));
 
 const byPostId = ({ specificUser }) => {
 	console.log("specificUser: ", specificUser);
 	const styles = useStyles();
 	return (
-		<div className={styles.byPostIdOuterContainer}>
-			<div className={styles.byPostIdInnerContainer}></div>
+		<div className={styles.byAuthorOuterContainer}>
+			<div className={styles.byAuthorTitleContainer}>{specificUser.title}</div>
+			<div
+				className={styles.byAuthorSubtitleContainer}
+				// onClick={redirectToPost}
+			>
+				{specificUser.firstName} {specificUser.lastName}
+			</div>
+			<div className={styles.byAuthorRecentPostsSection}></div>
 		</div>
 	);
 };

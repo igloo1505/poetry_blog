@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 		// backgroundColor: `${theme.palette.primary.main}cc`,
 		backgroundColor: `#fff`,
 		width: "100%",
-		padding: "0.25rem",
+		padding: "0.5rem",
 		color: "#fff",
 		boxShadow: "0px -2px 8px #bebebe",
 		color: `${theme.palette.primary.light}ff`,

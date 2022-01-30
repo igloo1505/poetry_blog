@@ -48,11 +48,28 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 		padding: "0.5rem",
-		"&:hover": {
-			backgroundColor: "rgba(255, 255, 255, 1)",
-			color: theme.palette.primary.main,
-			transition: "all 0.2s ease-in-out",
-		},
+		transition: "all 0.3s ease-in-out",
+		// "&:hover": {
+		// 	backgroundColor: "rgba(255, 255, 255, 1)",
+		// 	color: theme.palette.primary.main,
+		// 	transition: "all 0.2s ease-in-out",
+		// },
+	},
+	emHovered: {
+		color: theme.palette.primary.main,
+		backgroundColor: "rgba(255, 255, 255, 1)",
+	},
+	borderBottomDiv: {
+		width: "100%",
+		height: "2px",
+		transition: "all 0.5s ease",
+		transform: "scaleX(0)",
+		backgroundColor: theme.palette.primary.main,
+		transformOrigin: "center",
+	},
+	borderBottomDivHovered: {
+		backgroundColor: theme.palette.secondary.main,
+		transform: "scaleX(1)",
 	},
 }));
 
@@ -66,6 +83,7 @@ const Appbar = ({
 }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isAuthed, setIsAuthed] = useState(false);
+	const [emHovered, setEmHovered] = useState(false);
 	const dispatch = useDispatch();
 
 	const showNavbar = () => {
@@ -153,25 +171,99 @@ const Appbar = ({
 					</Typography>
 					<div className={styles.toolbarRight}>
 						<Link href="/">
-							<a className={styles.aTag}>Home</a>
+							<a
+								className={clsx(
+									styles.aTag,
+									emHovered === "home" && styles.emHovered
+								)}
+								onMouseEnter={() => setEmHovered("home")}
+								onMouseLeave={() => setEmHovered(null)}
+							>
+								Home
+								<div
+									className={clsx(
+										styles.borderBottomDiv,
+										emHovered === "home" && styles.borderBottomDivHovered
+									)}
+								/>
+							</a>
 						</Link>
 						<Link href={isAuthed ? "/newSubmission" : "/login"}>
-							<a className={styles.aTag}>Submit</a>
+							<a
+								className={clsx(
+									styles.aTag,
+									emHovered === "submit" && styles.emHovered
+								)}
+								onMouseEnter={() => setEmHovered("submit")}
+								onMouseLeave={() => setEmHovered(null)}
+							>
+								Submit
+								<div
+									className={clsx(
+										styles.borderBottomDiv,
+										emHovered === "submit" && styles.borderBottomDivHovered
+									)}
+								/>
+							</a>
 						</Link>
 						{isAuthed && (
 							<Link href="/myPosts">
-								<a className={styles.aTag}>My Posts</a>
+								<a
+									className={clsx(
+										styles.aTag,
+										emHovered === "myPosts" && styles.emHovered
+									)}
+									onMouseEnter={() => setEmHovered("myPosts")}
+									onMouseLeave={() => setEmHovered(null)}
+								>
+									My Posts
+									<div
+										className={clsx(
+											styles.borderBottomDiv,
+											emHovered === "myPosts" && styles.borderBottomDivHovered
+										)}
+									/>
+								</a>
 							</Link>
 						)}
 						{isAuthed ? (
 							<Link href="/">
-								<a className={styles.aTag} onClick={handleLogout}>
+								<a
+									className={clsx(
+										styles.aTag,
+										emHovered === "logout" && styles.emHovered
+									)}
+									onMouseEnter={() => setEmHovered("logout")}
+									onMouseLeave={() => setEmHovered(null)}
+									onClick={handleLogout}
+								>
 									Logout
+									<div
+										className={clsx(
+											styles.borderBottomDiv,
+											emHovered === "logout" && styles.borderBottomDivHovered
+										)}
+									/>
 								</a>
 							</Link>
 						) : (
 							<Link href="/login">
-								<a className={styles.aTag}>Login</a>
+								<a
+									className={clsx(
+										styles.aTag,
+										emHovered === "login" && styles.emHovered
+									)}
+									onMouseEnter={() => setEmHovered("login")}
+									onMouseLeave={() => setEmHovered(null)}
+								>
+									Login
+									<div
+										className={clsx(
+											styles.borderBottomDiv,
+											emHovered === "login" && styles.borderBottomDivHovered
+										)}
+									/>
+								</a>
 							</Link>
 						)}
 					</div>
