@@ -50,6 +50,35 @@ export const queryOwnSubmissions = (queryData) => async (dispatch) => {
 	}
 };
 
+export const queryAllSubmissions = (queryData) => async (dispatch) => {
+	try {
+		let res = await useAxios({
+			method: "post",
+			url: `/api/submissions/getSubmissionsByQuery`,
+			data: queryData,
+		});
+		if (res.status === 200 && res.data.success) {
+			if (res.data?.byBody?.length === 0 && res.data?.byTag?.length === 0) {
+				dispatch({
+					type: Types.QUERY_ALL_SUBMISSION_NO_RESULT,
+					payload: res.data,
+				});
+				return { success: "no result" };
+			}
+			dispatch({ type: Types.QUERY_ALL_SUBMISSION_RESULTS, payload: res.data });
+			return { success: true };
+		}
+		if (res.status === 401) {
+			dispatch({ type: Types.UNAUTHORIZED, payload: res.data });
+		}
+		if (res.status !== 200 && res.status !== 401) {
+			dispatch({ type: Types.SERVER_ERROR, payload: error });
+		}
+	} catch (error) {
+		dispatch({ type: Types.SERVER_ERROR, payload: error });
+	}
+};
+
 export const setCurrentEditing = (editingPoem) => (dispatch) => {
 	dispatch({
 		type: Types.SET_CURRENTLY_EDITING_POST,

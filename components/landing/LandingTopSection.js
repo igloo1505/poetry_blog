@@ -21,8 +21,10 @@ const LandingTopSection = ({ setEmphasizeOverlay }) => {
 	const styles = useStyles();
 	return (
 		<div className={styles.topContainer}>
-			<LandingTitle />
-			<MainSearchInput setEmphasizeOverlay={setEmphasizeOverlay} />
+			<div className={styles.content}>
+				<LandingTitle />
+				<MainSearchInput setEmphasizeOverlay={setEmphasizeOverlay} />
+			</div>
 		</div>
 	);
 };

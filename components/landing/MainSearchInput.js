@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
+import { queryAllSubmissions } from "../../state/poemActions";
 
 const useStyles = makeStyles((theme) => ({
 	mainInput: {
@@ -30,8 +31,22 @@ const useStyles = makeStyles((theme) => ({
 
 const mainSearchInputId = "main-search-input-id";
 
-const MainSearchInput = ({ setEmphasizeOverlay }) => {
+const MainSearchInput = ({
+	props: { setEmphasizeOverlay },
+	queryAllSubmissions,
+}) => {
 	const styles = useStyles();
+	const [searchQuery, setSearchQuery] = useState({
+		query: "",
+	});
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log("sending query all submissions request: ");
+		let { success } = queryAllSubmissions({ searchQuery: searchQuery.query });
+		console.log("success: ", success);
+	};
+
 	return (
 		<div className={styles.outerContainer} id={mainSearchInputId}>
 			<div className={styles.innerContainer}>
@@ -41,10 +56,26 @@ const MainSearchInput = ({ setEmphasizeOverlay }) => {
 					className={styles.mainInput}
 					onFocus={() => setEmphasizeOverlay(true)}
 					onBlur={() => setEmphasizeOverlay(false)}
+					onChange={(e) => {
+						setSearchQuery({ query: e.target.value });
+					}}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							handleSubmit(e);
+						}
+					}}
 				/>
 			</div>
 		</div>
 	);
 };
 
-export default MainSearchInput;
+const mapStateToProps = (state, props) => ({
+	user: state.user,
+	posts: state.posts,
+	props: props,
+});
+
+export default connect(mapStateToProps, { queryAllSubmissions })(
+	MainSearchInput
+);
