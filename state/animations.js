@@ -18,13 +18,13 @@ const overlayId = "hero-overlay-id";
 const imageId = "hero-image-id";
 
 export const animateLandingWithFeatured = () => {
+	console.log("animateLandingWithFeatured: ");
 	let tl = gsap.timeline();
 	tl.fromTo(
 		`#${overlayId}`,
 		{ backgroundColor: "rgba(0, 0, 0, 0)" },
 		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
 	);
-
 	tl.fromTo(
 		"#landing-page-title-text",
 		{

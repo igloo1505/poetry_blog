@@ -5,7 +5,7 @@ import clsx from "clsx";
 import gsap from "gsap";
 import { useRouter } from "next/router";
 import { Typography } from "@material-ui/core";
-import { isMobile } from "mobile-device-detect";
+
 import Image from "next/image";
 import Cookies from "cookies";
 import { autoLoginOnFirstRequest } from "../../util/autoLogin";

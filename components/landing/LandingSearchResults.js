@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		height: "100px",
 		width: "100vw",
 		zIndex: 99999,
-		height: "30vh",
+		minHeight: "30vh",
 		backgroundColor: theme.palette.primary.main,
 		scaleY: 0,
 	},
@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 		gridTemplateColumns: "repeat(3, 1fr)",
 		height: "100%",
 		gridArea: "featured",
+		gridRowGap: "0.25rem",
 	},
 	widthTwo: {
 		gridTemplateColumns: "repeat(2, 1fr)",

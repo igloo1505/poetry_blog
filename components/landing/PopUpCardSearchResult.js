@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 		opacity: 0,
 		zIndex: 99999,
 		height: "30vh",
+		// border: "1px solid red",
 	},
 	popupCardContainerIn: {
 		// boxShadow: "0px -5px 8px #bebebe",
@@ -45,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
 		gridArea: "popupCardTop",
 	},
 	bottomContainer: {
-		height: "30%",
+		// height: "30%",
 		// maxHeight: "30%",
 		backgroundColor: "#fff",
-		padding: "1rem",
+		padding: "1rem 1rem 0rem 1rem",
 		gridArea: "popupCardBottom",
 		width: "100%",
 		position: "relative",
@@ -64,12 +65,14 @@ const useStyles = makeStyles((theme) => ({
 		objectFit: "cover",
 		gridArea: "popupCardTop",
 		minHeight: "30%",
+		backgroundColor: theme.palette.primary.main,
+		border: "1px solid #e0e0e0",
 	},
 	bottomContainerNoImage: {
 		height: "100%",
 		// maxHeight: "30%",
 		backgroundColor: "#fff",
-		padding: "1rem",
+		padding: "1rem 1rem 0rem 1rem",
 		gridArea: "popupCardBottom",
 		width: "100%",
 		position: "relative",
@@ -327,16 +330,15 @@ const PopUpCardSearchResult = ({
 							</span>
 						))}
 					</div>
-				</div>
-
-				<div
-					className={clsx(
-						styles.viewButton
-						// isMobile && styles.mobileViewButton
-					)}
-					onClick={viewSingleSubmission}
-				>
-					View
+					<div
+						className={clsx(
+							styles.viewButton
+							// isMobile && styles.mobileViewButton
+						)}
+						onClick={viewSingleSubmission}
+					>
+						View
+					</div>
 				</div>
 			</div>
 		</div>

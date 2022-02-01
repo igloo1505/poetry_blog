@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 import * as Types from "../../state/Types";
-import { isMobile } from "mobile-device-detect";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";

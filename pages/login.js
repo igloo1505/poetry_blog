@@ -5,15 +5,20 @@ import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-	container: {
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "center",
-		alignItems: "center",
-		minHeight: "100vh",
-	},
-}));
+const useStyles = makeStyles(
+	(theme) => (
+		{
+			container: {
+				display: "flex",
+				flexDirection: "column",
+				justifyContent: "center",
+				alignItems: "center",
+				minHeight: "100vh",
+			},
+		},
+		{ name: "Login" }
+	)
+);
 
 const login = ({
 	user: {

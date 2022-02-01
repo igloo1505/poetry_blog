@@ -4,7 +4,7 @@ import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import * as Types from "../../state/Types";
-import { isMobile } from "mobile-device-detect";
+
 import HeroImage from "../../public/penWithCoffeeAndRoses.jpg";
 import clsx from "clsx";
 import gsap from "gsap";

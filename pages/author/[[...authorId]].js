@@ -3,7 +3,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { Typography } from "@material-ui/core";
 import clsx from "clsx";
-import { isMobile } from "mobile-device-detect";
+
 import Image from "next/image";
 import Cookies from "cookies";
 import { autoLoginOnFirstRequest } from "../../util/autoLogin";
