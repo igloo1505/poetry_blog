@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.primary.main,
 		scaleY: 0,
 	},
-	containerResult: {},
+	containerResult: {
+		height: "fit-content",
+	},
 	containerNoResult: {},
 	contentContainer: {
 		// display: "flex",
@@ -43,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 		gridTemplateColumns: "repeat(3, 1fr)",
 		height: "100%",
 		gridArea: "featured",
-		gridRowGap: "0.25rem",
+		// gridRowGap: "0.25rem",
 	},
 	widthTwo: {
 		gridTemplateColumns: "repeat(2, 1fr)",

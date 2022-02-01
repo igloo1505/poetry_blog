@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
 	container: {},
 	containerNoResult: {},
 	containerWithResult: {},
+	contentContainer: {
+		paddingBottom: "1rem",
+	},
 }));
 const LandingBottomSection = ({
 	posts: {

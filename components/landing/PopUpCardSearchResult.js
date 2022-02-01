@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
 	popupCardContainer: {
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "center",
+		justifyContent: "space-between",
 		alignItems: "center",
 		gridTemplateAreas: '"popupCardTop" "popupCardBottom"',
 		opacity: 0,
 		zIndex: 99999,
 		height: "30vh",
+		overflow: "hidden",
 		// border: "1px solid red",
 	},
 	popupCardContainerIn: {
@@ -49,22 +50,27 @@ const useStyles = makeStyles((theme) => ({
 		// height: "30%",
 		// maxHeight: "30%",
 		backgroundColor: "#fff",
-		padding: "1rem 1rem 0rem 1rem",
+		padding: "1rem 0rem 0rem 0rem",
 		gridArea: "popupCardBottom",
 		width: "100%",
 		position: "relative",
 		flexGrow: 1,
 		height: "100%",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "space-between",
 	},
 	topContainerNoImage: {
 		position: "relative",
+		top: 0,
+		zIndex: 99,
 		// height: "70%",
 		height: "fit-content",
 		maxHeight: "70%",
 		width: "100%",
 		objectFit: "cover",
 		gridArea: "popupCardTop",
-		minHeight: "30%",
+		// minHeight: "30%",
 		backgroundColor: theme.palette.primary.main,
 		border: "1px solid #e0e0e0",
 	},
@@ -72,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		// maxHeight: "30%",
 		backgroundColor: "#fff",
-		padding: "1rem 1rem 0rem 1rem",
+		padding: "1rem 0rem 0rem 0rem",
 		gridArea: "popupCardBottom",
 		width: "100%",
 		position: "relative",
@@ -81,8 +87,8 @@ const useStyles = makeStyles((theme) => ({
 	viewButton: {
 		position: "absolute",
 		bottom: "0",
-		left: "50%",
-		transform: "translateX(-50%)",
+		// left: "50%",
+		// transform: "translateX(-50%)",
 		// backgroundColor: `${theme.palette.primary.main}cc`,
 		backgroundColor: `#fff`,
 		width: "100%",
@@ -91,13 +97,16 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: "0px -2px 8px #bebebe",
 		color: `${theme.palette.primary.light}ff`,
 		backgroundColor: theme.palette.primary.main,
+		// background: "linear-gradient(145deg, #6272cd, #5360ad)",
+		// boxShadow: "9px 9px 17px #4e5ba3, -9px -9px 17px #6a7bdd",
+		border: `1px solid ${theme.palette.primary.light}`,
 		color: `#fff`,
 		textAlign: "center",
 		transition: "all 0.3s ease-in-out",
 		"&:hover": {
 			color: `#fff`,
-			backgroundColor: theme.palette.primary.dark,
-			boxShadow: "0px -1px 4px #bebebe",
+			background: theme.palette.primary.dark,
+			// boxShadow: "0px -1px 4px #bebebe",
 			cursor: "pointer",
 		},
 	},
@@ -112,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
 	imageOverlayDiv: {
 		width: "100%",
 		height: "100%",
+		minHeight: "30%",
 		zIndex: 1,
 		transition: "all 0.5s ease-in-out",
 		padding: "0.5rem 0",
@@ -130,8 +140,9 @@ const useStyles = makeStyles((theme) => ({
 		position: "relative",
 		top: "8px",
 		left: "8px",
-		maxWidth: "50%",
-		width: "50%",
+		// maxWidth: "50%",
+		// width: "50%",
+		width: "100%",
 		height: "100%",
 		textAlign: "left",
 		padding: "0.5rem",
@@ -153,8 +164,8 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.primary.main,
 	},
 	titleTextContainerBorderLeft: {
-		transform: "rotate(90deg) translate(50%, 35px)",
-		width: "70px",
+		transform: "rotate(90deg) translate(50%, 15px)",
+		width: "30px",
 		height: "2px",
 		position: "absolute",
 		transition: "all 0.3s ease-in-out",
@@ -162,8 +173,8 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	titleTextContainerBorderLeftEmphasize: {
-		transform: "rotate(90deg) translate(50%, 38px)",
-		width: "76px",
+		transform: "rotate(90deg) translate(50%, 25px)",
+		width: "50px",
 		height: "4px",
 		position: "absolute",
 		backgroundColor: theme.palette.secondary.main,
@@ -204,16 +215,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 	bodyText: {
 		flexGrow: 1,
-		height: "100%",
+		// height: "100%",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "flex-start",
 		gap: "0.35rem",
+		overflow: "hidden",
+		// position: "absolute",
+		// left: "50%",
+		// transform: "translateX(-50%)",
 	},
 	bodyTextContainer: {
 		flexGrow: 1,
-		height: "100%",
+		// height: "100%",
 	},
 }));
 
@@ -230,9 +245,30 @@ const PopUpCardSearchResult = ({
 	isFeatured,
 }) => {
 	let cardAnimateClass = isFeatured ? "pop-up-card-featured" : "pop-up-card";
+	const topContainerId = `top-container-${_index}`;
 	console.log("submission: ", submission);
 	const styles = useStyles();
 	const router = useRouter();
+	// const [bodyTextStyles, setBodyTextStyles] = useState({});
+	const [additionalStyles, setAdditionalStyles] = useState({});
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			let emHeight = document
+				.getElementById(topContainerId)
+				.getBoundingClientRect().height;
+			console.log("emHeight: ", emHeight);
+			setAdditionalStyles({
+				...additionalStyles,
+				bodyText: {
+					top: `${emHeight + 8}px`,
+				},
+				// imageOverlay: {
+				// 	height: `${emHeight}px`,
+				// },
+			});
+		}
+	}, []);
+
 	const [animatedIn, setAnimatedIn] = useState(true);
 	const handleCardClick = () => {
 		// console.log("Clicked", featuredImage);
@@ -263,12 +299,15 @@ const PopUpCardSearchResult = ({
 					!featuredImage && styles.topContainerNoImage,
 					"popup-card-top-container-animated"
 				)}
+				id={topContainerId}
+				onClick={viewSingleSubmission}
 			>
 				<div
 					className={clsx(
 						styles.imageOverlayDiv,
 						emphasizeOverlay && styles.imageOverlayDark
 					)}
+					style={additionalStyles.imageOverlay}
 				>
 					{featuredImage && (
 						<Image
@@ -323,23 +362,23 @@ const PopUpCardSearchResult = ({
 				)}
 			>
 				<div className={styles.bodyTextContainer}>
-					<div className={styles.bodyText}>
+					<div className={styles.bodyText} style={additionalStyles.bodyText}>
 						{submission.body.split(/\r?\n/).map((t, i) => (
 							<span key={`text-${i}`} className={styles.bodyTextSpan}>
 								{t}
 							</span>
 						))}
 					</div>
-					<div
-						className={clsx(
-							styles.viewButton
-							// isMobile && styles.mobileViewButton
-						)}
-						onClick={viewSingleSubmission}
-					>
-						View
-					</div>
 				</div>
+			</div>
+			<div
+				className={clsx(
+					styles.viewButton
+					// isMobile && styles.mobileViewButton
+				)}
+				onClick={viewSingleSubmission}
+			>
+				View
 			</div>
 		</div>
 	);

@@ -63,28 +63,7 @@ export const animateLandingWithFeatured = () => {
 		},
 		">-=0.3"
 	);
-	// tl.fromTo(
-	// 	`.popup-card-image-animated`,
-	// 	{
-	// 		scaleY: 0,
-	// 		opacity: 0.0,
-	// 		transformOrigin: "top center",
-	// 	},
-	// 	{
-	// 		scaleY: 1,
-	// 		opacity: 1,
-	// 		duration: 0.5,
-	// 		// onComplete: () => {
-	// 		// 	if (!isMobile) {
-	// 		// 		dispatch({
-	// 		// 			type: Types.SET_NAVBAR_HIDDEN,
-	// 		// 			payload: true,
-	// 		// 		});
-	// 		// 	}
-	// 		// },
-	// 		stagger: 0.1,
-	// 	}
-	// );
+
 	tl.fromTo(
 		`.popup-card-container-animated`,
 		{
@@ -95,6 +74,7 @@ export const animateLandingWithFeatured = () => {
 		{
 			transform: "translateY(0)",
 			opacity: 1,
+			visibility: "visible",
 			duration: 1,
 			// ease: "back.out(1.7)",
 			ease: "elastic.out(1, 0.7)",
@@ -204,11 +184,11 @@ export const animateSearchResult = () => {
 			`.${popUpCardSearchResultClass}`,
 			{
 				opacity: 0,
-				scale: 0,
 				x: "100vw",
 			},
 			{
 				opacity: 1,
+				visibility: "visible",
 				x: 0,
 				stagger: 0.2,
 				scale: 1,
@@ -334,7 +314,11 @@ export const animateSearchReset = () => {
 	);
 
 	// animateLandingWithFeatured();
-
+	tl.to(`.${popUpCardSearchResultClass}`, {
+		visibility: "hidden",
+		scaleY: 1,
+		duration: 0,
+	});
 	store.dispatch({
 		type: Types.CLEAR_ALL_QUERY_RESULTS,
 	});

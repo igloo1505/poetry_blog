@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
 	popupCardContainer: {
+		visibility: "hidden",
+		opacity: 0,
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
@@ -171,7 +173,9 @@ const useStyles = makeStyles((theme) => ({
 	bodyTextSpan: {
 		display: "block",
 	},
-	bodyText: {},
+	bodyText: {
+		overflow: "hidden",
+	},
 	bodyTextContainer: {},
 }));
 
