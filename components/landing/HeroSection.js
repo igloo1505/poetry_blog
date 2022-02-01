@@ -85,7 +85,7 @@ const HeroSection = ({
 	useEffect(() => {
 		// setTimeout(() => {
 		// }, overlayTimeout);
-		if (shouldAnimateLandingEntrance) {
+		if (shouldAnimateLandingEntrance && !hasSearchResults) {
 			animateLandingWithFeatured();
 		}
 	}, [shouldAnimateLandingEntrance]);

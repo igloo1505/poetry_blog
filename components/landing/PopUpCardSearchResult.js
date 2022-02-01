@@ -138,8 +138,8 @@ const useStyles = makeStyles((theme) => ({
 	titleTextContainer: {
 		// position: "absolute",
 		position: "relative",
-		top: "8px",
-		left: "8px",
+		// top: "8px",
+		// left: "8px",
 		// maxWidth: "50%",
 		// width: "50%",
 		width: "100%",

@@ -293,6 +293,7 @@ export const animateSearchReset = () => {
 		// ease: "elastic.out(1, 0.7)",
 		ease: "power3.inOut",
 	});
+
 	tl.fromTo(
 		`.${featuredCardClass}`,
 		{
