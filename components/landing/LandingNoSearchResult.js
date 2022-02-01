@@ -5,10 +5,11 @@ import { gsap } from "gsap";
 import clsx from "clsx";
 import PopupCard from "./popupCard";
 import { Typography } from "@material-ui/core";
+import { animateSearchNoResult } from "../../state/animations";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
-		display: "none",
+		// display: "none",
 		opacity: 0,
 		position: "absolute",
 		top: "70vh",
@@ -46,7 +47,12 @@ const LandingBottomSectionNoResult = ({
 	},
 }) => {
 	const styles = useStyles();
-	const [indexHovered, setIndexHovered] = useState(-1);
+	useEffect(() => {
+		if (noResult && !Boolean(byTag?.length > 0 || byBody?.length > 0)) {
+			animateSearchNoResult();
+		}
+	}, [noResult, byTag, byBody]);
+
 	return (
 		<div
 			className={clsx(

@@ -95,9 +95,7 @@ const formReducer = createReducer(initialState, (builder) => {
 		};
 	});
 	builder.addCase(Types.QUERY_ALL_SUBMISSION_NO_RESULT, (state, action) => {
-		setTimeout(() => {
-			animateSearchNoResult();
-		}, 300);
+		// animateSearchNoResult();
 		return {
 			...state,
 			filteredAllPosts: {
@@ -109,9 +107,9 @@ const formReducer = createReducer(initialState, (builder) => {
 	});
 
 	builder.addCase(Types.CLEAR_ALL_QUERY_RESULTS, (state, action) => {
-		setTimeout(() => {
-			animateSearchReset();
-		}, 300);
+		// setTimeout(() => {
+		// 	animateSearchReset();
+		// }, 300);
 		return {
 			...state,
 			filteredAllPosts: initialState.filteredAllPosts,

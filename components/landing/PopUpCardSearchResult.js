@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 		gridTemplateAreas: '"popupCardTop" "popupCardBottom"',
-		transform: "translateY(100%)",
+		// width: "33vw",
+		// transform: "translateY(100%)",
 		// transform: "scaleY(0)",
 		// opacity: 0,
 	},
@@ -175,7 +176,7 @@ const useStyles = makeStyles((theme) => ({
 	bodyTextContainer: {},
 }));
 
-const PopupCard = ({
+const PopUpCardSearchResult = ({
 	submission,
 	featuredImage,
 	_index,
@@ -196,7 +197,6 @@ const PopupCard = ({
 		console.log("Clicked", featuredImage);
 	};
 	const viewSingleSubmission = () => {
-		console.log("Clicked", featuredImage);
 		router.push(`/post/${submission._id}`);
 	};
 	console.log("textColor: ", textColor);
@@ -278,7 +278,7 @@ const PopupCard = ({
 				<div className={styles.bodyTextContainer}>
 					<div className={styles.bodyText}>
 						{submission.body.split(/\r?\n/).map((t, i) => (
-							<span key={`text-${i}`} className={styles.bodyTextSpan}>
+							<span key={`text-i`} className={styles.bodyTextSpan}>
 								{t}
 							</span>
 						))}
@@ -298,4 +298,9 @@ const PopupCard = ({
 	);
 };
 
-export default PopupCard;
+const mapStateToProps = (state, props) => ({
+	posts: state.posts,
+	props: props,
+});
+
+export default connect(mapStateToProps)(PopUpCardSearchResult);

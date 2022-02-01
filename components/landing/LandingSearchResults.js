@@ -3,7 +3,8 @@ import { connect, useDispatch } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
 import clsx from "clsx";
-import PopupCard from "./popupCard";
+import PopupCard from "./PopUpCardSearchResult";
+import { animateSearchResult } from "../../state/animations";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -15,11 +16,30 @@ const useStyles = makeStyles((theme) => ({
 		height: "100px",
 		width: "100vw",
 		zIndex: 99999,
+		height: "30vh",
 		backgroundColor: theme.palette.primary.main,
 	},
 	containerResult: {},
 	containerNoResult: {},
-	contentContainer: {},
+	contentContainer: {
+		// display: "flex",
+		// justifyContent: "center",
+		// alignItems: "center",
+		// flexWrap: "wrap",
+		height: "100%  ",
+		gap: "0rem",
+		width: "100vw",
+		display: "grid",
+		gridTemplateColumns: "repeat(3, 1fr)",
+		height: "100%",
+		gridArea: "featured",
+	},
+	widthTwo: {
+		gridTemplateColumns: "repeat(2, 1fr)",
+	},
+	widthOne: {
+		gridTemplateColumns: "repeat(1, 1fr)",
+	},
 	contentContainerNoResult: {},
 	contentContainerResult: {},
 }));
@@ -32,6 +52,12 @@ const LandingSearchResults = ({
 }) => {
 	const styles = useStyles();
 	const [indexHovered, setIndexHovered] = useState(-1);
+	useEffect(() => {
+		if (shouldDisplay && Boolean(byTag?.length > 0 || byBody?.length > 0)) {
+			animateSearchResult();
+		}
+	}, [noResult, byTag, byBody]);
+
 	return (
 		<div
 			className={clsx(
@@ -60,7 +86,6 @@ const LandingSearchResults = ({
 								// )}
 								emphasizeOverlay={index === indexHovered}
 								isFeatured={false}
-								// featuredImage={images[index + 1].image}
 								textColor={"dark"}
 								_index={index}
 								indexHovered={indexHovered}

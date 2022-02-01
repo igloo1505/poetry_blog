@@ -4,9 +4,17 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
+	overflow: hidden;
+	max-height: 100vh;
+	position: absolute;
 	@media screen and (min-width: 768px) {
 		padding: 0 2rem;
 	}
+}
+
+.overflowVisibile {
+	overflow: visible !important;
+	max-height: unset;
 }
 
 .main {

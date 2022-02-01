@@ -37,28 +37,28 @@ export const animateSearchResult = () => {
 };
 
 export const animateSearchNoResult = () => {
-	console.log(animateSearchNoResult);
+	console.log("animateSearchNoResult");
 	if (typeof window !== "undefined") {
 		let tl = gsap.timeline();
-		// tl.fromTo(
-		// 	`.${featuredCardClass}`,
-		// 	{
-		// 		opacity: 1,
-		// 	},
-		// 	{
-		// 		opacity: 0,
-		// 		ease: "power3.inOut",
-		// 	}
-		// );
+		gsap.to(`.${searchNoResultContainerClass}`, {
+			display: "flex",
+			flexDirection: "row",
+			flexWrap: "wrap",
+			opacity: 1,
+			duration: 0,
+			immediateRender: true,
+		});
+
 		tl.to(`.${featuredCardClass}`, {
 			opacity: 0,
 			ease: "power3.inOut",
 		});
+
 		tl.fromTo(
 			`.${searchNoResultContainerClass}`,
 			{
 				opacity: 0,
-				x: "100vw",
+				y: "100%",
 				display: "flex",
 				flexDirection: "row",
 				flexWrap: "wrap",
@@ -66,12 +66,12 @@ export const animateSearchNoResult = () => {
 			},
 			{
 				opacity: 1,
-				x: 0,
+				y: 0,
 				display: "flex",
 				flexDirection: "row",
 				flexWrap: "wrap",
-				duration: 1,
-				ease: "power3.inOut",
+				duration: 0.5,
+				ease: "elastic.out(1, 0.7)",
 			}
 		);
 		// tl.fromTo(
