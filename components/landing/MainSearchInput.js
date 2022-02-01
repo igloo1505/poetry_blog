@@ -3,6 +3,12 @@ import { connect, useDispatch } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
 import { queryAllSubmissions } from "../../state/poemActions";
+import { Typography } from "@material-ui/core";
+import clsx from "clsx";
+import * as Types from "../../state/Types";
+import { animateSearchReset } from "../../state/animations";
+
+const clearButtonId = "landingSearchClearButton";
 
 const useStyles = makeStyles((theme) => ({
 	mainInput: {
@@ -26,6 +32,52 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 9999,
 		transform: "translateY(-100px)",
 		opacity: 0,
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	clearButtonContainer: {
+		padding: "0.5rem 1rem",
+		width: "fit-content",
+		margin: "1rem",
+		borderRadius: "10px",
+		backgroundColor: theme.palette.primary.main,
+		transition: "all 0.3s ease-in-out",
+		boxShadow: "10px 10px 16px #777674, -10px -10px 16px #a1a09e",
+		visibility: "hidden",
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+		// opacity: 0,
+		transform: "scale(0)",
+		"&:hover": {
+			cursor: "pointer",
+			// boxShadow: "5px 5px 8px #bebebe, -5px -5px 8px #ffffff",
+			boxShadow: "5px 5px 10px #777674, -5px -5px 10px #a1a09e",
+			backgroundColor: theme.palette.primary.dark,
+		},
+	},
+	clearButtonContainerHovered: {
+		cursor: "pointer",
+		boxShadow: "5px 5px 10px #777674, -5px -5px 10px #a1a09e",
+		backgroundColor: theme.palette.primary.dark,
+	},
+	clearButtonText: {
+		fontSize: "1.5rem",
+		color: "#fff",
+	},
+	clearButtonUnderline: {
+		width: "100%",
+		height: "2px",
+		backgroundColor: theme.palette.secondary.main,
+		transform: "scaleX(0)",
+		transformOrigin: "center",
+		transition: "all 0.3s ease-in-out",
+	},
+	clearButtonUnderlineHovered: {
+		transform: "scaleX(1)",
 	},
 }));
 
@@ -36,6 +88,8 @@ const MainSearchInput = ({
 	queryAllSubmissions,
 }) => {
 	const styles = useStyles();
+	const dispatch = useDispatch();
+	const [clearButtonHovered, setClearButtonHovered] = useState(false);
 	const [searchQuery, setSearchQuery] = useState({
 		query: "",
 	});
@@ -45,6 +99,11 @@ const MainSearchInput = ({
 		console.log("sending query all submissions request: ");
 		let { success } = queryAllSubmissions({ searchQuery: searchQuery.query });
 		console.log("success: ", success);
+	};
+
+	const clearSearchResults = (e) => {
+		e.preventDefault();
+		animateSearchReset();
 	};
 
 	return (
@@ -65,6 +124,32 @@ const MainSearchInput = ({
 						}
 					}}
 				/>
+			</div>
+			<div
+				className={clsx(
+					styles.clearButtonContainer,
+					clearButtonHovered && styles.clearButtonContainerHovered
+				)}
+				onMouseEnter={() => setClearButtonHovered(true)}
+				onMouseLeave={() => setClearButtonHovered(false)}
+				id={clearButtonId}
+				onClick={clearSearchResults}
+			>
+				<a className={styles.clearButtonATag}>
+					<Typography
+						component="h1"
+						variant="h5"
+						className={styles.clearButtonText}
+					>
+						Clear
+					</Typography>
+					<div
+						className={clsx(
+							styles.clearButtonUnderline,
+							clearButtonHovered && styles.clearButtonUnderlineHovered
+						)}
+					/>
+				</a>
 			</div>
 		</div>
 	);

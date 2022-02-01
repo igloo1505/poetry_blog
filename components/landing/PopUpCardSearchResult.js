@@ -197,10 +197,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 	bodyTextSpan: {
 		display: "block",
+		textAlign: "center",
 	},
 	bodyText: {
 		flexGrow: 1,
 		height: "100%",
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent: "flex-start",
+		gap: "0.35rem",
 	},
 	bodyTextContainer: {
 		flexGrow: 1,
