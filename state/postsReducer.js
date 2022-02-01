@@ -1,6 +1,11 @@
 import * as Types from "./Types";
 import store from "./store";
 import { createReducer } from "@reduxjs/toolkit";
+import {
+	animateSearchResult,
+	animateSearchNoResult,
+	animateSearchReset,
+} from "./animations";
 
 const replaceEverywhere = (updatedPost, state) => {
 	Object.keys(state).forEach((key) => {
@@ -51,6 +56,9 @@ const formReducer = createReducer(initialState, (builder) => {
 	});
 
 	builder.addCase(Types.QUERY_ALL_SUBMISSION_RESULTS, (state, action) => {
+		setTimeout(() => {
+			animateSearchResult();
+		}, 300);
 		return {
 			...state,
 			filteredAllPosts: action.payload,
@@ -87,6 +95,9 @@ const formReducer = createReducer(initialState, (builder) => {
 		};
 	});
 	builder.addCase(Types.QUERY_ALL_SUBMISSION_NO_RESULT, (state, action) => {
+		setTimeout(() => {
+			animateSearchNoResult();
+		}, 300);
 		return {
 			...state,
 			filteredAllPosts: {
@@ -98,6 +109,9 @@ const formReducer = createReducer(initialState, (builder) => {
 	});
 
 	builder.addCase(Types.CLEAR_ALL_QUERY_RESULTS, (state, action) => {
+		setTimeout(() => {
+			animateSearchReset();
+		}, 300);
 		return {
 			...state,
 			filteredAllPosts: initialState.filteredAllPosts,

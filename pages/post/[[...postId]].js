@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
-import { Typography } from "@material-ui/core";
 import clsx from "clsx";
+import gsap from "gsap";
+import { useRouter } from "next/router";
+import { Typography } from "@material-ui/core";
 import { isMobile } from "mobile-device-detect";
 import Image from "next/image";
 import Cookies from "cookies";
-import gsap from "gsap";
 import { autoLoginOnFirstRequest } from "../../util/autoLogin";
 import Submission from "../../models/Submission";
-import { useRouter } from "next/router";
 import mongoose from "mongoose";
 
 const byPostTitleDivId = "by-post-title-div-id-animated";
@@ -204,7 +204,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
 
 const animateEntrance = () => {
 	let tl = gsap.timeline();
-
 	tl.fromTo(
 		`#${byPostTitleDivId}`,
 		{

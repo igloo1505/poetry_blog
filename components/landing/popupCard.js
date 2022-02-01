@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 		// backgroundColor: `${theme.palette.primary.main}cc`,
 		backgroundColor: `#fff`,
 		width: "100%",
-		padding: "0.5rem",
+		padding: "1rem",
 		color: "#fff",
 		boxShadow: "0px -2px 8px #bebebe",
 		color: `${theme.palette.primary.light}ff`,
@@ -76,10 +76,8 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	mobileViewButton: {
-		// color: `${theme.palette.primary.main}ff`,
 		backgroundColor: "#fff",
 		boxShadow: "0px -2px 8px #bebebe",
-		// boxShadow: `0px -5px 8px ${theme.palette.primary.main}`,
 	},
 
 	image: {
@@ -121,11 +119,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	titleTextContainerBorderTopEmphasize: {
 		height: "4px",
+		width: "150px",
 		backgroundColor: theme.palette.primary.main,
 	},
 	titleTextContainerBorderLeft: {
-		transform: "rotate(90deg) translate(50%, 50px)",
-		width: "100px",
+		transform: "rotate(90deg) translate(50%, 35px)",
+		width: "70px",
 		height: "2px",
 		position: "absolute",
 		transition: "all 0.3s ease-in-out",
@@ -133,8 +132,8 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	titleTextContainerBorderLeftEmphasize: {
-		transform: "rotate(90deg) translate(50%, 50px)",
-		width: "100px",
+		transform: "rotate(90deg) translate(50%, 55px)",
+		width: "110px",
 		height: "4px",
 		position: "absolute",
 		backgroundColor: theme.palette.secondary.main,
@@ -186,7 +185,9 @@ const PopupCard = ({
 	textColor,
 	indexHovered,
 	setIndexHovered,
+	isFeatured,
 }) => {
+	let cardAnimateClass = isFeatured ? "pop-up-card-featured" : "pop-up-card";
 	console.log("submission: ", submission);
 	const styles = useStyles();
 	const router = useRouter();
@@ -204,6 +205,7 @@ const PopupCard = ({
 			className={clsx(
 				styles.popupCardContainer,
 				"popup-card-container-animated",
+				cardAnimateClass,
 				animatedIn && styles.popupCardContainerIn
 			)}
 			onClick={handleCardClick}
@@ -222,19 +224,21 @@ const PopupCard = ({
 						emphasizeOverlay && styles.imageOverlayDark
 					)}
 				>
-					<Image
-						src={featuredImage}
-						alt="Featured Image"
-						layout="fill"
-						objectFit="cover"
-						className={clsx(styles.image, "popup-card-image-animated")}
-						id={`imageId-${_index}`}
-						onLoad={() => {
-							if (!shouldAnimateLandingEntrance) {
-								setShouldAnimateLandingEntrance(true);
-							}
-						}}
-					/>
+					{featuredImage && (
+						<Image
+							src={featuredImage}
+							alt="Featured Image"
+							layout="fill"
+							objectFit="cover"
+							className={clsx(styles.image, "popup-card-image-animated")}
+							id={`imageId-${_index}`}
+							onLoad={() => {
+								if (!shouldAnimateLandingEntrance) {
+									setShouldAnimateLandingEntrance(true);
+								}
+							}}
+						/>
+					)}
 					<div className={styles.titleTextContainer}>
 						<div
 							className={clsx(

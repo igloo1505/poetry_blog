@@ -6,6 +6,7 @@ import FeaturedImage_A from "../../public/pagesFoldedHeart.jpg";
 import FeaturedImage_B from "../../public/clutteredOldDesk.jpg";
 // import FeaturedImage_C from "../../public/girlReadingOutside.jpg";
 import FeaturedImage_C from "../../public/lonelyDudeWithARose.jpg";
+import { animateSearchResult } from "../../state/animations";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -33,14 +34,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PopupCardSection = ({
-	poemCardArray,
-	shouldAnimateLandingEntrance,
-	setShouldAnimateLandingEntrance,
-	emphasizeOverlay,
-	indexHovered,
-	setIndexHovered,
+	props: {
+		poemCardArray,
+		shouldAnimateLandingEntrance,
+		setShouldAnimateLandingEntrance,
+		emphasizeOverlay,
+		indexHovered,
+		setIndexHovered,
+	},
+	posts: {
+		filteredAllPosts: { noResult, byTag, byBody },
+	},
 }) => {
 	console.log("poemCardArray: ", poemCardArray);
+
 	const styles = useStyles();
 	let images = {
 		1: {
@@ -68,6 +75,7 @@ const PopupCardSection = ({
 								emphasizeOverlay={Boolean(
 									emphasizeOverlay || index === indexHovered
 								)}
+								isFeatured={true}
 								key={`pop-up-featured-card-${index}`}
 								featuredImage={images[index + 1].image}
 								textColor={images[index + 1].textColor}
@@ -87,7 +95,12 @@ const PopupCardSection = ({
 	);
 };
 
-export default PopupCardSection;
+const mapStateToProps = (state, props) => ({
+	posts: state.posts,
+	props: props,
+});
+
+export default connect(mapStateToProps)(PopupCardSection);
 
 const useFooterStyles = makeStyles((theme) => ({
 	footer: {

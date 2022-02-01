@@ -7,6 +7,9 @@ import User from "../../../models/User";
 import Submission from "../../../models/Submission";
 import colors from "colors";
 
+// TODO: QUERY BY TITLE AS WELL AS BY BODY AND BY TAG AND CONCAT ON BACKEND.
+// RESPOND WITH APPROPRIATE NUMBER OF POSTS DIRECTLY, AND ADD KEY TO INDICATE QUERY METHOD.
+
 const handler = nc();
 
 handler.post(async (req, res) => {

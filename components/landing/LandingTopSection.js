@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 	},
+	content: {},
 }));
 
 const LandingTopSection = ({ setEmphasizeOverlay }) => {

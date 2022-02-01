@@ -7,11 +7,17 @@ import { autoLoginOnFirstRequest } from "../util/autoLogin";
 import Cookies from "cookies";
 import mongoose from "mongoose";
 import Submission from "../models/Submission";
+import LandingBottomSection from "../components/landing/LandingBottomSection";
+import { connect } from "react-redux";
 
-export default function Home({ latestSubmissions }) {
+const Home = ({
+	latestSubmissions,
+	posts: {
+		filteredAllPosts: { noResult, byTag, byBody },
+	},
+}) => {
 	const [poemCardArray, setPoemCardArray] = useState([]);
 	useEffect(() => {
-		console.log("latestSubmissions: ", latestSubmissions);
 		if (latestSubmissions.length > 0) {
 			setPoemCardArray(latestSubmissions.slice(0, 3));
 		}
@@ -25,9 +31,17 @@ export default function Home({ latestSubmissions }) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<HeroSection poemCardArray={poemCardArray} />
+			<LandingBottomSection poemCardArray={poemCardArray} />
 		</div>
 	);
-}
+};
+
+const mapStateToProps = (state, props) => ({
+	posts: state.posts,
+	props: props,
+});
+
+export default connect(mapStateToProps)(Home);
 
 export const getServerSideProps = async (ctx) => {
 	// let _user = await autoLoginOnFirstRequest(ctx.req, ctx.res);
