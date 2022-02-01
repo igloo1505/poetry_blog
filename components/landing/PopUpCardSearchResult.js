@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 		gridTemplateAreas: '"popupCardTop" "popupCardBottom"',
+		opacity: 0,
+		zIndex: 99999,
 		// width: "33vw",
 		// transform: "translateY(100%)",
 		// transform: "scaleY(0)",
@@ -46,7 +48,27 @@ const useStyles = makeStyles((theme) => ({
 	},
 	bottomContainer: {
 		height: "30%",
-		maxHeight: "30%",
+		// maxHeight: "30%",
+		backgroundColor: "#fff",
+		padding: "1rem",
+		gridArea: "popupCardBottom",
+		width: "100%",
+		position: "relative",
+		flexGrow: 1,
+		height: "100%",
+	},
+	topContainerNoImage: {
+		position: "relative",
+		// height: "70%",
+		height: "fit-content",
+		maxHeight: "70%",
+		width: "100%",
+		objectFit: "cover",
+		gridArea: "popupCardTop",
+	},
+	bottomContainerNoImage: {
+		height: "100%",
+		// maxHeight: "30%",
 		backgroundColor: "#fff",
 		padding: "1rem",
 		gridArea: "popupCardBottom",
@@ -100,13 +122,16 @@ const useStyles = makeStyles((theme) => ({
 		// 	"linear-gradient (135deg, rgba (0,0,0,1) 30%, rgba (0,0,0,0.2) 100%) ",
 	},
 	titleTextContainer: {
-		position: "absolute",
+		// position: "absolute",
+		position: "relative",
 		top: "8px",
 		left: "8px",
 		maxWidth: "50%",
 		width: "50%",
 		height: "100%",
 		textAlign: "left",
+		padding: "0.5rem",
+		// top: "0",
 	},
 	titleTextContainerInner: {
 		padding: "0.5rem",
@@ -172,8 +197,14 @@ const useStyles = makeStyles((theme) => ({
 	bodyTextSpan: {
 		display: "block",
 	},
-	bodyText: {},
-	bodyTextContainer: {},
+	bodyText: {
+		flexGrow: 1,
+		height: "100%",
+	},
+	bodyTextContainer: {
+		flexGrow: 1,
+		height: "100%",
+	},
 }));
 
 const PopUpCardSearchResult = ({
@@ -199,22 +230,25 @@ const PopUpCardSearchResult = ({
 	const viewSingleSubmission = () => {
 		router.push(`/post/${submission._id}`);
 	};
-	console.log("textColor: ", textColor);
 	return (
 		<div
 			className={clsx(
 				styles.popupCardContainer,
-				"popup-card-container-animated",
+				"popup-card-container-animated-searchResult",
 				cardAnimateClass,
 				animatedIn && styles.popupCardContainerIn
 			)}
 			onClick={handleCardClick}
-			onMouseEnter={() => setIndexHovered(_index)}
+			onMouseEnter={() => {
+				console.log("Setting index", _index);
+				setIndexHovered(_index);
+			}}
 			onMouseLeave={() => setIndexHovered(-1)}
 		>
 			<div
 				className={clsx(
 					styles.topContainer,
+					!featuredImage && styles.topContainerNoImage,
 					"popup-card-top-container-animated"
 				)}
 			>
@@ -272,6 +306,7 @@ const PopUpCardSearchResult = ({
 			<div
 				className={clsx(
 					styles.bottomContainer,
+					!featuredImage && styles.bottomContainerNoImage,
 					"popup-card-bottom-container-animated"
 				)}
 			>

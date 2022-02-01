@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		left: "0",
 		height: "100px",
 		width: "100vw",
-		zIndex: 99999,
+		// zIndex: 99999,
 		height: "30vh",
 		backgroundColor: theme.palette.primary.main,
 	},
@@ -57,6 +57,9 @@ const LandingSearchResults = ({
 			animateSearchResult();
 		}
 	}, [noResult, byTag, byBody]);
+	useEffect(() => {
+		console.log("indexHovered: ", indexHovered);
+	}, [indexHovered]);
 
 	return (
 		<div
