@@ -93,6 +93,7 @@ const Appbar = ({
 		});
 	};
 	const hideNavbar = () => {
+		console.log("navbarHidden: ", navbarHidden);
 		if (!navbarHidden && !isMobile) {
 			dispatch({
 				type: Types.RESET_NAVBAR_HIDDEN,

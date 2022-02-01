@@ -141,7 +141,7 @@ const byPostId = ({ specificPost }) => {
 			<div className={styles.byPostIdBodyContainer}>
 				{specificPost.body.split(/\r?\n/).map((t, i) => (
 					<span
-						key={`text-i`}
+						key={`text-${i}`}
 						className={clsx(styles.byPostIdBodySpan, bodySpanId)}
 					>
 						{t}
@@ -161,6 +161,8 @@ const mapStateToProps = (state, props) => ({
 export default connect(mapStateToProps)(byPostId);
 
 export const getServerSideProps = async ({ req, res, query }) => {
+	console.log("query: ", query);
+	console.log("Did run in /post/:id");
 	let cookies = new Cookies(req, res);
 	let specificPost = false;
 	if (query.postId) {

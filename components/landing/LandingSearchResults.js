@@ -8,14 +8,24 @@ import { animateSearchResult } from "../../state/animations";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
-		display: "none",
+		// display: "none",
+		// opacity: 0,
+		// position: "absolute",
+		// left: "0",
+		// height: "100px",
+		// width: "100vw",
+		// // zIndex: 99999,
+		// backgroundColor: theme.palette.primary.main,
+		// top: "70vh",
+		// height: "30vh",
+
 		opacity: 0,
 		position: "absolute",
 		top: "70vh",
 		left: "0",
 		height: "100px",
 		width: "100vw",
-		// zIndex: 99999,
+		zIndex: 99999,
 		height: "30vh",
 		backgroundColor: theme.palette.primary.main,
 	},

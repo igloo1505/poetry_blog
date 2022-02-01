@@ -16,11 +16,12 @@ handler.post(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
-		let { searchQuery, userId } = req.body;
+		let { searchQuery, userId, byUser } = req.body;
+		if (!byUser) byUser = false;
 		let _userId = cookies.get("userId") || userId;
 		console.log("userId: from cookies", _userId);
 		const user = await User.findById(_userId);
-		if (!user) {
+		if (!user && byUser) {
 			return res.status(401).json({ msg: "Unauthorized.", success: false });
 		}
 		let bodyQuery = {

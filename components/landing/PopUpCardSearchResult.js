@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { isMobile } from "mobile-device-detect";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { Link } from "next/link";
 
 const useStyles = makeStyles((theme) => ({
 	popupCardContainer: {
@@ -16,10 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		gridTemplateAreas: '"popupCardTop" "popupCardBottom"',
 		opacity: 0,
 		zIndex: 99999,
-		// width: "33vw",
-		// transform: "translateY(100%)",
-		// transform: "scaleY(0)",
-		// opacity: 0,
+		height: "30vh",
 	},
 	popupCardContainerIn: {
 		// boxShadow: "0px -5px 8px #bebebe",
@@ -65,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 		width: "100%",
 		objectFit: "cover",
 		gridArea: "popupCardTop",
+		minHeight: "30%",
 	},
 	bottomContainerNoImage: {
 		height: "100%",
@@ -90,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
 		color: `${theme.palette.primary.light}ff`,
 		backgroundColor: theme.palette.primary.main,
 		color: `#fff`,
+		textAlign: "center",
 		transition: "all 0.3s ease-in-out",
 		"&:hover": {
 			color: `#fff`,
@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
 		height: "100%",
 		zIndex: 1,
 		transition: "all 0.5s ease-in-out",
+		padding: "0.5rem 0",
 		"&:hover": {
 			backgroundColor: "rgba(0,0,0,0.7)",
 			cursor: "pointer",
@@ -140,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 		width: "100px",
 		height: "2px",
 		position: "absolute",
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: theme.palette.primary.dark,
 		transition: "all 0.3s ease-in-out",
 	},
 	titleTextContainerBorderTopEmphasize: {
@@ -158,8 +159,8 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	titleTextContainerBorderLeftEmphasize: {
-		transform: "rotate(90deg) translate(50%, 55px)",
-		width: "110px",
+		transform: "rotate(90deg) translate(50%, 38px)",
+		width: "76px",
 		height: "4px",
 		position: "absolute",
 		backgroundColor: theme.palette.secondary.main,
@@ -225,11 +226,14 @@ const PopUpCardSearchResult = ({
 	const router = useRouter();
 	const [animatedIn, setAnimatedIn] = useState(true);
 	const handleCardClick = () => {
-		console.log("Clicked", featuredImage);
+		// console.log("Clicked", featuredImage);
 	};
 	const viewSingleSubmission = () => {
+		console.log("redirect to single submission");
 		router.push(`/post/${submission._id}`);
+		console.log("router: ", router);
 	};
+
 	return (
 		<div
 			className={clsx(
@@ -240,7 +244,6 @@ const PopUpCardSearchResult = ({
 			)}
 			onClick={handleCardClick}
 			onMouseEnter={() => {
-				console.log("Setting index", _index);
 				setIndexHovered(_index);
 			}}
 			onMouseLeave={() => setIndexHovered(-1)}
@@ -313,12 +316,13 @@ const PopUpCardSearchResult = ({
 				<div className={styles.bodyTextContainer}>
 					<div className={styles.bodyText}>
 						{submission.body.split(/\r?\n/).map((t, i) => (
-							<span key={`text-i`} className={styles.bodyTextSpan}>
+							<span key={`text-${i}`} className={styles.bodyTextSpan}>
 								{t}
 							</span>
 						))}
 					</div>
 				</div>
+
 				<div
 					className={clsx(
 						styles.viewButton

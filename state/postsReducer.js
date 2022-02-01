@@ -34,6 +34,7 @@ const filterById = ({ array, id }) => {
 
 const initialState = {
 	myPosts: [],
+	hasSearchResults: false,
 	filteredAllPosts: {
 		noResult: false,
 		byTag: [],
@@ -61,7 +62,11 @@ const formReducer = createReducer(initialState, (builder) => {
 		}, 300);
 		return {
 			...state,
-			filteredAllPosts: action.payload,
+			hasSearchResults: true,
+			filteredAllPosts: {
+				noResult: false,
+				...action.payload,
+			},
 		};
 	});
 	builder.addCase(Types.GET_BY_TAG_SUCCESS, (state, action) => {
@@ -81,12 +86,14 @@ const formReducer = createReducer(initialState, (builder) => {
 		}
 		return {
 			...state,
+			hasSearchResults: true,
 			..._ns,
 		};
 	});
 	builder.addCase(Types.QUERY_OWN_SUBMISSION_NO_RESULT, (state, action) => {
 		return {
 			...state,
+			hasSearchResults: true,
 			filteredOwnPosts: {
 				noResult: true,
 				byTag: [],
@@ -98,6 +105,7 @@ const formReducer = createReducer(initialState, (builder) => {
 		// animateSearchNoResult();
 		return {
 			...state,
+			hasSearchResults: true,
 			filteredAllPosts: {
 				noResult: true,
 				byTag: [],
@@ -112,6 +120,7 @@ const formReducer = createReducer(initialState, (builder) => {
 		// }, 300);
 		return {
 			...state,
+			hasSearchResults: false,
 			filteredAllPosts: initialState.filteredAllPosts,
 		};
 	});
@@ -119,13 +128,18 @@ const formReducer = createReducer(initialState, (builder) => {
 	builder.addCase(Types.QUERY_OWN_SUBMISSION_RESULT, (state, action) => {
 		return {
 			...state,
-			filteredOwnPosts: action.payload,
+			hasSearchResults: true,
+			filteredOwnPosts: {
+				noResult: false,
+				...action.payload,
+			},
 		};
 	});
 
 	builder.addCase(Types.CLEAR_OWN_QUERY_RESULTS, (state, action) => {
 		return {
 			...state,
+			hasSearchResults: false,
 			filteredOwnPosts: initialState.filteredOwnPosts,
 		};
 	});

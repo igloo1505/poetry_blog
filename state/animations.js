@@ -8,10 +8,16 @@ const searchNoResultContainerClass = "landing-search-no-results-container";
 const searchNoResultContentContainerClass =
 	"landing-search-no-results-content-container";
 const popUpCardSearchResultClass = "popup-card-container-animated-searchResult";
+const mainSearchInputId = "main-search-input-id";
 
 export const animateSearchResult = () => {
 	console.log("animateSearchResult: ");
 	if (typeof window !== "undefined") {
+		gsap.to(`#${mainSearchInputId}`, {
+			opacity: 1,
+			duration: 0,
+			immediateRender: true,
+		});
 		let tl = gsap.timeline();
 		tl.to(`.${featuredCardClass}`, {
 			opacity: 0,
@@ -44,6 +50,11 @@ export const animateSearchResult = () => {
 export const animateSearchNoResult = () => {
 	console.log("animateSearchNoResult");
 	if (typeof window !== "undefined") {
+		gsap.to(`#${mainSearchInputId}`, {
+			opacity: 1,
+			duration: 0,
+			immediateRender: true,
+		});
 		let tl = gsap.timeline();
 		gsap.to(`.${searchNoResultContainerClass}`, {
 			display: "flex",

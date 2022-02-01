@@ -66,7 +66,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const HeroSection = ({ props: { poemCardArray } }) => {
+const HeroSection = ({
+	props: { poemCardArray },
+	posts: { hasSearchResults },
+}) => {
 	const styles = useStyles();
 	const [emphasizeOverlay, setEmphasizeOverlay] = useState(false);
 	const [indexHovered, setIndexHovered] = useState(-1);
@@ -105,14 +108,16 @@ const HeroSection = ({ props: { poemCardArray } }) => {
 				/>
 				<div className={styles.innerContainer}>
 					<LandingTopSection setEmphasizeOverlay={setEmphasizeOverlay} />
-					<PopupCardSection
-						poemCardArray={poemCardArray}
-						shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}
-						setShouldAnimateLandingEntrance={setShouldAnimateLandingEntrance}
-						emphasizeOverlay={emphasizeOverlay}
-						indexHovered={indexHovered}
-						setIndexHovered={setIndexHovered}
-					/>
+					{!hasSearchResults && (
+						<PopupCardSection
+							poemCardArray={poemCardArray}
+							shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}
+							setShouldAnimateLandingEntrance={setShouldAnimateLandingEntrance}
+							emphasizeOverlay={emphasizeOverlay}
+							indexHovered={indexHovered}
+							setIndexHovered={setIndexHovered}
+						/>
+					)}
 				</div>
 			</div>
 		</div>
@@ -121,6 +126,7 @@ const HeroSection = ({ props: { poemCardArray } }) => {
 
 const mapStateToProps = (state, props) => ({
 	user: state.user,
+	posts: state.posts,
 	props: props,
 });
 

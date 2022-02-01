@@ -12,7 +12,7 @@
 	}
 }
 
-.overflowVisibile {
+.overflowVisible {
 	overflow: visible !important;
 	max-height: unset;
 }
