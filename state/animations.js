@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import store from "./store";
 import * as Types from "./Types";
+import { isMobile } from "mobile-device-detect";
 
 const featuredCardClass = "pop-up-card-featured";
 const searchResultContainerClass = "landing-search-results-container";
@@ -12,10 +13,133 @@ const searchNoResultContentContainerClass =
 const popUpCardSearchResultClass = "popup-card-container-animated-searchResult";
 const clearButtonId = "landingSearchClearButton";
 const mainSearchInputId = "main-search-input-id";
+const overlayTimeout = 800;
+const overlayId = "hero-overlay-id";
+const imageId = "hero-image-id";
+
+export const animateLandingWithFeatured = () => {
+	let tl = gsap.timeline();
+	tl.fromTo(
+		`#${overlayId}`,
+		{ backgroundColor: "rgba(0, 0, 0, 0)" },
+		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
+	);
+
+	tl.fromTo(
+		"#landing-page-title-text",
+		{
+			y: "-100px",
+			opacity: 0.0,
+		},
+		{
+			y: "0px",
+			opacity: 1,
+			duration: 0.7,
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
+		}
+	);
+	tl.fromTo(
+		`#main-search-input-id`,
+		{ y: "-100px", opacity: 0.0 },
+		{
+			y: "0px",
+			opacity: 1,
+			duration: 0.5,
+			onComplete: () => {
+				if (!isMobile) {
+					store.dispatch({
+						type: Types.SET_NAVBAR_HIDDEN,
+						payload: true,
+					});
+				}
+			},
+		},
+		">-=0.3"
+	);
+	// tl.fromTo(
+	// 	`.popup-card-image-animated`,
+	// 	{
+	// 		scaleY: 0,
+	// 		opacity: 0.0,
+	// 		transformOrigin: "top center",
+	// 	},
+	// 	{
+	// 		scaleY: 1,
+	// 		opacity: 1,
+	// 		duration: 0.5,
+	// 		// onComplete: () => {
+	// 		// 	if (!isMobile) {
+	// 		// 		dispatch({
+	// 		// 			type: Types.SET_NAVBAR_HIDDEN,
+	// 		// 			payload: true,
+	// 		// 		});
+	// 		// 	}
+	// 		// },
+	// 		stagger: 0.1,
+	// 	}
+	// );
+	tl.fromTo(
+		`.popup-card-container-animated`,
+		{
+			opacity: 0.0,
+			transform: "translateY(100%)",
+			transformOrigin: "top center",
+		},
+		{
+			transform: "translateY(0)",
+			opacity: 1,
+			duration: 1,
+			// ease: "back.out(1.7)",
+			ease: "elastic.out(1, 0.7)",
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
+			stagger: 0.2,
+		}
+	);
+	tl.fromTo(
+		`.popup-card-container-animated`,
+		{
+			boxShadow: "0px 0px 8px #bebebe",
+		},
+		{
+			boxShadow: "0px -5px 8px #bebebe",
+			ease: "elastic.out(1, 0.7)",
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
+			stagger: 0.2,
+		},
+		">-=0.5"
+	);
+};
 
 export const animateSearchResult = () => {
 	console.log("animateSearchResult: ");
 	if (typeof window !== "undefined") {
+		gsap.to("#index-container-main", {
+			duration: 0,
+			immediateRender: true,
+			overflow: "visible",
+			maxHeight: "unset",
+		});
 		gsap.to(`#${mainSearchInputId}`, {
 			opacity: 1,
 			duration: 0,
@@ -27,39 +151,81 @@ export const animateSearchResult = () => {
 			immediateRender: true,
 		});
 		let tl = gsap.timeline();
-
 		tl.to(`#${clearButtonId}`, {
 			opacity: 1,
-
 			scale: 1,
 			duration: 0.3,
 			ease: "elastic.out(1, 0.7)",
 		});
 		tl.to(`.${featuredCardClass}`, {
 			opacity: 0,
+			x: "-100vw",
+			stagger: 0.1,
 			ease: "power3.inOut",
 		});
-		tl.to(`.${searchResultContainerClass}`, {
-			opacity: 1,
-			display: "flex",
-			flexDirection: "row",
-			flexWrap: "wrap",
-			duration: 0.5,
-		});
+
+		// tl.fromTo(
+		// 	`.${searchResultContainerClass}`,
+		// 	{
+		// 		opacity: 0,
+		// 		scaleY: 0,
+		// 		transformOrigin: "bottom",
+		// 		display: "flex",
+		// 		flexDirection: "row",
+		// 		flexWrap: "wrap",
+		// 		duration: 0.5,
+		// 		ease: "power3.inOut",
+		// 	},
+		// 	{
+		// 		opacity: 1,
+		// 		scaleY: 1,
+		// 		display: "flex",
+		// 		flexDirection: "row",
+		// 		flexWrap: "wrap",
+		// 		duration: 0.5,
+		// 		ease: "power3.inOut",
+		// 	},
+		// 	"+=0.2"
+		// );
+		tl.to(
+			`.${searchResultContainerClass}`,
+			{
+				opacity: 1,
+				scaleY: 1,
+				display: "flex",
+				flexDirection: "row",
+				flexWrap: "wrap",
+				duration: 0.5,
+				ease: "power3.inOut",
+			},
+			"+=0.2"
+		);
 		tl.fromTo(
 			`.${popUpCardSearchResultClass}`,
 			{
 				opacity: 0,
+				scale: 0,
 				x: "100vw",
 			},
 			{
 				opacity: 1,
 				x: 0,
 				stagger: 0.2,
+				scale: 1,
 				duration: 1,
 				ease: "power3.inOut",
 			}
 		);
+		tl.to(`.${featuredCardClass}`, {
+			opacity: 0,
+			x: "0",
+			y: "100%",
+			visibility: "hidden",
+			duration: 0,
+			// immediateRender: true,
+			stagger: 0.1,
+			ease: "power3.inOut",
+		});
 	}
 };
 
@@ -147,6 +313,27 @@ export const animateSearchReset = () => {
 		// ease: "elastic.out(1, 0.7)",
 		ease: "power3.inOut",
 	});
+	tl.fromTo(
+		`.${featuredCardClass}`,
+		{
+			opacity: 0,
+			y: "100%",
+			x: 0,
+			// transformOrigin: "bottom",
+		},
+		{
+			opacity: 1,
+			visibility: "visible",
+			y: 0,
+			x: 0,
+			duration: 0.5,
+			stagger: 0.1,
+			ease: "elastic.out(1, 0.7)",
+			// ease: "power3.inOut",
+		}
+	);
+
+	// animateLandingWithFeatured();
 
 	store.dispatch({
 		type: Types.CLEAR_ALL_QUERY_RESULTS,

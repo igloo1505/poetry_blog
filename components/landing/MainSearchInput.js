@@ -104,6 +104,7 @@ const MainSearchInput = ({
 	const clearSearchResults = (e) => {
 		e.preventDefault();
 		animateSearchReset();
+		setSearchQuery({ query: "" });
 	};
 
 	return (
@@ -118,6 +119,7 @@ const MainSearchInput = ({
 					onChange={(e) => {
 						setSearchQuery({ query: e.target.value });
 					}}
+					value={searchQuery.query}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") {
 							handleSubmit(e);

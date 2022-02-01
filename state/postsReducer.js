@@ -34,6 +34,7 @@ const filterById = ({ array, id }) => {
 
 const initialState = {
 	myPosts: [],
+	featuredPosts: [],
 	hasSearchResults: false,
 	filteredAllPosts: {
 		noResult: false,
@@ -53,6 +54,12 @@ const formReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			myPosts: [...state.myPosts, action.payload],
+		};
+	});
+	builder.addCase(Types.SET_FEATURED_POSTS, (state, action) => {
+		return {
+			...state,
+			featuredPosts: action.payload,
 		};
 	});
 

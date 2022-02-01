@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 		// backgroundColor: theme.palette.primary.main,
 		// top: "70vh",
 		// height: "30vh",
-
 		opacity: 0,
 		position: "absolute",
 		top: "70vh",
@@ -28,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 99999,
 		height: "30vh",
 		backgroundColor: theme.palette.primary.main,
+		scaleY: 0,
 	},
 	containerResult: {},
 	containerNoResult: {},
@@ -67,6 +67,7 @@ const LandingSearchResults = ({
 			animateSearchResult();
 		}
 	}, [noResult, byTag, byBody]);
+
 	useEffect(() => {
 		console.log("indexHovered: ", indexHovered);
 	}, [indexHovered]);
