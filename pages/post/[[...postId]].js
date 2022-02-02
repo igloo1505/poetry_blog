@@ -5,7 +5,7 @@ import clsx from "clsx";
 import gsap from "gsap";
 import { useRouter } from "next/router";
 import { Typography } from "@material-ui/core";
-
+import Tag from "../../components/app/Tag";
 import Image from "next/image";
 import Cookies from "cookies";
 import { autoLoginOnFirstRequest } from "../../util/autoLogin";
@@ -27,6 +27,16 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 		// opacity: 0
+	},
+	byPostIdTagContainer: {
+		width: "100%",
+		height: "auto",
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		flexWrap: "wrap",
+		marginTop: "1.5rem",
 	},
 	byPostIdTitleContainer: {
 		margin: "0.5rem 0 0 0",
@@ -147,6 +157,11 @@ const byPostId = ({ specificPost }) => {
 						{t}
 					</span>
 				))}
+			</div>
+			<div className={styles.byPostIdTagContainer}>
+				{specificPost.tags.map((t, i) => {
+					return <Tag tag={t} key={`Tag-${i}`} />;
+				})}
 			</div>
 		</div>
 	);

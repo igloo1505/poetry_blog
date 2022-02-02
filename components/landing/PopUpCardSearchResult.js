@@ -271,7 +271,10 @@ const PopUpCardSearchResult = ({
 			document.addEventListener("scroll", async (e) => {
 				let _scrollHeight = document.getElementById(
 					"index-container-main"
-				).scrollHeight;
+				)?.scrollHeight;
+
+				if (!_scrollHeight) return;
+
 				if (
 					Boolean(
 						_scrollHeight - (window.scrollY + window.innerHeight) <=
