@@ -13,10 +13,16 @@ const useStyles = makeStyles((theme) => ({
 		gap: "0rem",
 		width: "100vw",
 		display: "grid",
-		gridTemplateColumns: "repeat(3, 1fr)",
+		gridTemplateColumns: "repeat(1, 1fr)",
 		// height: "30vw",
 		height: "100%",
 		gridArea: "featured",
+		[theme.breakpoints.up(800)]: {
+			gridTemplateColumns: "repeat(2, 1fr)",
+		},
+		[theme.breakpoints.up(980)]: {
+			gridTemplateColumns: "repeat(3, 1fr)",
+		},
 		// transform: "translateX(-50%)",
 	},
 	bottomSectionContainer: {

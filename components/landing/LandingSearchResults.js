@@ -40,17 +40,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 	containerNoResult: {},
 	contentContainer: {
-		// display: "flex",
-		// justifyContent: "center",
-		// alignItems: "center",
-		// flexWrap: "wrap",
 		height: "100%  ",
 		gap: "0rem",
 		width: "100vw",
 		display: "grid",
-		gridTemplateColumns: "repeat(3, 1fr)",
+		gridTemplateColumns: "repeat(1, 1fr)",
 		height: "100%",
 		gridArea: "featured",
+		overflow: "hidden",
+		[theme.breakpoints.up(800)]: {
+			gridTemplateColumns: "repeat(2, 1fr)",
+		},
+		[theme.breakpoints.up(1100)]: {
+			gridTemplateColumns: "repeat(3, 1fr)",
+		},
 		// gridRowGap: "0.25rem",
 	},
 	widthTwo: {

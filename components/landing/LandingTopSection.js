@@ -14,8 +14,11 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
+		maxWidth: "100vw",
 	},
-	content: {},
+	content: {
+		maxWidth: "100%",
+	},
 }));
 
 const LandingTopSection = ({

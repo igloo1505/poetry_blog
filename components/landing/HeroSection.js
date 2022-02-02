@@ -85,11 +85,12 @@ const HeroSection = ({
 	useEffect(() => {
 		// setTimeout(() => {
 		// }, overlayTimeout);
+		let _query = router?.query?.currentQuery?.[0];
 		if (shouldAnimateLandingEntrance) {
-			if (!hasSearchResults) {
+			if (!hasSearchResults && !_query) {
 				animateLandingWithFeatured();
 			}
-			if (hasSearchResults) {
+			if (hasSearchResults || _query) {
 				animateLandingWithoutCards();
 			}
 		}

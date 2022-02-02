@@ -4,6 +4,7 @@ import { connect, useDispatch } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
 import clsx from "clsx";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -39,12 +40,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Tag = ({ tag }) => {
 	const styles = useStyles();
+	const router = useRouter();
 	const [isHovered, setIsHovered] = useState(false);
+	const handleRedirect = (e) => {
+		router.push(`/${tag}`);
+	};
 	return (
 		<div
 			className={styles.container}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
+			onClick={handleRedirect}
 		>
 			{tag}
 			<div
