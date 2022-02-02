@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 		gridArea: "popupCardBottom",
 		width: "100%",
 		position: "relative",
+		overflow: "hidden",
 	},
 	text: {},
 	viewButton: {
@@ -121,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
 		transition: "all 0.3s ease-in-out",
 	},
 	titleTextContainerBorderTopEmphasize: {
+		transform: "translateY(-2px)",
 		height: "4px",
 		width: "150px",
 		backgroundColor: theme.palette.primary.main,
@@ -135,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	titleTextContainerBorderLeftEmphasize: {
-		transform: "rotate(90deg) translate(50%, 55px)",
+		transform: "rotate(90deg) translate(calc(50% - 2px), 53px)",
 		width: "110px",
 		height: "4px",
 		position: "absolute",
