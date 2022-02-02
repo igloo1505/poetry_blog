@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	titleTextContainerBorderLeftEmphasize: {
-		transform: "rotate(90deg) translate(calc(50% - 2px), 53px)",
+		transform: "rotate(90deg) translate(calc(50% - 2px), 56px)",
 		width: "110px",
 		height: "4px",
 		position: "absolute",

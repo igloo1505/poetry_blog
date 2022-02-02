@@ -2,6 +2,7 @@ import * as Types from "./Types";
 import store from "./store";
 import { animateSearchResult } from "./animations";
 import { createReducer } from "@reduxjs/toolkit";
+import { Router } from "next/router";
 
 const replaceEverywhere = (updatedPost, state) => {
 	Object.keys(state).forEach((key) => {

@@ -18,13 +18,19 @@ const useStyles = makeStyles((theme) => ({
 	content: {},
 }));
 
-const LandingTopSection = ({ setEmphasizeOverlay }) => {
+const LandingTopSection = ({
+	setEmphasizeOverlay,
+	resetRouteShallowLikeMyEx,
+}) => {
 	const styles = useStyles();
 	return (
 		<div className={styles.topContainer}>
 			<div className={styles.content}>
 				<LandingTitle />
-				<MainSearchInput setEmphasizeOverlay={setEmphasizeOverlay} />
+				<MainSearchInput
+					setEmphasizeOverlay={setEmphasizeOverlay}
+					resetRouteShallowLikeMyEx={resetRouteShallowLikeMyEx}
+				/>
 			</div>
 		</div>
 	);

@@ -4,7 +4,6 @@ import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import * as Types from "../../state/Types";
-
 import HeroImage from "../../public/penWithCoffeeAndRoses.jpg";
 import clsx from "clsx";
 import gsap from "gsap";
@@ -71,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HeroSection = ({
-	props: { poemCardArray },
+	props: { poemCardArray, resetRouteShallowLikeMyEx },
 	posts: { hasSearchResults },
 }) => {
 	const styles = useStyles();
@@ -114,7 +113,10 @@ const HeroSection = ({
 					id={imageId}
 				/>
 				<div className={styles.innerContainer}>
-					<LandingTopSection setEmphasizeOverlay={setEmphasizeOverlay} />
+					<LandingTopSection
+						setEmphasizeOverlay={setEmphasizeOverlay}
+						resetRouteShallowLikeMyEx={resetRouteShallowLikeMyEx}
+					/>
 					<PopupCardSection
 						poemCardArray={poemCardArray}
 						shouldAnimateLandingEntrance={shouldAnimateLandingEntrance}

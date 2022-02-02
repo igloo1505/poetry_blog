@@ -7,6 +7,7 @@ import { Typography } from "@material-ui/core";
 import clsx from "clsx";
 import * as Types from "../../state/Types";
 import { animateSearchReset } from "../../state/animations";
+import { useRouter } from "next/router";
 
 const clearButtonId = "landingSearchClearButton";
 
@@ -84,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 const mainSearchInputId = "main-search-input-id";
 
 const MainSearchInput = ({
-	props: { setEmphasizeOverlay },
+	props: { setEmphasizeOverlay, resetRouteShallowLikeMyEx },
 	posts: {
 		filteredAllPosts: { page: _page },
 		mainSearchQuery,
@@ -92,6 +93,7 @@ const MainSearchInput = ({
 	queryAllSubmissions,
 }) => {
 	const styles = useStyles();
+	const router = useRouter();
 	const dispatch = useDispatch();
 	const [clearButtonHovered, setClearButtonHovered] = useState(false);
 	const setSearchQuery = (newVal) => {
@@ -118,6 +120,7 @@ const MainSearchInput = ({
 		e.preventDefault();
 		animateSearchReset();
 		setSearchQuery("");
+		resetRouteShallowLikeMyEx();
 	};
 
 	return (
@@ -131,6 +134,7 @@ const MainSearchInput = ({
 					onBlur={() => setEmphasizeOverlay(false)}
 					onChange={(e) => {
 						setSearchQuery(e.target.value);
+						router.push(`/${e.target.value}`, undefined, { shallow: true });
 					}}
 					value={mainSearchQuery}
 					onKeyDown={(e) => {
