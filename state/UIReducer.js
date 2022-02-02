@@ -4,6 +4,19 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
 	navbarHidden: false,
+	viewport: {
+		width: 0,
+		height: 0,
+	},
+	drawer: {
+		isOpen: false,
+	},
+	snackbar: {
+		isOpen: false,
+		message: "",
+		// error, warning, info, success
+		variant: "success",
+	},
 	largeModal: {
 		open: false,
 		title: "",
@@ -18,6 +31,37 @@ const initialState = {
 };
 
 const UIReducer = createReducer(initialState, (builder) => {
+	builder.addCase(Types.SET_DRAWER_OPEN, (state, action) => {
+		return {
+			...state,
+			drawer: {
+				isOpen: true,
+			},
+		};
+	});
+	builder.addCase(Types.SET_DRAWER_CLOSED, (state, action) => {
+		return {
+			...state,
+			drawer: {
+				isOpen: false,
+			},
+		};
+	});
+	builder.addCase(Types.RESET_SNACKBAR, (state, action) => {
+		return {
+			...state,
+			snackbar: initialState.snackbar,
+		};
+	});
+	builder.addCase(Types.SET_SNACKBAR_DATA, (state, action) => {
+		return {
+			...state,
+			snackbar: {
+				...state.snackbar,
+				...action.payload,
+			},
+		};
+	});
 	builder.addCase(Types.SET_NAVBAR_HIDDEN, (state, action) => {
 		return {
 			...state,
@@ -44,6 +88,15 @@ const UIReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			largeModal: initialState.largeModal,
+		};
+	});
+	builder.addCase(Types.SET_VIEWPORT_DIMS, (state, action) => {
+		return {
+			...state,
+			viewport: {
+				...state.viewport,
+				...action.payload,
+			},
 		};
 	});
 });

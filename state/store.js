@@ -4,6 +4,7 @@ import formReducer from "./formReducer";
 import postsReducer from "./postsReducer";
 import networkReducer from "./networkReducer";
 import UIReducer from "./UIReducer";
+import { reducer as burgerMenu } from "redux-burger-menu";
 
 const initialState = {};
 
@@ -19,6 +20,7 @@ const store = configureStore({
 		network: networkReducer,
 		UI: UIReducer,
 		posts: postsReducer,
+		drawer: burgerMenu,
 	},
 	devTools: () => withDevtools(),
 	// devTools: true,

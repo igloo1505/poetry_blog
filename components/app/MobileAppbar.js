@@ -10,6 +10,9 @@ import * as Types from "../../state/Types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";
+import { action as toggleMenu } from "redux-burger-menu";
+import { Slide as Menu } from "react-burger-menu";
+import { decorator as reduxBurgerMenu } from "redux-burger-menu";
 
 const useStyles = makeStyles((theme) => ({
 	toolbarMain: {
@@ -48,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	appbarHeader: {
-		backgroundColor: "transparent",
+		backgroundColor: "transparent !important",
 	},
 }));
 
@@ -70,6 +73,7 @@ const MobileAppbar = ({
 			// onMouseEnter={showNavbar}
 			// onMouseLeave={hideNavbar}
 			className={clsx(styles.toolbarMain, navbarHidden && styles.toolbarHidden)}
+			id="mobile-appbar-outer-container"
 		>
 			<AppBar position="static" className={styles.appbarHeader}>
 				<Toolbar>
@@ -81,29 +85,8 @@ const MobileAppbar = ({
 					>
 						Poetry Blog
 					</Typography>
-					<div className={styles.toolbarRight}>
-						<Link href="/">
-							<a className={styles.aTag}>Home</a>
-						</Link>
-						<Link href={isAuthed ? "/newSubmission" : "/login"}>
-							<a className={styles.aTag}>Submit</a>
-						</Link>
-						{isAuthed && (
-							<Link href="/myPosts">
-								<a className={styles.aTag}>My Posts</a>
-							</Link>
-						)}
-						{isAuthed ? (
-							<Link href="/">
-								<a className={styles.aTag} onClick={handleLogout}>
-									Logout
-								</a>
-							</Link>
-						) : (
-							<Link href="/login">
-								<a className={styles.aTag}>Login</a>
-							</Link>
-						)}
+					<div className={styles.toolbarHamburger}>
+						<Hamburger />
 					</div>
 				</Toolbar>
 			</AppBar>
@@ -118,3 +101,53 @@ const mapStateToProps = (state, props) => ({
 });
 
 export default connect(mapStateToProps)(MobileAppbar);
+
+export const LinkList = ({ styles, handleLogout }) => {
+	return (
+		<div className={styles.toolbarRight}>
+			<Link href="/">
+				<a className={styles.aTag}>Home</a>
+			</Link>
+			<Link href={isAuthed ? "/newSubmission" : "/login"}>
+				<a className={styles.aTag}>Submit</a>
+			</Link>
+			{isAuthed && (
+				<Link href="/myPosts">
+					<a className={styles.aTag}>My Posts</a>
+				</Link>
+			)}
+			{isAuthed ? (
+				<Link href="/">
+					<a className={styles.aTag} onClick={handleLogout}>
+						Logout
+					</a>
+				</Link>
+			) : (
+				<Link href="/login">
+					<a className={styles.aTag}>Login</a>
+				</Link>
+			)}
+		</div>
+	);
+};
+
+const _Hamburger = () => {
+	return (
+		<Menu>
+			<a id="home" className="menu-item" href="/">
+				Home
+			</a>
+			<a id="about" className="menu-item" href="/about">
+				About
+			</a>
+			<a id="contact" className="menu-item" href="/contact">
+				Contact
+			</a>
+			<a onClick={this.showSettings} className="menu-item--small" href="">
+				Settings
+			</a>
+		</Menu>
+	);
+};
+
+const Hamburger = reduxBurgerMenu(_Hamburger);

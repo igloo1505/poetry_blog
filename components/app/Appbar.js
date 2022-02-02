@@ -159,6 +159,7 @@ const Appbar = ({
 		<Box
 			sx={{ flexGrow: 1 }}
 			className={clsx(styles.toolbarMain, navbarHidden && styles.toolbarHidden)}
+			id="standard-appbar-outer-container"
 		>
 			<AppBar position="static" className={styles.appbarHeader}>
 				<Toolbar>
