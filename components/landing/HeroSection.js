@@ -10,7 +10,10 @@ import clsx from "clsx";
 import gsap from "gsap";
 import PopupCardSection from "./PopupCardSection";
 import LandingTopSection from "./LandingTopSection";
-import { animateLandingWithFeatured } from "../../state/animations";
+import {
+	animateLandingWithFeatured,
+	animateLandingWithoutCards,
+} from "../../state/animations";
 
 const overlayTimeout = 800;
 const overlayId = "hero-overlay-id";
@@ -74,9 +77,7 @@ const HeroSection = ({
 	const styles = useStyles();
 	const [emphasizeOverlay, setEmphasizeOverlay] = useState(false);
 	const [indexHovered, setIndexHovered] = useState(-1);
-	useEffect(() => {
-		console.log("indexHovered: ", indexHovered);
-	}, [indexHovered]);
+	useEffect(() => {}, [indexHovered]);
 
 	const [shouldAnimateLandingEntrance, setShouldAnimateLandingEntrance] =
 		useState(false);
@@ -85,8 +86,13 @@ const HeroSection = ({
 	useEffect(() => {
 		// setTimeout(() => {
 		// }, overlayTimeout);
-		if (shouldAnimateLandingEntrance && !hasSearchResults) {
-			animateLandingWithFeatured();
+		if (shouldAnimateLandingEntrance) {
+			if (!hasSearchResults) {
+				animateLandingWithFeatured();
+			}
+			if (hasSearchResults) {
+				animateLandingWithoutCards();
+			}
 		}
 	}, [shouldAnimateLandingEntrance]);
 

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		gridTemplateAreas: '"popupCardTop" "popupCardBottom"',
 		transform: "translateY(100%)",
+		maxHeight: "30vh",
 		// transform: "scaleY(0)",
 		// opacity: 0,
 	},

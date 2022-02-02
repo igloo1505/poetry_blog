@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-import { v4 } from "uuid";
-import User from "./User";
+const { v4 } = require("uuid");
+const User = require("./User");
 
 const SubmissionSchema = mongoose.Schema(
 	{

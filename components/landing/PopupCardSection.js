@@ -46,8 +46,6 @@ const PopupCardSection = ({
 		filteredAllPosts: { noResult, byTag, byBody },
 	},
 }) => {
-	console.log("poemCardArray: ", poemCardArray);
-
 	const styles = useStyles();
 	let images = {
 		1: {

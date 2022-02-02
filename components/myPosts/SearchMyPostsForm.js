@@ -83,6 +83,7 @@ const SearchMyPostsForm = ({
 		if (userId && isAuthenticated) {
 			setSearchFormData({
 				...searchFormData,
+				page: filteredOwnPosts.page,
 				userId,
 			});
 		}

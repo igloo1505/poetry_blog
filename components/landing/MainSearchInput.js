@@ -85,26 +85,39 @@ const mainSearchInputId = "main-search-input-id";
 
 const MainSearchInput = ({
 	props: { setEmphasizeOverlay },
+	posts: {
+		filteredAllPosts: { page: _page },
+		mainSearchQuery,
+	},
 	queryAllSubmissions,
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	const [clearButtonHovered, setClearButtonHovered] = useState(false);
-	const [searchQuery, setSearchQuery] = useState({
-		query: "",
-	});
+	const setSearchQuery = (newVal) => {
+		dispatch({
+			type: Types.SET_MAIN_SEARCH_QUERY,
+			payload: newVal,
+		});
+	};
+	// const [searchQuery, setSearchQuery] = useState({
+	// 	query: "",
+	// });
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log("sending query all submissions request: ");
-		let { success } = queryAllSubmissions({ searchQuery: searchQuery.query });
+		let { success } = queryAllSubmissions({
+			searchQuery: mainSearchQuery,
+			page: _page || 1,
+		});
 		console.log("success: ", success);
 	};
 
 	const clearSearchResults = (e) => {
 		e.preventDefault();
 		animateSearchReset();
-		setSearchQuery({ query: "" });
+		setSearchQuery("");
 	};
 
 	return (
@@ -117,9 +130,9 @@ const MainSearchInput = ({
 					onFocus={() => setEmphasizeOverlay(true)}
 					onBlur={() => setEmphasizeOverlay(false)}
 					onChange={(e) => {
-						setSearchQuery({ query: e.target.value });
+						setSearchQuery(e.target.value);
 					}}
-					value={searchQuery.query}
+					value={mainSearchQuery}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") {
 							handleSubmit(e);

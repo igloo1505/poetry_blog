@@ -1,11 +1,7 @@
 import * as Types from "./Types";
 import store from "./store";
 import { createReducer } from "@reduxjs/toolkit";
-import {
-	animateSearchResult,
-	animateSearchNoResult,
-	animateSearchReset,
-} from "./animations";
+import { animateSearchResult } from "./animations";
 
 const replaceEverywhere = (updatedPost, state) => {
 	Object.keys(state).forEach((key) => {
@@ -36,13 +32,18 @@ const initialState = {
 	myPosts: [],
 	featuredPosts: [],
 	hasSearchResults: false,
+	mainSearchQuery: "",
 	filteredAllPosts: {
 		noResult: false,
+		page: 1,
+		isLoading: false,
 		byTag: [],
 		byBody: [],
 	},
 	filteredOwnPosts: {
 		noResult: false,
+		page: 1,
+		isLoading: false,
 		byTag: [],
 		byBody: [],
 	},
@@ -50,6 +51,18 @@ const initialState = {
 };
 
 const formReducer = createReducer(initialState, (builder) => {
+	builder.addCase(Types.SET_MAIN_SEARCH_QUERY, (state, action) => {
+		return {
+			...state,
+			mainSearchQuery: action.payload,
+		};
+	});
+	builder.addCase(Types.CLEAR_MAIN_SEARCH_QUERY, (state, action) => {
+		return {
+			...state,
+			mainSearchQuery: "",
+		};
+	});
 	builder.addCase(Types.NEW_SUBMISSION_SUCCESS, (state, action) => {
 		return {
 			...state,
@@ -179,27 +192,30 @@ const formReducer = createReducer(initialState, (builder) => {
 	builder.addCase(Types.REMOVE_SUBMISSION_SUCCESS, (state, action) => {
 		return {
 			...state,
-			myPosts: filterById({ array: state.myPosts, id: action.payload }),
+			myPosts: filterById({
+				array: state.myPosts,
+				id: action.payload.removedId,
+			}),
 			filteredOwnPosts: {
 				...state.filteredOwnPosts,
 				byTag: filterById({
 					array: state.filteredOwnPosts.byTag,
-					id: action.payload,
+					id: action.payload.removedId,
 				}),
 				byBody: filterById({
 					array: state.filteredOwnPosts.byBody,
-					id: action.payload,
+					id: action.payload.removedId,
 				}),
 			},
 			filteredAllPosts: {
 				...state.filteredAllPosts,
 				byTag: filterById({
 					array: state.filteredAllPosts.byBody,
-					id: action.payload,
+					id: action.payload.removedId,
 				}),
 				byBody: filterById({
 					array: state.filteredAllPosts.byBody,
-					id: action.payload,
+					id: action.payload.removedId,
 				}),
 			},
 		};

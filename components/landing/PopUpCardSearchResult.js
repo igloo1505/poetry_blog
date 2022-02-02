@@ -7,6 +7,7 @@ import { isMobile } from "mobile-device-detect";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Link } from "next/link";
+import { useVisibilityHook } from "react-observer-api";
 
 const useStyles = makeStyles((theme) => ({
 	popupCardContainer: {
@@ -243,12 +244,29 @@ const PopUpCardSearchResult = ({
 	indexHovered,
 	setIndexHovered,
 	isFeatured,
+	shouldCheckVisible,
 }) => {
 	let cardAnimateClass = isFeatured ? "pop-up-card-featured" : "pop-up-card";
 	const topContainerId = `top-container-${_index}`;
-	console.log("submission: ", submission);
 	const styles = useStyles();
 	const router = useRouter();
+	const { setElement, isVisible } = useVisibilityHook({
+		threshold: 0.5,
+		rootMargin: "100px",
+	});
+
+	useEffect(() => {
+		if (isVisible && shouldCheckVisible) {
+			console.log("END IS VISIBLE");
+		}
+		// if(typeof window !== "undefined"){
+		// 	window.addEventListener("scroll", (e) => {
+
+		// 	})
+		// }
+	}, [isVisible, shouldCheckVisible]);
+	console.log("shouldCheckVisible: ", shouldCheckVisible, _index);
+
 	// const [bodyTextStyles, setBodyTextStyles] = useState({});
 	const [additionalStyles, setAdditionalStyles] = useState({});
 	useEffect(() => {
@@ -256,7 +274,7 @@ const PopUpCardSearchResult = ({
 			let emHeight = document
 				.getElementById(topContainerId)
 				.getBoundingClientRect().height;
-			console.log("emHeight: ", emHeight);
+
 			setAdditionalStyles({
 				...additionalStyles,
 				bodyText: {
@@ -271,12 +289,10 @@ const PopUpCardSearchResult = ({
 
 	const [animatedIn, setAnimatedIn] = useState(true);
 	const handleCardClick = () => {
-		// console.log("Clicked", featuredImage);
+		//
 	};
 	const viewSingleSubmission = () => {
-		console.log("redirect to single submission");
 		router.push(`/post/${submission._id}`);
-		console.log("router: ", router);
 	};
 
 	return (
@@ -292,6 +308,7 @@ const PopUpCardSearchResult = ({
 				setIndexHovered(_index);
 			}}
 			onMouseLeave={() => setIndexHovered(-1)}
+			ref={setElement}
 		>
 			<div
 				className={clsx(

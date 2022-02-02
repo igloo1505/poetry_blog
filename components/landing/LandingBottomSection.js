@@ -36,14 +36,12 @@ const LandingBottomSection = ({
 					.concat(byBody.filter((sub) => !idArr.includes(sub._id)))
 					.slice(0, 10);
 			}
-			console.log("newArr: ", newArr);
+
 			return setShouldDisplay(newArr);
 		}
 	}, [byTag, byBody, noResult]);
 
-	useEffect(() => {
-		console.log("shouldDisplay: ", shouldDisplay);
-	}, [shouldDisplay]);
+	useEffect(() => {}, [shouldDisplay]);
 
 	const styles = useStyles();
 	return (

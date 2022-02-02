@@ -17,6 +17,53 @@ const overlayTimeout = 800;
 const overlayId = "hero-overlay-id";
 const imageId = "hero-image-id";
 
+export const animateLandingWithoutCards = () => {
+	console.log("animateLandingWithFeatured: ");
+	let tl = gsap.timeline();
+	tl.fromTo(
+		`#${overlayId}`,
+		{ backgroundColor: "rgba(0, 0, 0, 0)" },
+		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
+	);
+	tl.fromTo(
+		"#landing-page-title-text",
+		{
+			y: "-100px",
+			opacity: 0.0,
+		},
+		{
+			y: "0px",
+			opacity: 1,
+			duration: 0.7,
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
+		}
+	);
+	tl.fromTo(
+		`#main-search-input-id`,
+		{ y: "-100px", opacity: 0.0 },
+		{
+			y: "0px",
+			opacity: 1,
+			duration: 0.5,
+			onComplete: () => {
+				if (!isMobile) {
+					store.dispatch({
+						type: Types.SET_NAVBAR_HIDDEN,
+						payload: true,
+					});
+				}
+			},
+		},
+		">-=0.3"
+	);
+};
 export const animateLandingWithFeatured = () => {
 	console.log("animateLandingWithFeatured: ");
 	let tl = gsap.timeline();

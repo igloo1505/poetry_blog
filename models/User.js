@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-import { v4 } from "uuid";
-import Submission from "./Submission";
+const { v4 } = require("uuid");
+const Submission = require("./Submission");
 
 const perPage = 10;
 

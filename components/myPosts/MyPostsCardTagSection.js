@@ -59,6 +59,10 @@ const MyPostsCardTagSection = ({
 		isAuthenticated,
 		user: { _id: userId },
 	},
+	posts: {
+		filteredOwnPosts: { page: _page },
+	},
+
 	getByTag,
 }) => {
 	const styles = useStyles();
@@ -76,6 +80,7 @@ const MyPostsCardTagSection = ({
 		let { success } = await getByTag({
 			tagText: tag,
 			byUser: Boolean(byUser),
+			page: _page || 1,
 			...(byUser && { userId: userId }),
 		});
 		console.log("getByTag success: ", success);
@@ -98,8 +103,9 @@ const MyPostsCardTagSection = ({
 };
 
 const mapStateToProps = (state, props) => ({
-	props: props,
 	user: state.user,
+	posts: state.posts,
+	props: props,
 });
 
 export default connect(mapStateToProps, { getByTag })(MyPostsCardTagSection);

@@ -7,6 +7,8 @@ import User from "../../../models/User";
 import Submission from "../../../models/Submission";
 import colors from "colors";
 
+let paginateLimit = 10;
+
 // TODO: QUERY BY TITLE AS WELL AS BY BODY AND BY TAG AND CONCAT ON BACKEND.
 // RESPOND WITH APPROPRIATE NUMBER OF POSTS DIRECTLY, AND ADD KEY TO INDICATE QUERY METHOD.
 
@@ -16,7 +18,8 @@ handler.post(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
-		let { searchQuery, userId, byUser } = req.body;
+		let { searchQuery, userId, byUser, page } = req.body;
+		if (!page) page = 1;
 		if (!byUser) byUser = false;
 		let _userId = cookies.get("userId") || userId;
 		console.log("userId: from cookies", _userId);
@@ -41,7 +44,10 @@ handler.post(async (req, res) => {
 			tagQuery.author = _userId;
 		}
 
-		let _byBody = await Submission.find(bodyQuery).limit(10);
+		let _byBody = await Submission.find(bodyQuery)
+			.skip(paginateLimit * (page - 1))
+			.limit(paginateLimit);
+
 		let _byTag = await Submission.find(tagQuery).limit(10);
 
 		return res.status(200).json({

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
+import * as Types from "../../state/Types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
 import clsx from "clsx";
@@ -64,6 +65,7 @@ const LandingSearchResults = ({
 	},
 }) => {
 	const styles = useStyles();
+	const dispatch = useDispatch();
 	const [indexHovered, setIndexHovered] = useState(-1);
 	useEffect(() => {
 		if (shouldDisplay && Boolean(byTag?.length > 0 || byBody?.length > 0)) {
@@ -71,9 +73,40 @@ const LandingSearchResults = ({
 		}
 	}, [noResult, byTag, byBody]);
 
-	useEffect(() => {
-		console.log("indexHovered: ", indexHovered);
-	}, [indexHovered]);
+	// const handleScroll = () => {
+	// 	console.log(
+	// 		"Window",
+	// 		window.scrollY,
+	// 		window.innerHeight,
+	// 		document.body.offsetHeight
+	// 	);
+	// 	if (typeof window !== "undefined") {
+	// 		if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+	// 			// you're at the bottom of the page
+	//
+	// 		}
+	// 		if (
+	// 			Math.ceil(window.innerHeight + document.documentElement.scrollTop) !==
+	// 			document.documentElement.offsetHeight
+	// 		) {
+	//
+	// 			dispatch({
+	// 				type: Types.GET_POSTS_LAZILY_LOADING,
+	// 				payload: {
+	// 					value: true,
+	// 					key: "filteredAllPosts",
+	// 				},
+	// 			});
+	// 		}
+	// 	}
+	// };
+
+	// useEffect(() => {
+	//
+	// 	if (typeof window !== "undefined") {
+	// 		window.addEventListener("scroll", handleScroll);
+	// 	}
+	// }, [indexHovered]);
 
 	return (
 		<div
@@ -93,7 +126,7 @@ const LandingSearchResults = ({
 				)}
 			>
 				{resultArray &&
-					resultArray.map((post, index) => {
+					resultArray.map((post, index, arr) => {
 						return (
 							<PopupCard
 								key={`card-search-result-${index}`}
@@ -102,6 +135,7 @@ const LandingSearchResults = ({
 								// 	emphasizeOverlay || index === indexHovered
 								// )}
 								emphasizeOverlay={index === indexHovered}
+								shouldCheckVisible={index === arr.length - 1}
 								isFeatured={false}
 								textColor={"dark"}
 								_index={index}

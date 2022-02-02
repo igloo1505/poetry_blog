@@ -5,7 +5,6 @@ import { connect, useDispatch } from "react-redux";
 import Cookies from "cookies";
 import Submission from "../../models/Submission";
 import mongoose from "mongoose";
-import PopupCard from "../../components/landing/popupCard";
 import MyPostCard from "../../components/myPosts/myPostCard";
 import SearchMyPostsForm from "../../components/myPosts/SearchMyPostsForm";
 import { gsap } from "gsap";

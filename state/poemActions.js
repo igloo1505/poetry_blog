@@ -155,6 +155,7 @@ export const removePost = (_data) => async (dispatch) => {
 		});
 		if (res.status === 200 && res.data.success) {
 			console.log("dispatching: ");
+			debugger;
 			dispatch({
 				type: Types.REMOVE_SUBMISSION_SUCCESS,
 				payload: res.data,
