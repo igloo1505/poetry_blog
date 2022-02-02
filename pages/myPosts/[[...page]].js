@@ -81,25 +81,12 @@ const myPosts = ({
 	console.log("userSubmissions in component: ", userSubmissions);
 	const [currentDisplayedArray, setCurrentDisplayedArray] = useState([]);
 	useEffect(() => {
-		if (filteredOwnPosts.byBody || filteredOwnPosts.byTag) {
-			let newArr = [];
-			if (filteredOwnPosts?.byBody?.length > 0) {
-				// setCurrentDisplayedArray(filteredOwnPosts);
-				newArr = [...newArr, ...filteredOwnPosts.byBody];
-			}
-			if (filteredOwnPosts?.byTag?.length > 0) {
-				// setCurrentDisplayedArray(filteredOwnPosts);
-				newArr = [...newArr, ...filteredOwnPosts.byTag];
-			}
-			setCurrentDisplayedArray(newArr);
+		if (filteredOwnPosts.results) {
+			setCurrentDisplayedArray(filteredOwnPosts.results);
 		}
 		if (
 			Boolean(
-				!filteredOwnPosts ||
-					Boolean(
-						filteredOwnPosts?.byBody?.length === 0 &&
-							filteredOwnPosts?.byTag?.length === 0
-					)
+				!filteredOwnPosts || Boolean(filteredOwnPosts?.results?.length === 0)
 			) &&
 			userSubmissions?.length > 0
 		) {

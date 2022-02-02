@@ -82,7 +82,7 @@ const Home = ({
 	posts: {
 		hasSearchResults,
 		featuredPosts,
-		filteredAllPosts: { noResult, byTag, byBody },
+		filteredAllPosts: { noResult, queryResults },
 	},
 }) => {
 	const dispatch = useDispatch();
@@ -94,7 +94,7 @@ const Home = ({
 				payload: latestSubmissions.slice(0, 3),
 			});
 		}
-	}, [hasSearchResults, noResult, byTag, byBody]);
+	}, [hasSearchResults, noResult, queryResults]);
 	console.log("hasSearchResults: ", hasSearchResults);
 	console.log("styles.overflowVisible: ", styles.overflowVisible);
 	return (

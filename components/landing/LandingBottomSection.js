@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const LandingBottomSection = ({
 	posts: {
-		filteredAllPosts: { noResult, byTag, byBody },
+		filteredAllPosts: { noResult, results },
 	},
 }) => {
 	const [shouldDisplay, setShouldDisplay] = useState(null);
@@ -25,21 +25,10 @@ const LandingBottomSection = ({
 		if (noResult) {
 			return setShouldDisplay([]);
 		}
-		if (Boolean(byTag?.length > 0 || byBody?.length > 0)) {
-			let newArr = [];
-			if (byTag?.length > 0) {
-				newArr.concat(byTag);
-			}
-			if (byBody?.length > 0) {
-				let idArr = newArr.map((post) => post._id);
-				newArr = [...newArr]
-					.concat(byBody.filter((sub) => !idArr.includes(sub._id)))
-					.slice(0, 10);
-			}
-
-			return setShouldDisplay(newArr);
+		if (results?.length > 0) {
+			return setShouldDisplay(results);
 		}
-	}, [byTag, byBody, noResult]);
+	}, [results, noResult]);
 
 	useEffect(() => {}, [shouldDisplay]);
 
@@ -49,16 +38,14 @@ const LandingBottomSection = ({
 			className={clsx(
 				styles.container,
 				noResult && styles.containerNoResult,
-				Boolean(byTag?.length > 0 || byBody?.length > 0) &&
-					styles.containerWithResult
+				results && styles.containerWithResult
 			)}
 		>
 			<div
 				className={clsx(
 					styles.contentContainer,
 					noResult && styles.contentContainerNoResult,
-					Boolean(byTag?.length > 0 || byBody?.length > 0) &&
-						styles.contentContainerWithResult
+					results && styles.contentContainerWithResult
 				)}
 			>
 				{noResult && <LandingNoSearchResult />}

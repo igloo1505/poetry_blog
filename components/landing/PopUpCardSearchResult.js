@@ -7,7 +7,7 @@ import { isMobile } from "mobile-device-detect";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Link } from "next/link";
-import { useVisibilityHook } from "react-observer-api";
+import { queryAdditionalGeneralSubmissions } from "../../state/poemActions";
 
 const useStyles = makeStyles((theme) => ({
 	popupCardContainer: {
@@ -83,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 		gridArea: "popupCardBottom",
 		width: "100%",
 		position: "relative",
+		padding: "0.5rem 0.75rem",
 	},
 	text: {},
 	viewButton: {
@@ -234,38 +235,64 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PopUpCardSearchResult = ({
-	submission,
-	featuredImage,
-	_index,
-	shouldAnimateLandingEntrance,
-	setShouldAnimateLandingEntrance,
-	emphasizeOverlay,
-	textColor,
-	indexHovered,
-	setIndexHovered,
-	isFeatured,
-	shouldCheckVisible,
+	props: {
+		submission,
+		featuredImage,
+		_index,
+		shouldAnimateLandingEntrance,
+		setShouldAnimateLandingEntrance,
+		emphasizeOverlay,
+		textColor,
+		indexHovered,
+		setIndexHovered,
+		isFeatured,
+		shouldCheckVisible,
+	},
+	posts: {
+		mainSearchQuery,
+		filteredAllPosts: {
+			noResult,
+			page: _page,
+			isLoading,
+			lastRequestedPage,
+			results,
+		},
+	},
+	queryAdditionalGeneralSubmissions,
 }) => {
+	let popUpCardSearchResultId = `popUpCardSearchResult-${_index}`;
 	let cardAnimateClass = isFeatured ? "pop-up-card-featured" : "pop-up-card";
 	const topContainerId = `top-container-${_index}`;
 	const styles = useStyles();
 	const router = useRouter();
-	const { setElement, isVisible } = useVisibilityHook({
-		threshold: 0.5,
-		rootMargin: "100px",
-	});
 
 	useEffect(() => {
-		if (isVisible && shouldCheckVisible) {
-			console.log("END IS VISIBLE");
+		if (shouldCheckVisible) {
+			document.addEventListener("scroll", async (e) => {
+				let _scrollHeight = document.getElementById(
+					"index-container-main"
+				).scrollHeight;
+				if (
+					Boolean(
+						_scrollHeight - (window.scrollY + window.innerHeight) <=
+							window.innerHeight * 0.3
+					) &&
+					!isLoading &&
+					Boolean(lastRequestedPage < _page || lastRequestedPage === null)
+				) {
+					console.log("Sending query from scroll");
+					console.log("queryAdditionalGeneralSubmissions: ");
+					let { success } = await queryAdditionalGeneralSubmissions({
+						page: _page,
+						searchQuery: mainSearchQuery,
+						lastId: results[results.length - 1]._id,
+						retrievedIds: results.map((result) => result._id),
+					});
+				}
+			});
 		}
-		// if(typeof window !== "undefined"){
-		// 	window.addEventListener("scroll", (e) => {
-
-		// 	})
-		// }
-	}, [isVisible, shouldCheckVisible]);
-	console.log("shouldCheckVisible: ", shouldCheckVisible, _index);
+	}, []);
+	// console.log("shouldCheckVisible: ", shouldCheckVisible, _index);
 
 	// const [bodyTextStyles, setBodyTextStyles] = useState({});
 	const [additionalStyles, setAdditionalStyles] = useState({});
@@ -308,7 +335,7 @@ const PopUpCardSearchResult = ({
 				setIndexHovered(_index);
 			}}
 			onMouseLeave={() => setIndexHovered(-1)}
-			ref={setElement}
+			id={popUpCardSearchResultId}
 		>
 			<div
 				className={clsx(
@@ -403,7 +430,10 @@ const PopUpCardSearchResult = ({
 
 const mapStateToProps = (state, props) => ({
 	posts: state.posts,
+	network: state.network,
 	props: props,
 });
 
-export default connect(mapStateToProps)(PopUpCardSearchResult);
+export default connect(mapStateToProps, { queryAdditionalGeneralSubmissions })(
+	PopUpCardSearchResult
+);

@@ -5,7 +5,12 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
 import clsx from "clsx";
 import PopupCard from "./PopUpCardSearchResult";
-import { animateSearchResult } from "../../state/animations";
+import {
+	animateSearchResult,
+	animateAdditionalSearchResults,
+} from "../../state/animations";
+
+const paginateLimit = 10;
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -61,17 +66,33 @@ const useStyles = makeStyles((theme) => ({
 const LandingSearchResults = ({
 	props: { shouldDisplay, resultArray },
 	posts: {
-		filteredAllPosts: { noResult, byTag, byBody },
+		filteredAllPosts: { noResult, results, lastRequestedPage },
 	},
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	const [indexHovered, setIndexHovered] = useState(-1);
+	const [lastResultLength, setLastResultLength] = useState(0);
 	useEffect(() => {
-		if (shouldDisplay && Boolean(byTag?.length > 0 || byBody?.length > 0)) {
+		if (
+			shouldDisplay &&
+			results?.length > 0 &&
+			results.length <= paginateLimit
+		) {
+			console.log("lastRequestedPage: ", lastRequestedPage);
 			animateSearchResult();
 		}
-	}, [noResult, byTag, byBody]);
+		if (results.length !== lastResultLength) {
+			animateAdditionalSearchResults({
+				indexRange: {
+					min: lastResultLength,
+					max: results.length,
+				},
+			});
+			setLastResultLength(results.length);
+			// Handle other animation here and pass in the index of cards needing to be animated, or add class with the page they were retrieved on.
+		}
+	}, [noResult, results]);
 
 	// const handleScroll = () => {
 	// 	console.log(

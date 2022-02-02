@@ -43,15 +43,15 @@ const useStyles = makeStyles((theme) => ({
 const LandingBottomSectionNoResult = ({
 	props: { shouldDisplay, resultArray },
 	posts: {
-		filteredAllPosts: { noResult, byTag, byBody },
+		filteredAllPosts: { noResult, results },
 	},
 }) => {
 	const styles = useStyles();
 	useEffect(() => {
-		if (noResult && !Boolean(byTag?.length > 0 || byBody?.length > 0)) {
+		if (noResult && !results?.length > 0) {
 			animateSearchNoResult();
 		}
-	}, [noResult, byTag, byBody]);
+	}, [noResult, results]);
 
 	return (
 		<div

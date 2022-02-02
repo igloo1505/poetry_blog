@@ -163,9 +163,7 @@ const SearchMyPostsForm = ({
 								Search
 							</Button>
 							{Boolean(
-								filteredOwnPosts?.byBody?.length > 0 ||
-									filteredOwnPosts?.byTag?.length > 0 ||
-									filteredOwnPosts.noResult
+								filteredOwnPosts.results > 0 || filteredOwnPosts.noResult
 							) && (
 								<Button
 									fullWidth

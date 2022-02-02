@@ -25,13 +25,17 @@ export const newSubmission = (submissionData) => async (dispatch) => {
 export const queryOwnSubmissions = (queryData) => async (dispatch) => {
 	console.log("queryData: ", queryData);
 	try {
+		dispatch({
+			type: Types.SET_LAZY_LOADING_LIST_STATE,
+			payload: true,
+		});
 		let res = await useAxios({
 			method: "post",
 			url: `/api/submissions/getSubmissionsByQuery`,
 			data: queryData,
 		});
 		if (res.status === 200 && res.data.success) {
-			if (res.data?.byBody?.length === 0 && res.data?.byTag?.length === 0) {
+			if (res.data?.results?.length === 0 && res.data?.results?.length === 0) {
 				return dispatch({
 					type: Types.QUERY_OWN_SUBMISSION_NO_RESULT,
 					payload: res.data,
@@ -58,7 +62,7 @@ export const queryAllSubmissions = (queryData) => async (dispatch) => {
 			data: queryData,
 		});
 		if (res.status === 200 && res.data.success) {
-			if (res.data?.byBody?.length === 0 && res.data?.byTag?.length === 0) {
+			if (res.data?.results?.length === 0 && res.data?.results?.length === 0) {
 				dispatch({
 					type: Types.QUERY_ALL_SUBMISSION_NO_RESULT,
 					payload: res.data,
@@ -78,6 +82,43 @@ export const queryAllSubmissions = (queryData) => async (dispatch) => {
 		dispatch({ type: Types.SERVER_ERROR, payload: error });
 	}
 };
+
+export const queryAdditionalGeneralSubmissions =
+	(queryData) => async (dispatch) => {
+		try {
+			console.log(
+				"queryData: in queryAdditionalGeneralSubmissions ",
+				queryData
+			);
+			let res = await useAxios({
+				method: "post",
+				url: `/api/submissions/getSubmissionsByQuery`,
+				data: queryData,
+			});
+			if (res.status === 200 && res.data.success) {
+				if (res.data?.results?.length === 0) {
+					dispatch({
+						type: Types.QUERY_ADDITIONAL_SUBMISSION_NO_RESULT,
+						payload: res.data,
+					});
+					return { success: "no result" };
+				}
+				dispatch({
+					type: Types.QUERY_ADDITIONAL_SUBMISSIONS_RESULT,
+					payload: res.data,
+				});
+				return { success: true };
+			}
+			if (res.status === 401) {
+				dispatch({ type: Types.UNAUTHORIZED, payload: res.data });
+			}
+			if (res.status !== 200 && res.status !== 401) {
+				dispatch({ type: Types.SERVER_ERROR, payload: error });
+			}
+		} catch (error) {
+			dispatch({ type: Types.SERVER_ERROR, payload: error });
+		}
+	};
 
 export const setCurrentEditing = (editingPoem) => (dispatch) => {
 	dispatch({
@@ -155,7 +196,6 @@ export const removePost = (_data) => async (dispatch) => {
 		});
 		if (res.status === 200 && res.data.success) {
 			console.log("dispatching: ");
-			debugger;
 			dispatch({
 				type: Types.REMOVE_SUBMISSION_SUCCESS,
 				payload: res.data,

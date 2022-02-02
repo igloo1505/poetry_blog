@@ -18,6 +18,7 @@ const overlayId = "hero-overlay-id";
 const imageId = "hero-image-id";
 
 export const animateLandingWithoutCards = () => {
+	// debugger;
 	console.log("animateLandingWithFeatured: ");
 	let tl = gsap.timeline();
 	tl.fromTo(
@@ -65,6 +66,7 @@ export const animateLandingWithoutCards = () => {
 	);
 };
 export const animateLandingWithFeatured = () => {
+	// debugger;
 	console.log("animateLandingWithFeatured: ");
 	let tl = gsap.timeline();
 	tl.fromTo(
@@ -159,6 +161,7 @@ export const animateLandingWithFeatured = () => {
 };
 
 export const animateSearchResult = () => {
+	// debugger;
 	console.log("animateSearchResult: ");
 	if (typeof window !== "undefined") {
 		gsap.to("#index-container-main", {
@@ -257,6 +260,7 @@ export const animateSearchResult = () => {
 };
 
 export const animateSearchNoResult = () => {
+	// debugger;
 	console.log("animateSearchNoResult");
 	if (typeof window !== "undefined") {
 		gsap.to(`#${mainSearchInputId}`, {
@@ -313,6 +317,7 @@ export const animateSearchNoResult = () => {
 };
 
 export const animateSearchReset = () => {
+	// debugger;
 	let tl = gsap.timeline();
 	tl.to(`#${clearButtonId}`, {
 		// opacity: 0,
@@ -371,3 +376,25 @@ export const animateSearchReset = () => {
 		type: Types.CLEAR_ALL_QUERY_RESULTS,
 	});
 };
+
+export const animateAdditionalSearchResults = ({ indexRange }) => {
+	console.log("Ran additional search results animation");
+	let tl = gsap.timeline();
+	for (let index = indexRange.min; index < indexRange.max; index++) {
+		tl.fromTo(
+			`#popUpCardSearchResult-${index}`,
+			{
+				opacity: 0,
+				// x: "100vw",
+				scaleY: 0,
+			},
+			{
+				opacity: 1,
+				scaleY: 1,
+				duration: 0.5,
+				ease: "elastic.out(1, 0.7)",
+			}
+		);
+	}
+};
+// debugger;

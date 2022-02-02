@@ -1,7 +1,7 @@
 import * as Types from "./Types";
 import store from "./store";
-import { createReducer } from "@reduxjs/toolkit";
 import { animateSearchResult } from "./animations";
+import { createReducer } from "@reduxjs/toolkit";
 
 const replaceEverywhere = (updatedPost, state) => {
 	Object.keys(state).forEach((key) => {
@@ -35,17 +35,19 @@ const initialState = {
 	mainSearchQuery: "",
 	filteredAllPosts: {
 		noResult: false,
+		endResults: false,
 		page: 1,
+		lastRequestedPage: null,
 		isLoading: false,
-		byTag: [],
-		byBody: [],
+		results: [],
 	},
 	filteredOwnPosts: {
 		noResult: false,
+		endResults: false,
+		lastRequestedPage: null,
 		page: 1,
 		isLoading: false,
-		byTag: [],
-		byBody: [],
+		results: [],
 	},
 	currentlyEditing: {},
 };
@@ -76,6 +78,17 @@ const formReducer = createReducer(initialState, (builder) => {
 		};
 	});
 
+	builder.addCase(Types.SET_LAZY_LOADING_LIST_STATE, (state, action) => {
+		return {
+			...state,
+			hasSearchResults: true,
+			filteredAllPosts: {
+				...state.filteredAllPosts,
+				isLoading: action.payload,
+				lastRequestedPage: state.filteredAllPosts.page,
+			},
+		};
+	});
 	builder.addCase(Types.QUERY_ALL_SUBMISSION_RESULTS, (state, action) => {
 		setTimeout(() => {
 			animateSearchResult();
@@ -85,24 +98,29 @@ const formReducer = createReducer(initialState, (builder) => {
 			hasSearchResults: true,
 			filteredAllPosts: {
 				noResult: false,
+				page: state.filteredAllPosts.page + 1,
+				lastRequestedPage: state.filteredAllPosts.page,
 				...action.payload,
 			},
 		};
 	});
+
 	builder.addCase(Types.GET_BY_TAG_SUCCESS, (state, action) => {
 		let _ns = {
 			filteredOwnPosts: {
 				...initialState.filteredOwnPosts,
+				page: state.filteredOwnPosts.page + 1,
 			},
 			filteredAllPosts: {
 				...initialState.filteredAllPosts,
+				page: state.filteredAllPosts.page + 1,
 			},
 		};
 		if (action.payload?.byUser) {
-			_ns.filteredOwnPosts.byTag = action.payload.byTag;
+			_ns.filteredOwnPosts.results = action.payload.results;
 		}
 		if (!action.payload?.byUser) {
-			_ns.filteredAllPosts.byTag = action.payload.byTag;
+			_ns.filteredAllPosts.results = action.payload.results;
 		}
 		return {
 			...state,
@@ -116,8 +134,7 @@ const formReducer = createReducer(initialState, (builder) => {
 			hasSearchResults: true,
 			filteredOwnPosts: {
 				noResult: true,
-				byTag: [],
-				byBody: [],
+				results: [],
 			},
 		};
 	});
@@ -128,8 +145,7 @@ const formReducer = createReducer(initialState, (builder) => {
 			hasSearchResults: true,
 			filteredAllPosts: {
 				noResult: true,
-				byTag: [],
-				byBody: [],
+				results: [],
 			},
 		};
 	});
@@ -151,6 +167,7 @@ const formReducer = createReducer(initialState, (builder) => {
 			hasSearchResults: true,
 			filteredOwnPosts: {
 				noResult: false,
+				page: state.filteredOwnPosts.page + 1,
 				...action.payload,
 			},
 		};
@@ -198,28 +215,56 @@ const formReducer = createReducer(initialState, (builder) => {
 			}),
 			filteredOwnPosts: {
 				...state.filteredOwnPosts,
-				byTag: filterById({
-					array: state.filteredOwnPosts.byTag,
-					id: action.payload.removedId,
-				}),
-				byBody: filterById({
-					array: state.filteredOwnPosts.byBody,
+				results: filterById({
+					array: state.filteredOwnPosts.results,
 					id: action.payload.removedId,
 				}),
 			},
 			filteredAllPosts: {
 				...state.filteredAllPosts,
-				byTag: filterById({
-					array: state.filteredAllPosts.byBody,
-					id: action.payload.removedId,
-				}),
-				byBody: filterById({
-					array: state.filteredAllPosts.byBody,
+				results: filterById({
+					array: state.filteredAllPosts.results,
 					id: action.payload.removedId,
 				}),
 			},
 		};
 	});
+	builder.addCase(
+		Types.QUERY_ADDITIONAL_SUBMISSION_NO_RESULT,
+		(state, action) => {
+			return {
+				...state,
+				hasSearchResults: true,
+				filteredAllPosts: {
+					endResults: true,
+					...state.filteredAllPosts,
+				},
+			};
+		}
+	);
+	builder.addCase(
+		Types.QUERY_ADDITIONAL_SUBMISSIONS_RESULT,
+		(state, action) => {
+			return {
+				...state,
+				filteredAllPosts: {
+					noResult: false,
+					// set to be true if not returning max allowed results
+					endResults: false,
+					isLoading: false,
+					page: state.filteredAllPosts.page + 1,
+					results: [
+						...state.filteredAllPosts.results,
+						...action.payload.results.filter((_r) => {
+							return ![...state.filteredAllPosts.results]
+								.map((r) => r._id)
+								.includes(_r._id);
+						}),
+					],
+				},
+			};
+		}
+	);
 });
 
 export default formReducer;

@@ -18,7 +18,9 @@ handler.post(async (req, res) => {
 	console.log(colors.bgBlue("Did run in route with...", req.body));
 	const cookies = new Cookies(req, res);
 	try {
-		let { searchQuery, userId, byUser, page } = req.body;
+		let { searchQuery, userId, byUser, page, lastId, retrievedIds } = req.body;
+		if (!retrievedIds) retrievedIds = [];
+		let _regex = new RegExp(searchQuery, "i");
 		if (!page) page = 1;
 		if (!byUser) byUser = false;
 		let _userId = cookies.get("userId") || userId;
@@ -27,34 +29,58 @@ handler.post(async (req, res) => {
 		if (!user && byUser) {
 			return res.status(401).json({ msg: "Unauthorized.", success: false });
 		}
-		let bodyQuery = {
-			body: {
-				$regex: searchQuery,
-				$options: "i",
-			},
-		};
-		let tagQuery = {
-			tags: {
-				$regex: searchQuery,
-				$options: "i",
-			},
-		};
-		if (_userId) {
-			bodyQuery.author = _userId;
-			tagQuery.author = _userId;
+
+		let _query;
+		if (byUser) {
+			if (!lastId) {
+				_query = {
+					$and: [
+						{ $or: [{ title: _regex }, { body: _regex }, { tags: _regex }] },
+						{ author: _userId },
+						{ _id: { $nin: retrievedIds } },
+					],
+				};
+			}
+			if (lastId) {
+				_query = {
+					$and: [
+						{ $or: [{ title: _regex }, { body: _regex }, { tags: _regex }] },
+						{ author: _userId },
+						{ _id: { $gt: lastId } },
+						{ _id: { $nin: retrievedIds } },
+					],
+				};
+			}
+		}
+		if (!byUser) {
+			if (lastId) {
+				_query = {
+					$and: [
+						{ $or: [{ title: _regex }, { body: _regex }, { tags: _regex }] },
+						{ _id: { $gt: lastId } },
+						{ _id: { $nin: retrievedIds } },
+					],
+				};
+			}
+			if (!lastId) {
+				_query = {
+					$and: [
+						{ $or: [{ title: _regex }, { body: _regex }, { tags: _regex }] },
+						{ _id: { $nin: retrievedIds } },
+					],
+				};
+			}
 		}
 
-		let _byBody = await Submission.find(bodyQuery)
-			.skip(paginateLimit * (page - 1))
+		let allResults = await Submission.find(_query)
+			.sort({ createdAt: -1 })
+			// .skip(paginateLimit * (page - 1))
 			.limit(paginateLimit);
-
-		let _byTag = await Submission.find(tagQuery).limit(10);
 
 		return res.status(200).json({
 			msg: "Posts retrieved successfully",
 			success: true,
-			byBody: _byBody,
-			byTag: _byTag,
+			results: allResults,
 		});
 	} catch (error) {
 		console.log(error);

@@ -36,7 +36,7 @@ handler.post(async (req, res) => {
 		return res.status(200).json({
 			msg: "Posts retrieved successfully",
 			success: true,
-			byTag: _byTag,
+			results: _byTag,
 		});
 	} catch (error) {
 		console.log(error);

@@ -43,7 +43,7 @@ const PopupCardSection = ({
 		setIndexHovered,
 	},
 	posts: {
-		filteredAllPosts: { noResult, byTag, byBody },
+		filteredAllPosts: { noResult, results },
 	},
 }) => {
 	const styles = useStyles();
