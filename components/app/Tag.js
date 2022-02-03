@@ -3,6 +3,7 @@ import { connect, useDispatch } from "react-redux";
 // import * as Types from "../../state/Types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { gsap } from "gsap";
+import * as Types from "../../state/Types";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 
@@ -41,9 +42,14 @@ const useStyles = makeStyles((theme) => ({
 const Tag = ({ tag }) => {
 	const styles = useStyles();
 	const router = useRouter();
+	const dispatch = useDispatch();
 	const [isHovered, setIsHovered] = useState(false);
 	const handleRedirect = (e) => {
 		router.push(`/${tag}`);
+		dispatch({
+			type: Types.SET_MAIN_SEARCH_QUERY,
+			payload: tag,
+		});
 	};
 	return (
 		<div

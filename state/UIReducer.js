@@ -4,6 +4,9 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
 	navbarHidden: false,
+	animations: {
+		animateSearchResult: false,
+	},
 	viewport: {
 		width: 0,
 		height: 0,
@@ -96,6 +99,15 @@ const UIReducer = createReducer(initialState, (builder) => {
 			viewport: {
 				...state.viewport,
 				...action.payload,
+			},
+		};
+	});
+	builder.addCase(Types.SET_ANIMATE_SEARCH_RESULT, (state, action) => {
+		return {
+			...state,
+			animations: {
+				...state.animations,
+				animateSearchResult: action.payload,
 			},
 		};
 	});

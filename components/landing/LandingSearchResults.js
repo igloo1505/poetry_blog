@@ -71,6 +71,7 @@ const LandingSearchResults = ({
 	posts: {
 		filteredAllPosts: { noResult, results, lastRequestedPage },
 	},
+	animations: { animateSearchResult: isAnimatingSearchResult },
 }) => {
 	const styles = useStyles();
 	const dispatch = useDispatch();
@@ -80,12 +81,13 @@ const LandingSearchResults = ({
 		if (
 			shouldDisplay &&
 			results?.length > 0 &&
-			results.length <= paginateLimit
+			results.length <= paginateLimit &&
+			!isAnimatingSearchResult
 		) {
 			console.log("lastRequestedPage: ", lastRequestedPage);
 			animateSearchResult();
 		}
-		if (results.length !== lastResultLength) {
+		if (results.length !== lastResultLength && lastResultLength !== 0) {
 			animateAdditionalSearchResults({
 				indexRange: {
 					min: lastResultLength,
@@ -175,6 +177,7 @@ const LandingSearchResults = ({
 
 const mapStateToProps = (state, props) => ({
 	posts: state.posts,
+	animations: state.UI.animations,
 	props: props,
 });
 

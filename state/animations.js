@@ -18,8 +18,7 @@ const overlayId = "hero-overlay-id";
 const imageId = "hero-image-id";
 
 export const animateLandingWithoutCards = () => {
-	// debugger;
-	console.log("animateLandingWithFeatured: ");
+	console.log("ANIMATION: animateLandingWithoutCards");
 	let tl = gsap.timeline();
 	tl.fromTo(
 		`#${overlayId}`,
@@ -47,7 +46,7 @@ export const animateLandingWithoutCards = () => {
 		}
 	);
 	tl.fromTo(
-		`#main-search-input-id`,
+		`#${mainSearchInputId}`,
 		{ y: "-100px", opacity: 0.0 },
 		{
 			y: "0px",
@@ -66,8 +65,7 @@ export const animateLandingWithoutCards = () => {
 	);
 };
 export const animateLandingWithFeatured = () => {
-	// debugger;
-	console.log("animateLandingWithFeatured: ");
+	console.log("ANIMATION: animateLandingWithFeatured");
 	let tl = gsap.timeline();
 	tl.fromTo(
 		`#${overlayId}`,
@@ -95,7 +93,7 @@ export const animateLandingWithFeatured = () => {
 		}
 	);
 	tl.fromTo(
-		`#main-search-input-id`,
+		`#${mainSearchInputId}`,
 		{ y: "-100px", opacity: 0.0 },
 		{
 			y: "0px",
@@ -161,8 +159,11 @@ export const animateLandingWithFeatured = () => {
 };
 
 export const animateSearchResult = () => {
-	// debugger;
-	console.log("animateSearchResult: ");
+	console.log("ANIMATION: animateSearchResult");
+	store.dispatch({
+		type: Types.SET_ANIMATE_SEARCH_RESULT,
+		payload: true,
+	});
 	if (typeof window !== "undefined") {
 		gsap.to("#index-container-main", {
 			duration: 0,
@@ -170,23 +171,55 @@ export const animateSearchResult = () => {
 			overflow: "visible",
 			maxHeight: "unset",
 		});
-		gsap.to(`#${mainSearchInputId}`, {
-			opacity: 1,
-			duration: 0,
-			immediateRender: true,
+		// gsap.fromTo(
+		// 	`#${mainSearchInputId}`,
+		// 	{
+		// 		opacity: 0,
+		// 	},
+		// 	{
+		// 		opacity: 1,
+		// 		duration: 0,
+		// 		immediateRender: true,
+		// 	}
+		// );
+
+		let tl = gsap.timeline({
+			onComplete: () => {
+				store.dispatch({
+					type: Types.SET_NAVBAR_HIDDEN,
+					payload: false,
+				});
+			},
 		});
-		gsap.to(`#${clearButtonId}`, {
-			visibility: "visible",
-			duration: 0,
-			immediateRender: true,
-		});
-		let tl = gsap.timeline();
-		tl.to(`#${clearButtonId}`, {
-			opacity: 1,
-			scale: 1,
-			duration: 0.3,
-			ease: "elastic.out(1, 0.7)",
-		});
+
+		tl.to(
+			`#${mainSearchInputId}`,
+			{
+				opacity: 1,
+				duration: 0.5,
+			},
+			">-=0.3"
+		);
+		// tl.to(`#${clearButtonId}`, {
+		// 	opacity: 1,
+		// 	scale: 1,
+		// 	duration: 0.5,
+		// 	ease: "elastic.out(1, 0.7)",
+		// });
+		tl.fromTo(
+			`#${clearButtonId}`,
+			{
+				opacity: 0,
+			},
+			{
+				visibility: "visible",
+				opacity: 1,
+				scale: 1,
+				duration: 0.5,
+				ease: "elastic.out(1, 0.7)",
+				// immediateRender: true,
+			}
+		);
 		tl.to(`.${featuredCardClass}`, {
 			opacity: 0,
 			x: "-100vw",
@@ -255,13 +288,18 @@ export const animateSearchResult = () => {
 			// immediateRender: true,
 			stagger: 0.1,
 			ease: "power3.inOut",
+			// onComplete: () => {
+			// 	store.dispatch({
+			// 		type: Types.SET_ANIMATE_SEARCH_RESULT,
+			// 		payload: false,
+			// 	});
+			// },
 		});
 	}
 };
 
 export const animateSearchNoResult = () => {
-	// debugger;
-	console.log("animateSearchNoResult");
+	console.log("ANIMATION: animateSearchNoResult");
 	if (typeof window !== "undefined") {
 		gsap.to(`#${mainSearchInputId}`, {
 			opacity: 1,
@@ -317,7 +355,7 @@ export const animateSearchNoResult = () => {
 };
 
 export const animateSearchReset = () => {
-	// debugger;
+	console.log("ANIMATION: animateSearchReset");
 	let tl = gsap.timeline();
 	tl.to(`#${clearButtonId}`, {
 		// opacity: 0,
@@ -378,7 +416,7 @@ export const animateSearchReset = () => {
 };
 
 export const animateAdditionalSearchResults = ({ indexRange }) => {
-	console.log("Ran additional search results animation");
+	console.log("ANIMATION: animateAdditionalSearchResults");
 	let tl = gsap.timeline();
 	for (let index = indexRange.min; index < indexRange.max; index++) {
 		tl.fromTo(
@@ -397,4 +435,3 @@ export const animateAdditionalSearchResults = ({ indexRange }) => {
 		);
 	}
 };
-// debugger;
