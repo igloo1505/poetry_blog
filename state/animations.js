@@ -2,6 +2,9 @@ import gsap from "gsap";
 import store from "./store";
 import * as Types from "./Types";
 import { isMobile } from "mobile-device-detect";
+import { ScrollToPlugin } from "gsap/all";
+
+gsap.registerPlugin(ScrollToPlugin);
 
 const featuredCardClass = "pop-up-card-featured";
 const searchResultContainerClass = "landing-search-results-container";
@@ -356,7 +359,15 @@ export const animateSearchNoResult = () => {
 
 export const animateSearchReset = () => {
 	console.log("ANIMATION: animateSearchReset");
+	if (typeof window !== "undefined") {
+		// window.scrollTo(0, 0);
+		gsap.to(window, {
+			scrollTo: 0,
+			duration: 0.3,
+		});
+	}
 	let tl = gsap.timeline();
+
 	tl.to(`#${clearButtonId}`, {
 		// opacity: 0,
 		scaleY: 0,

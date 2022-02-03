@@ -76,7 +76,7 @@ const LandingSearchResults = ({
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	const [indexHovered, setIndexHovered] = useState(-1);
-	const [lastResultLength, setLastResultLength] = useState(0);
+	const [lastResultLength, setLastResultLength] = useState(-1);
 	useEffect(() => {
 		if (
 			shouldDisplay &&
@@ -87,16 +87,16 @@ const LandingSearchResults = ({
 			console.log("lastRequestedPage: ", lastRequestedPage);
 			animateSearchResult();
 		}
-		if (results.length !== lastResultLength && lastResultLength !== 0) {
+		if (results.length !== lastResultLength && lastResultLength >= 0) {
 			animateAdditionalSearchResults({
 				indexRange: {
 					min: lastResultLength,
 					max: results.length,
 				},
 			});
-			setLastResultLength(results.length);
 			// Handle other animation here and pass in the index of cards needing to be animated, or add class with the page they were retrieved on.
 		}
+		setLastResultLength(results.length);
 	}, [noResult, results]);
 
 	// const handleScroll = () => {
