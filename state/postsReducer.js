@@ -91,9 +91,6 @@ const formReducer = createReducer(initialState, (builder) => {
 		};
 	});
 	builder.addCase(Types.QUERY_ALL_SUBMISSION_RESULTS, (state, action) => {
-		setTimeout(() => {
-			animateSearchResult();
-		}, 300);
 		return {
 			...state,
 			hasSearchResults: true,

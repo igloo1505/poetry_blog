@@ -2,7 +2,9 @@ import gsap from "gsap";
 import store from "./store";
 import * as Types from "./Types";
 import { isMobile } from "mobile-device-detect";
-import { ScrollToPlugin } from "gsap/all";
+// import ScrollToPlugin from "gsap/ScrollToPlugin";
+// import ScrollToPlugin from "gsap/ScrollToPlugin";
+import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -189,7 +191,7 @@ export const animateSearchResult = () => {
 		let tl = gsap.timeline({
 			onComplete: () => {
 				store.dispatch({
-					type: Types.SET_NAVBAR_HIDDEN,
+					type: Types.SET_ANIMATE_SEARCH_RESULT,
 					payload: false,
 				});
 			},

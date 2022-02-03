@@ -77,6 +77,13 @@ const LandingSearchResults = ({
 	const dispatch = useDispatch();
 	const [indexHovered, setIndexHovered] = useState(-1);
 	const [lastResultLength, setLastResultLength] = useState(-1);
+	console.log(
+		"LandingSearchResults",
+		shouldDisplay,
+		results?.length > 0,
+		results.length <= paginateLimit,
+		!isAnimatingSearchResult
+	);
 	useEffect(() => {
 		if (
 			shouldDisplay &&
