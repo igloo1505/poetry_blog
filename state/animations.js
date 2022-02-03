@@ -17,6 +17,7 @@ const searchNoResultContentContainerClass =
 	"landing-search-no-results-content-container";
 const popUpCardSearchResultClass = "popup-card-container-animated-searchResult";
 const clearButtonId = "landingSearchClearButton";
+const landingPageTitleTextId = "landing-page-title-text";
 const mainSearchInputId = "main-search-input-id";
 const overlayTimeout = 800;
 const overlayId = "hero-overlay-id";
@@ -25,30 +26,19 @@ const imageId = "hero-image-id";
 export const animateLandingWithoutCards = () => {
 	console.log("ANIMATION: animateLandingWithoutCards");
 	let tl = gsap.timeline();
+	//TODO Add this back in once issue is found
+	gsap.to(`#${clearButtonId}`, {
+		visibility: "visible",
+		opacity: 0,
+		scale: 0,
+		duration: 0,
+		immediateRender: true,
+	});
+
 	tl.fromTo(
 		`#${overlayId}`,
 		{ backgroundColor: "rgba(0, 0, 0, 0)" },
 		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
-	);
-	tl.fromTo(
-		"#landing-page-title-text",
-		{
-			y: "-100px",
-			opacity: 0.0,
-		},
-		{
-			y: "0px",
-			opacity: 1,
-			duration: 0.7,
-			// onComplete: () => {
-			// 	if (!isMobile) {
-			// 		dispatch({
-			// 			type: Types.SET_NAVBAR_HIDDEN,
-			// 			payload: true,
-			// 		});
-			// 	}
-			// },
-		}
 	);
 	tl.fromTo(
 		`#${mainSearchInputId}`,
@@ -68,7 +58,42 @@ export const animateLandingWithoutCards = () => {
 		},
 		">-=0.3"
 	);
+	tl.fromTo(
+		`#${landingPageTitleTextId}`,
+		{
+			y: "-100px",
+			opacity: 0.0,
+		},
+		{
+			y: "0px",
+			opacity: 1,
+			duration: 0.7,
+			// onComplete: () => {
+			// 	if (!isMobile) {
+			// 		dispatch({
+			// 			type: Types.SET_NAVBAR_HIDDEN,
+			// 			payload: true,
+			// 		});
+			// 	}
+			// },
+		}
+	);
+	tl.fromTo(
+		`#${clearButtonId}`,
+		{
+			scaleX: 0,
+			opacity: 0,
+		},
+		{
+			scaleX: 1,
+			opacity: 1,
+			duration: 0,
+			ease: "elastic.out(1, 0.3)",
+		},
+		"+=0.5"
+	);
 };
+
 export const animateLandingWithFeatured = () => {
 	console.log("ANIMATION: animateLandingWithFeatured");
 	let tl = gsap.timeline();
@@ -78,7 +103,7 @@ export const animateLandingWithFeatured = () => {
 		{ backgroundColor: "rgba(0, 0, 0, 0.35)", opacity: 1, duration: 1 }
 	);
 	tl.fromTo(
-		"#landing-page-title-text",
+		`#${landingPageTitleTextId}`,
 		{
 			y: "-100px",
 			opacity: 0.0,
@@ -176,6 +201,11 @@ export const animateSearchResult = () => {
 			overflow: "visible",
 			maxHeight: "unset",
 		});
+		gsap.to(`#${clearButtonId}`, {
+			visibility: "visible",
+			duration: 0,
+			immediateRender: true,
+		});
 		// gsap.fromTo(
 		// 	`#${mainSearchInputId}`,
 		// 	{
@@ -205,56 +235,13 @@ export const animateSearchResult = () => {
 			},
 			">-=0.3"
 		);
-		// tl.to(`#${clearButtonId}`, {
-		// 	opacity: 1,
-		// 	scale: 1,
-		// 	duration: 0.5,
-		// 	ease: "elastic.out(1, 0.7)",
-		// });
-		tl.fromTo(
-			`#${clearButtonId}`,
-			{
-				opacity: 0,
-			},
-			{
-				visibility: "visible",
-				opacity: 1,
-				scale: 1,
-				duration: 0.5,
-				ease: "elastic.out(1, 0.7)",
-				// immediateRender: true,
-			}
-		);
+
 		tl.to(`.${featuredCardClass}`, {
 			opacity: 0,
 			x: "-100vw",
 			stagger: 0.1,
 			ease: "power3.inOut",
 		});
-
-		// tl.fromTo(
-		// 	`.${searchResultContainerClass}`,
-		// 	{
-		// 		opacity: 0,
-		// 		scaleY: 0,
-		// 		transformOrigin: "bottom",
-		// 		display: "flex",
-		// 		flexDirection: "row",
-		// 		flexWrap: "wrap",
-		// 		duration: 0.5,
-		// 		ease: "power3.inOut",
-		// 	},
-		// 	{
-		// 		opacity: 1,
-		// 		scaleY: 1,
-		// 		display: "flex",
-		// 		flexDirection: "row",
-		// 		flexWrap: "wrap",
-		// 		duration: 0.5,
-		// 		ease: "power3.inOut",
-		// 	},
-		// 	"+=0.2"
-		// );
 		tl.to(
 			`.${searchResultContainerClass}`,
 			{
@@ -299,6 +286,13 @@ export const animateSearchResult = () => {
 			// 		payload: false,
 			// 	});
 			// },
+		});
+
+		tl.to(`#${clearButtonId}`, {
+			opacity: 1,
+			scale: 1,
+			duration: 0.5,
+			ease: "elastic.out(1, 0.7)",
 		});
 	}
 };
@@ -372,30 +366,34 @@ export const animateSearchReset = () => {
 
 	tl.to(`#${clearButtonId}`, {
 		// opacity: 0,
-		scaleY: 0,
+		scale: 0,
 		duration: 0.3,
-		transformOrigin: "bottom",
+		// transformOrigin: "bottom",
 		// ease: "elastic.out(1, 0.7)",
 		ease: "power3.inOut",
 	});
 
 	tl.to(`.${popUpCardSearchResultClass}`, {
 		// opacity: 0,
-		scaleY: 0,
+		scale: 0,
 		duration: 0.3,
 		stagger: 0.1,
 		// ease: "elastic.out(1, 0.7)",
 		ease: "power3.inOut",
 	});
-	tl.to(`.${searchResultContainerClass}`, {
-		// opacity: 0,
-		scaleY: 0,
-		transformOrigin: "bottom",
-		duration: 0.3,
-		stagger: 0.1,
-		// ease: "elastic.out(1, 0.7)",
-		ease: "power3.inOut",
-	});
+	tl.to(
+		`.${searchResultContainerClass}`,
+		{
+			// opacity: 0,
+			scaleY: 0,
+			transformOrigin: "bottom",
+			duration: 0.3,
+			stagger: 0.1,
+			// ease: "elastic.out(1, 0.7)",
+			ease: "power3.inOut",
+		},
+		"-=0.2"
+	);
 
 	tl.fromTo(
 		`.${featuredCardClass}`,

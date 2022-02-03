@@ -8,6 +8,7 @@ import PopupCard from "./PopUpCardSearchResult";
 import {
 	animateSearchResult,
 	animateAdditionalSearchResults,
+	animateSearchReset,
 } from "../../state/animations";
 
 const paginateLimit = 10;
@@ -105,6 +106,16 @@ const LandingSearchResults = ({
 		}
 		setLastResultLength(results.length);
 	}, [noResult, results]);
+
+	useEffect(
+		(prevState) => {
+			console.log("shouldDisplay: ", shouldDisplay);
+			if (!shouldDisplay && !isAnimatingSearchResult) {
+				animateSearchReset();
+			}
+		},
+		[noResult, results]
+	);
 
 	// const handleScroll = () => {
 	// 	console.log(

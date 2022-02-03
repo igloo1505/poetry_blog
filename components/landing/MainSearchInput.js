@@ -123,11 +123,24 @@ const MainSearchInput = ({
 	};
 
 	const clearSearchResults = (e) => {
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
 		animateSearchReset();
 		setSearchQuery("");
 		resetRouteShallowLikeMyEx();
 	};
+
+	useEffect(() => {
+		let params = router.query;
+		if (mainSearchQuery === "") {
+			// clearSearchResults();
+			// animateSearchReset();
+			dispatch({
+				type: Types.CLEAR_ALL_QUERY_RESULTS,
+			});
+		}
+	}, [mainSearchQuery]);
 
 	return (
 		<div className={styles.outerContainer} id={mainSearchInputId}>

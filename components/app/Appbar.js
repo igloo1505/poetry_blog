@@ -11,6 +11,9 @@ import { isMobile } from "mobile-device-detect";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";
+import { animateSearchReset } from "../../state/animations";
+
+// TODO: remove search query and reset to featured on 'Home' click
 
 const hoverLimit = 100;
 
@@ -84,6 +87,7 @@ const Appbar = ({
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isAuthed, setIsAuthed] = useState(false);
 	const [emHovered, setEmHovered] = useState(false);
+	const router = useRouter();
 	const dispatch = useDispatch();
 
 	const showNavbar = () => {
@@ -100,7 +104,7 @@ const Appbar = ({
 			});
 		}
 	};
-	const router = useRouter();
+
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			if (!isMobile) {
@@ -144,6 +148,16 @@ const Appbar = ({
 		}
 	}, [isAuthenticated, _id]);
 
+	const handleHomeClick = (e) => {
+		e.preventDefault();
+		dispatch({
+			type: Types.CLEAR_ALL_QUERY_RESULTS,
+		});
+		router.push(`/`, undefined, { shallow: true });
+		animateSearchReset();
+		// router.push("/");
+	};
+
 	const styles = useStyles();
 	const handleChange = (event) => {
 		setAuth(event.target.checked);
@@ -172,24 +186,23 @@ const Appbar = ({
 						Poetry Blog
 					</Typography>
 					<div className={styles.toolbarRight}>
-						<Link href="/">
-							<a
+						<a
+							className={clsx(
+								styles.aTag,
+								emHovered === "home" && styles.emHovered
+							)}
+							onClick={handleHomeClick}
+							onMouseEnter={() => setEmHovered("home")}
+							onMouseLeave={() => setEmHovered(null)}
+						>
+							Home
+							<div
 								className={clsx(
-									styles.aTag,
-									emHovered === "home" && styles.emHovered
+									styles.borderBottomDiv,
+									emHovered === "home" && styles.borderBottomDivHovered
 								)}
-								onMouseEnter={() => setEmHovered("home")}
-								onMouseLeave={() => setEmHovered(null)}
-							>
-								Home
-								<div
-									className={clsx(
-										styles.borderBottomDiv,
-										emHovered === "home" && styles.borderBottomDivHovered
-									)}
-								/>
-							</a>
-						</Link>
+							/>
+						</a>
 						<Link href={isAuthed ? "/newSubmission" : "/login"}>
 							<a
 								className={clsx(

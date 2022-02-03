@@ -20,18 +20,6 @@ const LandingBottomSection = ({
 		filteredAllPosts: { noResult, results },
 	},
 }) => {
-	const [shouldDisplay, setShouldDisplay] = useState(null);
-	useEffect(() => {
-		if (noResult) {
-			return setShouldDisplay([]);
-		}
-		if (results?.length > 0) {
-			return setShouldDisplay(results);
-		}
-	}, [results, noResult]);
-
-	useEffect(() => {}, [shouldDisplay]);
-
 	const styles = useStyles();
 	return (
 		<div
@@ -49,10 +37,10 @@ const LandingBottomSection = ({
 				)}
 			>
 				{noResult && <LandingNoSearchResult />}
-				{Boolean(shouldDisplay && shouldDisplay?.length > 0) && (
+				{Boolean(results && results?.length > 0) && (
 					<LandingSearchResults
-						resultArray={shouldDisplay}
-						shouldDisplay={Boolean(shouldDisplay && shouldDisplay?.length > 0)}
+						resultArray={results}
+						shouldDisplay={Boolean(results && results?.length > 0)}
 					/>
 				)}
 			</div>

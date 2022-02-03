@@ -58,6 +58,12 @@ const formReducer = createReducer(initialState, (builder) => {
 		return {
 			...state,
 			mainSearchQuery: action.payload,
+			...(action.payload === "" && {
+				hasSearchResults: false,
+			}),
+			...(action.payload === "" && {
+				filteredAllPosts: initialState.filteredAllPosts,
+			}),
 		};
 	});
 	builder.addCase(Types.CLEAR_MAIN_SEARCH_QUERY, (state, action) => {

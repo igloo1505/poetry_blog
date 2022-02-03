@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import * as Types from "../../state/Types";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -56,9 +57,11 @@ const Tag = ({ tag }) => {
 			className={styles.container}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			onClick={handleRedirect}
+			// onClick={handleRedirect}
 		>
-			{tag}
+			<Link href={`/${tag}`}>
+				<a>{tag}</a>
+			</Link>
 			<div
 				className={clsx(
 					styles.borderBottom,
