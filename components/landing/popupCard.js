@@ -224,6 +224,7 @@ const PopupCard = ({
 					styles.topContainer,
 					"popup-card-top-container-animated"
 				)}
+				onClick={viewSingleSubmission}
 			>
 				<div
 					className={clsx(

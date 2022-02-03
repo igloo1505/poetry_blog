@@ -252,10 +252,12 @@ const animateEntrance = () => {
 		`.${bodySpanId}`,
 		{
 			opacity: 0,
+			scaleY: 0,
 			y: "-50px",
 		},
 		{
 			opacity: 1,
+			scaleY: 1,
 			y: "0px",
 			stagger: 0.1,
 			// ease: "power3.inOut",

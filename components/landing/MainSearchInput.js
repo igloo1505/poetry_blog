@@ -145,7 +145,8 @@ const MainSearchInput = ({
 					value={mainSearchQuery}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") {
-							handleSubmit(e);
+							// Maybe add this back in, but for now it's causing headaches forcing the animation to run twice. Request is being dispatched from the URL params automatically as is.
+							// handleSubmit(e);
 						}
 					}}
 				/>
