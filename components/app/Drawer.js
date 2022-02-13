@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { decorator as reduxBurgerMenu } from "redux-burger-menu";
 
 const drawerWidth = 240;
 const breakpoint = 1920;
@@ -37,4 +36,4 @@ const mapStateToProps = (state, props) => ({
 	props: props,
 });
 
-export default connect(mapStateToProps)(reduxBurgerMenu(MyDrawer));
+export default connect(mapStateToProps)(MyDrawer);

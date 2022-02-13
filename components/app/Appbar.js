@@ -13,8 +13,6 @@ import { connect, useDispatch } from "react-redux";
 import { handleLogout } from "../../state/userActions";
 import { animateSearchReset } from "../../state/animations";
 
-// TODO: remove search query and reset to featured on 'Home' click
-
 const hoverLimit = 100;
 
 const useStyles = makeStyles((theme) => ({
@@ -52,11 +50,9 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		padding: "0.5rem",
 		transition: "all 0.3s ease-in-out",
-		// "&:hover": {
-		// 	backgroundColor: "rgba(255, 255, 255, 1)",
-		// 	color: theme.palette.primary.main,
-		// 	transition: "all 0.2s ease-in-out",
-		// },
+		"&:hover": {
+			cursor: "pointer",
+		},
 	},
 	emHovered: {
 		color: theme.palette.primary.main,

@@ -198,14 +198,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
 	let token = cookies.get("token");
 	let userId = cookies.get("userId");
 	let rememberMe = cookies.get("rememberMe");
-	if (!userId || !token) {
-		return {
-			redirect: {
-				destination: "/",
-				permanent: false,
-			},
-		};
-	}
+
 	if (userId && token) {
 		if (rememberMe) {
 			hasUser = await autoLoginOnFirstRequest(req, res);

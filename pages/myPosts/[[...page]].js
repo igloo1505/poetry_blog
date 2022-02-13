@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -7,7 +8,9 @@ import Submission from "../../models/Submission";
 import mongoose from "mongoose";
 import MyPostCard from "../../components/myPosts/myPostCard";
 import SearchMyPostsForm from "../../components/myPosts/SearchMyPostsForm";
+import Pagination from "../../components/myPosts/pagination";
 import { gsap } from "gsap";
+import { useRouter } from "next/router";
 
 const myPostCardClassName = "my-post-card-animated-class";
 
@@ -75,11 +78,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const myPosts = ({
-	props: { userSubmissions },
+	props: { userSubmissions, totalPages },
 	posts: { filteredOwnPosts },
 }) => {
-	console.log("userSubmissions in component: ", userSubmissions);
+	console.log("totalPages: ", totalPages);
+	const router = useRouter();
 	const [currentDisplayedArray, setCurrentDisplayedArray] = useState([]);
+	const [currentPage, setCurrentPage] = useState(0);
+
+	useEffect(() => {
+		let _q = router?.query?.page?.[0] || 0;
+		setCurrentPage(_q);
+	}, [router.query.page]);
+
 	useEffect(() => {
 		if (filteredOwnPosts.results) {
 			setCurrentDisplayedArray(filteredOwnPosts.results);
@@ -99,6 +110,11 @@ const myPosts = ({
 	}, [currentDisplayedArray]);
 
 	const styles = useStyles();
+
+	const updatePage = (newPage) => {
+		router.push(`/myPosts/${newPage}`);
+	};
+
 	return (
 		<div className={styles.outerContainer}>
 			<div className={styles.containerLeft}>
@@ -115,6 +131,13 @@ const myPosts = ({
 						/>
 					))
 				)}
+				{totalPages && totalPages > 1 && (
+					<Pagination
+						totalPages={totalPages}
+						updatePage={updatePage}
+						activePage={currentPage}
+					/>
+				)}
 			</div>
 		</div>
 	);
@@ -127,48 +150,6 @@ const mapStateToProps = (state, props) => ({
 });
 
 export default connect(mapStateToProps)(myPosts);
-
-export const getServerSideProps = async (ctx) => {
-	// TODO add paginate to route params, but for now:
-	let page = 0;
-	// let _user = await autoLoginOnFirstRequest(ctx.req, ctx.res);
-	let cookies = new Cookies(ctx.req, ctx.res);
-	let userId = cookies.get("userId");
-	let userSubmissions = false;
-	if (userId) {
-		userSubmissions = await mongoose
-			.connect(process.env.MONGO_URI, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			})
-			.then(async () => {
-				let _submissions = await Submission.find({ author: userId })
-					.limit(paginateOffset)
-					.skip(paginateOffset * page)
-					.populate({
-						path: "author",
-						select: "firstName lastName _id",
-					});
-				return _submissions;
-			});
-	}
-	return {
-		props: {
-			// hasUser: _user,
-			userSubmissions: JSON.parse(JSON.stringify(userSubmissions)),
-		},
-	};
-};
-
-const NoResult = ({ styles }) => {
-	return (
-		<div className={styles.noResultsContainer}>
-			<Typography variant="h5" component="h2" className={styles.noResultsText}>
-				No results found
-			</Typography>
-		</div>
-	);
-};
 
 const animateEntrance = () => {
 	gsap.fromTo(
@@ -188,5 +169,57 @@ const animateEntrance = () => {
 			// ease: "power3.inOut",
 			ease: "back.out(1.7)",
 		}
+	);
+};
+
+export const getServerSideProps = async (ctx) => {
+	// TODO add paginate to route params, but for now:
+	let page = parseInt(ctx.query.page) || 0;
+	// let _user = await autoLoginOnFirstRequest(ctx.req, ctx.res);
+	let cookies = new Cookies(ctx.req, ctx.res);
+	let userId = cookies.get("userId");
+	let userSubmissions = false;
+	if (userId) {
+		userSubmissions = await mongoose
+			.connect(process.env.MONGO_URI, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			})
+			.then(async () => {
+				let count = await Submission.count({ author: userId });
+				console.log("count: ", count);
+				count = Math.ceil(count / paginateOffset);
+				console.log("count: ", count);
+				let _submissions = await Submission.find({ author: userId })
+					.limit(paginateOffset)
+					.skip(paginateOffset * page)
+					.populate({
+						path: "author",
+						select: "firstName lastName _id",
+					});
+				return {
+					submissions: _submissions,
+					totalPages: count,
+				};
+			});
+	}
+	return {
+		props: {
+			// hasUser: _user,
+			userSubmissions: JSON.parse(JSON.stringify(userSubmissions.submissions)),
+			...(userSubmissions?.totalPages && {
+				totalPages: userSubmissions?.totalPages,
+			}),
+		},
+	};
+};
+
+const NoResult = ({ styles }) => {
+	return (
+		<div className={styles.noResultsContainer}>
+			<Typography variant="h5" component="h2" className={styles.noResultsText}>
+				No results found
+			</Typography>
+		</div>
 	);
 };

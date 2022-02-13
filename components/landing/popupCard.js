@@ -149,10 +149,10 @@ const useStyles = makeStyles((theme) => ({
 		fontFamily: "'Roboto Condensed', sans-serif",
 		// margin: "1rem",
 		lineHeight: 1,
-		// textShadow: "3px 3px 4px #fff, -3px -3px 4px #000",
 	},
 	textLight: {
 		color: "#fff",
+		// color: "#e0e0e0",
 		transition: "all 0.3s ease-in-out",
 	},
 	textDark: {
@@ -195,18 +195,17 @@ const PopupCard = ({
 	isFeatured,
 }) => {
 	let cardAnimateClass = isFeatured ? "pop-up-card-featured" : "pop-up-card";
-	console.log("submission: ", submission);
+
 	const styles = useStyles();
 	const router = useRouter();
 	const [animatedIn, setAnimatedIn] = useState(true);
-	const handleCardClick = () => {
-		console.log("Clicked", featuredImage);
-	};
+	const handleCardClick = () => {};
 	const viewSingleSubmission = () => {
-		console.log("Clicked", featuredImage);
+		console.log("Clicked view single with: ", `/post/${submission._id}`);
+
 		router.push(`/post/${submission._id}`);
 	};
-	console.log("textColor: ", textColor);
+
 	return (
 		<div
 			className={clsx(

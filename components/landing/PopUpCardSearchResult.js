@@ -191,10 +191,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	textLight: {
 		color: "#fff",
+		// color: "#e0e0e0",
 		transition: "all 0.3s ease-in-out",
 	},
 	textDark: {
-		color: "#000",
+		// color: "#000",
+		color: theme.palette.grey[300],
 		transition: "all 0.3s ease-in-out",
 	},
 	textLightEmphasize: {
